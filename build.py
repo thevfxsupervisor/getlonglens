@@ -24,7 +24,6 @@ APP = "https://newsletter-edge.thevfxsupervisor.workers.dev"
 SIGNIN = APP + "/login"
 APP_PRIVACY = APP + "/privacy"
 DAILY = "https://thevfxsupervisor.com/daily/"
-SAMPLE = "https://thevfxsupervisor.com/daily/8/"  # 13 Oct 2026: the issue the media below comes from
 GEOFF_SITE = "https://thevfxsupervisor.com/"
 EMAIL = "geoff@thevfxsupervisor.com"
 
@@ -37,7 +36,7 @@ INQUIRY_CONSENT = "I agree to be contacted about this message at the email addre
 
 NAV = [("Features", "/features/"), ("Pricing", "/pricing/"), ("How it works", "/how-it-works/"),
        ("FAQ", "/faq/")]
-CTA_LABEL = "Book my short call"
+CTA_LABEL = "Email Geoff to book a call"
 
 
 def mailto(subject: str, body: str = "") -> str:
@@ -53,6 +52,10 @@ CALL_MAIL = mailto(
     "Who are my customers, and what should they hear from me first?\n\n\n"
     "My name:\nMy business:\n",
 )
+
+
+EXTRAS = "up to two extras a week in total: the full audio conversation, a short video or slides"
+AI_LINE = "LongLens uses AI to write each issue, then checks names and figures against the original story before you see it."
 
 
 def coming(text: str = "") -> str:
@@ -77,7 +80,7 @@ def header(current: str) -> str:
   <div class="wrap">
     <a class="brand" href="/" aria-label="LongLens home"><img src="/assets/mark-e1.svg" alt="" width="32" height="32"><span>LongLens</span></a>
     <a class="btn btn-a hdr-cta" href="/contact/">{CTA_LABEL}</a>
-    <nav aria-label="Main">{links}<a href="{SIGNIN}">Sign in</a><a class="btn btn-a" href="/contact/">{CTA_LABEL}</a></nav>
+    <nav aria-label="Main">{links}<a href="/sign-in/">Sign in</a><a class="btn btn-a" href="/contact/">{CTA_LABEL}</a></nav>
   </div>
 </header>'''
 
@@ -90,7 +93,7 @@ def footer() -> str:
       <p class="by">LongLens. Built by <a href="{GEOFF_SITE}">Geoffrey Hancock</a>.</p>
       <p class="tiny">No tracking, no cookies on this site.</p>
     </div>
-    <nav aria-label="Footer">{links}<a href="/contact/">Book a call</a><a href="{SIGNIN}">Sign in</a><a href="/privacy/">Privacy</a></nav>
+    <nav aria-label="Footer">{links}<a href="/contact/">Email Geoff</a><a href="/sign-in/">Sign in</a><a href="/privacy/">Privacy</a></nav>
   </div>
 </footer>'''
 
@@ -136,7 +139,7 @@ def close_cta(h2: str, text: str) -> str:
   <div class="wrap"><div>
     <h2>{h2}</h2>
     <p class="k">{text}</p>
-    <div class="cta-row"><a class="btn btn-a" href="/contact/">Book a short call. See a week of your news, under your name.</a></div>
+    <div class="cta-row"><a class="btn btn-a" href="/contact/">Email Geoff to book a call. See a week of your news, under your name.</a></div>
   </div></div>
 </section>'''
 
@@ -156,12 +159,12 @@ FORMAT_STRIP = f'''<p class="eyebrow strip-label">One morning, every format</p>
     <div class="fmt-txt"><b>Flip the slides</b><p>For the Monday meeting, one story a slide.</p></div></div>
   <div class="fmt-card fmt-coming" role="listitem"><div class="fmt-txt"><b>The one picture</b> {coming()}<p>The whole issue on one screen, for the person who will not read.</p></div></div>
 </div>
-<p class="fmt-hint">All from the 13 Oct 2026 issue of The VFX Supervisor Daily. The audio and video here are short clips of the full 19 and 7 minutes.</p>'''
+<p class="fmt-hint">All from one real issue of Geoff's own VFX briefing, 13 Oct 2026. The audio and video here are short clips of the full 19 and 7 minutes.</p>'''
 
 PROOF = f'''<div class="proof">
   <b>The proof, every morning</b>
   <p>The VFX Supervisor Daily is Geoffrey Hancock's own morning VFX briefing, crafted with LongLens. Read it, hear it, watch it. That is how he shows producers what he knows before they hire him.</p>
-  <p class="links"><a href="{DAILY}">Read this morning's Daily</a><a href="{SAMPLE}">Open the 13 Oct 2026 issue from the clips above</a></p>
+  <p class="links"><a href="{DAILY}">Read this morning's Daily</a></p>
 </div>'''
 
 # --------------------------------------------------------------------------------------------
@@ -172,9 +175,10 @@ HOME = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow"><img src="/assets/mark-e1.svg" alt="" width="40" height="40">LongLens</span>
     <h1>Stop being quietly brilliant. Be the expert your customers hear from first.</h1>
-    <p class="lede">Every morning LongLens turns your trade's news into a letter under your name: what changed, and why it matters to your customers. Read it or hear it every morning, add the full audio conversation, a short video or slides up to twice a week, and change anything by replying in plain words.</p>
+    <p class="lede">Daily or weekly, LongLens turns your trade's news into a letter under your name: what changed, and why it matters to your customers. Read it or hear it, with up to two extras a week in total: the full audio conversation, a short video or slides, and change anything by replying in plain words.</p>
+    <p class="price-line">LongLens uses AI to write each issue, then checks names and figures against the original story before you see it.</p>
     <div class="cta-row">
-      <a class="btn btn-a" href="/contact/">Book a short call. See a week of your news, under your name.</a>
+      <a class="btn btn-a" href="/contact/">Email Geoff to book a call. See a week of your news, under your name.</a>
       <a class="btn btn-b" href="{DAILY}">Read this morning's Daily</a>
     </div>
     <p class="price-line">Free, Solo at $19 a month, or Business at $95 a month. <a href="/pricing/">Compare the three plans</a>.</p>
@@ -196,7 +200,7 @@ HOME = f'''<section class="hero">
     <div class="cards">
       <div class="card"><h3>The news, and why it matters to them</h3>
         <p>Every issue says what changed in your trade and why it matters to your customers, with the original link, checked before the issue goes out.</p></div>
-      <div class="card"><h3>Your name in front of them every morning</h3>
+      <div class="card"><h3>Your name in front of them, issue after issue</h3>
         <p>Send each issue on through the email tool you already use, or forward it. Week after week they see who knew first. Issue #41 is the proof you were right in issue #12.</p></div>
       <div class="card"><h3>Sounds like you, because you taught LongLens</h3>
         <p>"Shorter." "More on the new rules, less on trade shows." Reply in your own words and the next issue changes. Reply UNDO to take it back.</p></div>
@@ -219,7 +223,7 @@ HOME = f'''<section class="hero">
   </div>
 </section>
 
-{close_cta("Your customers hear the news from someone every morning. Make it you.",
+{close_cta("Your customers hear the news from someone. Make it you.",
            "One short call. Geoff points LongLens at the websites, forums, videos and newsletters you trust, and you see a week of real issues before anyone else does.")}'''
 
 # --------------------------------------------------------------------------------------------
@@ -230,7 +234,8 @@ FEATURES = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">Features</span>
     <h1>One morning of news. Every way your customers take it in.</h1>
-    <p class="lede">LongLens crafts each issue once as a letter, then turns the same issue into audio, a short explainer video and slides. More for your customers every morning than you could make by hand.</p>
+    <p class="lede">LongLens crafts each issue once as a letter, then turns the same issue into audio, a short explainer video and slides. More for your customers than you could make by hand.</p>
+    <p class="price-line">LongLens uses AI to write each issue, then checks names and figures against the original story before you see it.</p>
     {FORMAT_STRIP}
   </div>
 </section>
@@ -250,9 +255,9 @@ FEATURES = f'''<section class="hero">
           <li><strong>Slides</strong>: the slide deck on top, then the letter.</li>
           <li>{coming("<strong>See it</strong>: the whole issue on one screen, as a format of its own.")}</li>
         </ul>
-        <p>The full audio conversation, the video and the slides come up to twice a week on Solo and Business. A plain-voice audio read comes every morning on every plan. LongLens checks every audio, slide and video against the stories before you see it.</p>
+        <p>Every plan gets a plain-voice audio read with each issue, and up to two extras a week in total: the full audio conversation, a short video or slides. Audio, video and slides come when the issue includes stories from public websites. LongLens checks every audio, slide and video against the stories before you see it.</p>
       </div>
-      <figure class="shot"><img src="/assets/formats-video.png" width="1280" height="720" loading="lazy" alt="The explainer video of one real issue, paused on a frame that reads: A human touch is absolutely essential."><figcaption>Real explainer video from one issue of The VFX Supervisor Daily.</figcaption></figure>
+      <figure class="shot"><img src="/assets/formats-video.png" width="1280" height="720" loading="lazy" alt="The explainer video of one real issue, paused on a frame that reads: A human touch is absolutely essential."><figcaption>Real explainer video from one issue of Geoff's own VFX briefing.</figcaption></figure>
     </div>
 
     <div class="feat">
@@ -287,8 +292,8 @@ FEATURES = f'''<section class="hero">
         <h2>Your name on every issue. Your customers remember who told them.</h2>
         <p>Every issue carries your newsletter's name and its issue number. Send it on through the email tool you already use, or simply forward it.</p>
         <ul>
-          <li>Business: each issue posted to your Slack or Discord channel.</li>
-          <li>Business: your own blog page, and you choose which issues go up.</li>
+          <li>Each issue posted to your Slack or Discord channel, if you add one.</li>
+          <li>Your own blog page, set up by Geoff, and you choose which issues go up.</li>
           <li>{coming("LongLens sends straight to your customers from your own address, for example news@yourbusiness.com, each one in the format they picked, with a dated record of each yes and one-click unsubscribe.")}</li>
           <li>{coming("Social posts for every issue, and your issue on Telegram.")}</li>
         </ul>
@@ -345,7 +350,7 @@ FEATURES = f'''<section class="hero">
     <div class="notfor"><h3>What LongLens does not do</h3><ul>
       <li><strong>Write your own company news.</strong> LongLens works from what the trade press, the forums and the videos say about your trade. Your own announcements are still yours to write.</li>
       <li><strong>Run ads or paid subscriptions.</strong> Use a newsletter platform built for that.</li>
-      <li><strong>Replace you.</strong> Your judgment is the point. LongLens makes it reach further, every morning.</li>
+      <li><strong>Replace you.</strong> Your judgment is the point. LongLens makes it reach further, issue after issue.</li>
     </ul></div>
   </div>
 </section>
@@ -364,43 +369,50 @@ def plan(name, price, per, outcome, items, cta_label, cta_href, lead=False):
     )
     cls = "btn btn-a" if lead else "btn btn-b"
     per_html = f" <small>{per}</small>" if per else ""
-    return (f'<div class="plan{" lead" if lead else ""}"><h3>{name}</h3>'
+    return (f'<div class="plan{" lead" if lead else ""}"><h2>{name}</h2>'
             f'<p class="plan-price">{price}{per_html}</p><p class="plan-outcome">{outcome}</p>'
             f'<ul>{lis}</ul><a class="{cls}" href="{html.escape(cta_href)}">{cta_label}</a></div>')
 
 
 PLANS = "".join([
     plan("Free", "$0", "", "Know what changed in your trade before your first coffee.",
-         ["Your letter every morning, to read",
-          "Audio every morning, read in a plain voice",
-          "Coming: the full audio conversation every morning",
+         ["Everything under Every plan today",
           "Coming: a weekly summary as a letter, audio and video"],
          "Get my free invite", mailto("LongLens Free invite")),
     plan("Solo", "$19", "a month",
-         "Your trade's news every morning, plus video to watch and slides to flip through, up to twice a week.",
-         ["Your letter and a plain-voice audio read every morning",
-          "The full audio conversation, video and slides, up to two a week",
-          "Coming: the full audio conversation, video and slides every morning",
+         "Built for the reader who takes every format, with every issue.",
+         ["Everything under Every plan today",
+          "Coming: the full audio conversation, video and slides with every issue",
           "Coming: the whole issue as one picture"],
          "Get my Solo invite", mailto("LongLens Solo invite")),
     plan("Business", "$95", "a month", "Be the expert your customers hear from first.",
-         ["Everything in Solo, under your name, for your customers",
-          "Set up with you on one short call",
-          "Send each issue through the email tool you already use, or forward it",
-          "Each issue posted to your Slack or Discord channel",
-          "Your own blog page: you choose which issues go up",
+         ["Everything under Every plan today",
+          "Set up with you by Geoff, on one short call",
           "Coming: LongLens sends straight to your audience from your own address",
           "Coming: social posts for every issue",
           "Coming: your issue on Telegram"],
          "Put my name in front of my customers", "/contact/", lead=True),
 ])
 
+EVERY_PLAN = f'''<div class="card" style="margin-top:14px"><h2 style="font-size:18px">Every plan today</h2>
+  <ul class="list" style="margin-top:8px">
+    <li>Your letter with each issue, daily or weekly, under your newsletter's name</li>
+    <li>A plain-voice audio read with each issue</li>
+    <li>{EXTRAS[0].upper() + EXTRAS[1:]}</li>
+    <li>Change anything by replying in plain words</li>
+    <li>Send each issue through the email tool you already use, or forward it</li>
+    <li>Each issue posted to your Slack or Discord channel, if you add one</li>
+  </ul>
+  <p class="tiny">Today Free and Solo include the same. What Solo adds is tagged coming.</p>
+</div>'''
+
 PRICING = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">Pricing</span>
-    <h1>Start free. Add video and slides for $19. Put your name in front of your customers for $95.</h1>
-    <p class="lede">Three plans, priced today. Anything tagged coming is not built yet.</p>
+    <h1>Start free. Put your name in front of your customers for $95.</h1>
+    <p class="lede">Free, Solo at $19 a month, or Business at $95 a month. Anything tagged coming is not built yet.</p>
     <div class="plans">{PLANS}</div>
+    {EVERY_PLAN}
   </div>
 </section>
 
@@ -413,7 +425,7 @@ PRICING = f'''<section class="hero">
       <li><strong>Invite only, for now.</strong> Geoff sets up every account himself. The invite buttons above open an email to him. {coming("Sign up on your own.")}</li>
       <li><strong>Business starts with a short call.</strong> You and Geoff pin down who your customers are and what they should hear from you first. Then he quotes the setup, before anything starts.</li>
       <li><strong>A set amount of writing each month.</strong> Every plan covers a set amount of writing a month. If you reach it, LongLens says so on your pages and picks up again next month.</li>
-      <li><strong>Up to two extras a week</strong> on Solo and Business: the full audio conversation, the video or the slides. Once those two are used, the plain-voice audio still comes, and the rest waits until next week.</li>
+      <li><strong>Up to two extras a week in total</strong> on every plan: the full audio conversation, a short video or slides. Once those two are used, the plain-voice audio still comes, and the rest waits until next week.</li>
     </ul>
   </div>
 </section>
@@ -428,7 +440,7 @@ PRICING = f'''<section class="hero">
 HOW = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">How it works</span>
-    <h1>One short call. Then your trade's news lands every morning, under your name.</h1>
+    <h1>One short call. Then your trade's news lands daily or weekly, under your name.</h1>
     <p class="lede">No software to learn and no password to remember. Geoff sets LongLens up with you, and from then on you change anything by replying to an issue.</p>
   </div>
 </section>
@@ -440,7 +452,7 @@ HOW = f'''<section class="hero">
     <ol class="steps two">
       <li><h3>Book a short call</h3>
         <p>Tell Geoff who your customers are and what they should hear from you first. He reads every message himself and replies from {EMAIL}.</p>
-        <p><a href="/contact/">Book my short call</a></p></li>
+        <p><a href="/contact/">Email Geoff to book a call</a></p></li>
       <li><h3>Geoff sets LongLens up with you</h3>
         <p>He points LongLens at the websites, forums, videos and newsletters you trust, and you describe your customers in your own words. You see a week of real issues before anyone else does.</p></li>
       <li><h3>Sign in with the link Geoff emails you</h3>
@@ -478,7 +490,7 @@ HOW = f'''<section class="hero">
       <li><strong>Change your issue</strong>: reply to any issue in plain words, for example "shorter please". The next issue follows it.</li>
       <li><strong>Undo a change</strong>: reply UNDO.</li>
       <li><strong>Pause it</strong>: press Pause this newsletter at the bottom of any issue. The same page starts it again.</li>
-      <li><strong>Sign in</strong>: type your email on the <a href="{SIGNIN}">sign-in page</a> and a fresh link arrives by email, usually within a minute. Each link works once, and keeps you signed in for 30 days on that device.</li>
+      <li><strong>Sign in</strong>: type your email on the <a href="/sign-in/">sign-in page</a> and a fresh link arrives by email, usually within a minute. Each link works once, and keeps you signed in for 30 days on that device.</li>
     </ul>
     <p class="k">Sending to your customers: today each issue comes to you first, and you send it through the email tool you already use, or forward it. {coming("Email straight to your customers from your own address.")}</p>
   </div>
@@ -500,9 +512,9 @@ FAQ_ITEMS = [
         ("How do we start, and how does LongLens reach my customers?",
          "<p>A short call, then Geoff points LongLens at the websites, forums, videos and newsletters you trust, and you describe your customers in your own words. You see a week of real issues before anyone else does. Today each issue comes to you first, and you send it through the email tool you already use, or forward it. Email straight to your customers from your own address is coming.</p>"),
         ("Can I sign up on my own?",
-         f"<p>Not yet. LongLens is invite only for now, and Geoff sets up every account himself. <a href=\"/contact/\">Book a short call</a>, or ask for a Free or Solo invite on the <a href=\"/pricing/\">pricing page</a>.</p>"),
+         f"<p>Not yet. LongLens is invite only for now, and Geoff sets up every account himself. <a href=\"/contact/\">Email Geoff to book a short call</a>, or ask for a Free or Solo invite on the <a href=\"/pricing/\">pricing page</a>.</p>"),
         ("How do I sign in?",
-         f"<p>With a link by email. There is no password. Type your email on the <a href=\"{SIGNIN}\">sign-in page</a> and a fresh link arrives, usually within a minute. Each link works once and keeps you signed in for 30 days on that device.</p>"),
+         f"<p>With a link by email. There is no password. Type your email on the <a href=\"/sign-in/\">sign-in page</a> and a fresh link arrives, usually within a minute. Each link works once and keeps you signed in for 30 days on that device.</p>"),
     ]),
     ("What you get", [
         ("Is AI writing it?",
@@ -586,7 +598,7 @@ CONTACT_BODY = inquiry_form() if FORM_LIVE else f'''<div class="contact-card">
     <li>What they should hear from you first.</li>
     <li>Your name and your business.</li>
   </ol>
-  <a class="btn btn-a" href="{html.escape(CALL_MAIL)}">Email Geoff and book my short call</a>
+  <a class="btn btn-a" href="{html.escape(CALL_MAIL)}">Email Geoff to book a call</a>
   <p class="email-line">Or write to <a href="mailto:{EMAIL}">{EMAIL}</a></p>
   <p class="tiny">Writing does not add you to any list. Geoff replies personally to set up the call.</p>
 </div>'''
@@ -594,7 +606,7 @@ CONTACT_BODY = inquiry_form() if FORM_LIVE else f'''<div class="contact-card">
 CONTACT = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">Book a call</span>
-    <h1>Book a short call. See a week of your news, under your name.</h1>
+    <h1>Email Geoff for a short call. See a week of your news, under your name.</h1>
     <p class="lede">Tell Geoff who your customers are and what they should hear from you first. He reads every message himself and replies from {EMAIL} to set up a short call.</p>
     {CONTACT_BODY}
   </div>
@@ -621,9 +633,9 @@ SIGNIN_PAGE = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">Sign in</span>
     <h1>Sign in with one link. No password.</h1>
-    <p class="lede">Type your email on the sign-in page and a link arrives by email, usually within a minute. It keeps you signed in for 30 days on that device.</p>
-    <div class="cta-row"><a class="btn btn-a" href="{SIGNIN}">Get my sign-in link</a></div>
-    <p class="k">Not set up yet? LongLens is invite only for now. <a href="/contact/">Book a short call</a>.</p>
+    <p class="lede">The LongLens app lives at <strong>newsletter-edge.thevfxsupervisor.workers.dev</strong>. The button below takes you to its sign-in page: type your email and a link arrives by email, usually within a minute. The link keeps you signed in for 30 days on that device.</p>
+    <div class="cta-row"><a class="btn btn-a" href="{SIGNIN}">Open the LongLens app and get my sign-in link</a></div>
+    <p class="k">Not set up yet? LongLens is invite only for now. <a href="/contact/">Email Geoff to book a short call</a>.</p>
   </div>
 </section>'''
 
@@ -643,7 +655,7 @@ NOT_FOUND = '''<section class="hero">
   <div class="wrap prose">
     <span class="eyebrow">Not found</span>
     <h1>That page is not here.</h1>
-    <p><a href="/">Go to the LongLens home page</a>, or <a href="/contact/">book a short call</a>.</p>
+    <p><a href="/">Go to the LongLens home page</a>, or <a href="/contact/">email Geoff to book a short call</a>.</p>
   </div>
 </section>'''
 
@@ -652,7 +664,7 @@ NOT_FOUND = '''<section class="hero">
 PAGES = [
     # slug, title, description, body, nav-current
     ("", "LongLens: be the expert your customers hear from first",
-     "Every morning LongLens turns your trade's news into a letter under your name, to read or hear, with video and slides up to twice a week. Free, or from $19 a month.",
+     "Daily or weekly, LongLens turns your trade's news into a letter under your name, to read or hear, with up to two extras a week. Free, or from $19 a month.",
      HOME, ""),
     ("features", "Features | LongLens",
      "One morning of news, every way your customers take it in: read, skim, listen, watch or flip the slides, and change anything by replying in plain words.",
@@ -661,13 +673,13 @@ PAGES = [
      "Free, Solo at $19 a month, or Business at $95 a month. What each plan includes today, and what is coming.",
      PRICING, "/pricing/"),
     ("how-it-works", "How it works | LongLens",
-     "One short call, a sign-in link by email, and your first issue today. Then every morning, and you change anything by replying.",
+     "One short call, a sign-in link by email, and your first issue the same day. Then daily or weekly, and you change anything by replying.",
      HOW, "/how-it-works/"),
     ("faq", "FAQ | LongLens",
      "Straight answers about LongLens: getting started, signing in, what you get, changing it by replying, price and ownership.",
      FAQ, "/faq/"),
     ("contact", "Book a call | LongLens",
-     "Book a short call with Geoffrey Hancock and see a week of your trade's news, under your name.",
+     "Email Geoffrey Hancock for a short call and see a week of your trade's news, under your name.",
      CONTACT, ""),
     ("sign-in", "Sign in | LongLens",
      "Sign in to LongLens with a link by email. No password.", SIGNIN_PAGE, ""),
@@ -747,6 +759,14 @@ header.top{{position:static}}
     (ROOT / "preview.html").write_text(preview, encoding="utf-8")
 
 
+def write_seo() -> None:
+    urls = "".join(f"  <url><loc>{SITE}{'/' if s == '' else '/' + s + '/'}</loc></url>\n" for s, *_ in PAGES)
+    (ROOT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + '</urlset>\n', encoding="utf-8")
+    (ROOT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n", encoding="utf-8")
+
+
 if __name__ == "__main__":
+    write_seo()
     write_preview(write_site())
     print("built", len(PAGES) + 1, "pages and preview.html")
