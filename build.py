@@ -35,7 +35,7 @@ INQUIRY_CONSENT = "I agree to be contacted about this message at the email addre
 
 NAV = [("Features", "/features/"), ("Pricing", "/pricing/"), ("How it works", "/how-it-works/"),
        ("FAQ", "/faq/")]
-CTA_LABEL = "Ask for a free week"
+CTA_LABEL = "Free week"
 
 
 def mailto(subject: str, body: str = "") -> str:
@@ -139,7 +139,7 @@ def page(slug: str, title: str, description: str, body: str, current: str = "",
 '''
 
 
-CTA_TEXT = "Ask for a free week"
+CTA_TEXT = "Ask for a free week of issues"
 OFFER_LINE = "Free pilot: one short call with Geoff, then a week of real issues for your business. After the pilot, from $19 a month."
 CONTROL_LINE = "Nothing goes to your clients until you approve it. Every issue comes to you first: read it, change any line, then send it yourself."
 
@@ -162,7 +162,7 @@ EXAMPLE_LABEL = "Geoff's own newsletter about his own field, visual effects for 
 F_READ, F_SKIM, F_HEAR, F_WATCH, F_SHORT, F_SLIDES, F_PIC = (
     "Read it", "Skim it", "Hear it", "Watch it", "One minute", "Slides", "One picture")
 
-FORMAT_STRIP = f'''<p class="eyebrow strip-label">Real examples from {EXAMPLE_LABEL}, each dated</p>
+FORMAT_STRIP = f'''<p class="eyebrow strip-label">Real examples from Geoff's own newsletter, with their dates</p>
 <div class="fmt-strip six" role="list" aria-label="One issue in six formats, real examples">
   <div class="fmt-card" role="listitem"><div class="fmt-media tall"><a href="{M}read-letter.png"><img src="{M}read-letter.png" width="780" height="1276" loading="lazy" alt="Geoff's own issue of 13 Oct 2026 as an email on a phone: the date, the headline and a short paragraph on what it means for the reader."></a></div>
     <div class="fmt-txt"><b>{F_READ}</b><p>Two minutes with coffee. What is new, and what it means for the reader.</p><p class="fmt-date">13 Oct 2026</p></div></div>
@@ -246,12 +246,13 @@ HOME = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow"><img src="/assets/mark-e1.svg" alt="" width="40" height="40">LongLens</span>
     <h1 class="rot-h1"><span class="sr-only">Your clients hear the news from you.</span><span aria-hidden="true">Your <span class="rot">{ROT_WORDS}</span> hear the news from you.</span></h1>
-    <p class="lede">LongLens writes a short newsletter under your name on what changed in your field and what it means for your clients, prospects or members. Every week, or every morning if your field moves fast, as a letter, audio, slides, a picture and video. You never start from a blank page.</p>
+    <p class="lede">LongLens follows the news sites, forums and videos you name, and writes a short newsletter under your name on what changed in your field and what it means for your clients, prospects or members. Every week, or every morning if your field moves fast, as a letter, audio, slides, a picture and video. You never start from a blank page.</p>
     <div class="cta-row">
       <a class="btn btn-a" href="/contact/">{CTA_TEXT}</a>
     </div>
     <p class="price-line">{OFFER_LINE} <a href="/pricing/">See prices</a>.</p>
     <p class="price-line"><strong>{CONTROL_LINE}</strong></p>
+    <p class="price-line">{AI_LINE}</p>
   </div>
 </section>
 
@@ -559,7 +560,7 @@ PRICING = f'''<section class="hero">
     <ul class="list">
       <li><strong>Invite only, for now.</strong> Geoff sets up every account himself. {coming("Sign up on your own.")}</li>
       <li><strong>It starts with a short call.</strong> You and Geoff pin down who your readers are and what they should hear from you first.</li>
-      <li><strong>A monthly writing limit.</strong> The pilot covers a set amount of writing each month. If your newsletter reaches it, LongLens tells you on your pages and carries on the next month.</li>
+      <li><strong>A monthly cap on writing.</strong> If a newsletter reaches it, LongLens says so on your pages, and new issues start again the next month.</li>
       <li><strong>Up to two of the bigger formats a week</strong>: the two-voice audio, the slides, the explainer video or the one picture. The letter, the spoken version and the one-minute video carry on as usual.</li>
       <li><strong>Stop any time.</strong> Tell Geoff, and nothing is owed.</li>
     </ul>
