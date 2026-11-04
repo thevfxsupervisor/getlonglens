@@ -190,7 +190,15 @@ PROOF = f'''<div class="proof">
 
 # Sample issues for other kinds of business. Each: (image, alt, what it is, date, link or "").
 # The section renders only when this list has entries, so nothing placeholder is ever published.
-SAMPLES: list[tuple[str, str, str, str, str]] = []
+SAMPLES = [
+    ("dk-accounting", "Client Update", "For the clients of a Copenhagen accounting firm",
+     "Corporate tax overpayment window closes soon, and new EU parcel fees add to import costs"),
+    ("ux-research", "Research Notes", "For the prospects of an independent UX researcher",
+     "AI moderators and synthetic users: early data says use them for practice, not evidence"),
+    ("bakery", "The Proving Room", "For the members of a bakery owners' community",
+     "Cocoa has fallen, but your costs may not follow soon"),
+]
+SAMPLE_DATE = "Wed 4 Nov 2026"
 
 
 def samples_section() -> str:
@@ -198,16 +206,18 @@ def samples_section() -> str:
         return ""
     cards = "".join(
         f'<div class="fmt-card" role="listitem"><div class="fmt-media tall">'
-        f'<a href="{link or img}"><img src="{img}" loading="lazy" alt="{html.escape(alt)}"></a></div>'
-        f'<div class="fmt-txt"><b>{html.escape(what)}</b><p class="fmt-date">Sample issue made by LongLens, {date}</p></div></div>'
-        for img, alt, what, date, link in SAMPLES)
+        f'<a href="/samples/{slug}/"><img src="/assets/samples/{slug}-top.png" width="600" height="900" loading="lazy" '
+        f'alt="The top of {html.escape(name)}, a sample issue: {html.escape(headline)}"></a></div>'
+        f'<div class="fmt-txt"><b>{html.escape(name)}</b><p>{html.escape(who)}: "{html.escape(headline)}"</p>'
+        f'<p class="fmt-date">Sample issue made by LongLens, {SAMPLE_DATE}. <a href="/samples/{slug}/">Read the whole issue</a></p></div></div>'
+        for slug, name, who, headline in SAMPLES)
     return f'''<hr class="rule">
 <section>
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Sample issues</span>
-      <h2>See an issue for a business like yours</h2>
-      <p>Each one written by LongLens for a different kind of business, from that field's real news on the date shown.</p></div>
-    <div class="fmt-strip" role="list" aria-label="Sample issues for other businesses">{cards}</div>
+      <h2>Read an issue written for a business like yours</h2>
+      <p>Three sample issues LongLens wrote on {SAMPLE_DATE} from that week's real news, each for a made-up business: an accounting firm, a UX researcher and a bakery owners' community. Every story links to the original.</p></div>
+    <div class="fmt-strip six" role="list" aria-label="Sample issues for other businesses">{cards}</div>
   </div>
 </section>'''
 
