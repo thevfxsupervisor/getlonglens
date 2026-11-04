@@ -217,3 +217,6 @@ footer .by a{text-decoration:underline}
 .contact-card textarea{min-height:140px;resize:vertical}
 .contact-card input:focus,.contact-card textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
 .contact-card input[type=checkbox]{margin-right:8px;accent-color:var(--accent)}
+.fmt-media.tall video{height:100%;width:100%;object-fit:cover}
+.fmt-txt p.fmt-date{font-family:var(--mono);font-size:11px;color:var(--mute);margin-top:8px}
+@media(min-width:960px){.fmt-strip.six{grid-template-columns:repeat(3,1fr)}}

@@ -153,17 +153,23 @@ M = "/assets/media/"
 
 EXAMPLE_LABEL = "Geoff's own issue for his own field, visual effects for film and TV"
 
-FORMAT_STRIP = f'''<p class="eyebrow strip-label">A real example: one morning, read or heard</p>
-<div class="fmt-strip" role="list" aria-label="One real issue of Geoff's own, read and heard">
+FORMAT_STRIP = f'''<p class="eyebrow strip-label">Real examples from Geoff's own issue, each one labelled with its date</p>
+<div class="fmt-strip six" role="list" aria-label="One newsletter in six formats, real examples">
   <div class="fmt-card" role="listitem"><div class="fmt-media tall"><a href="{M}read-letter.png"><img src="{M}read-letter.png" width="780" height="1276" loading="lazy" alt="Geoff's own issue of 13 Oct 2026 as an email on a phone: the date, the headline and a short paragraph on what it means for the reader."></a></div>
-    <div class="fmt-txt"><b>Read it</b><p>Two minutes with coffee. Only what is new, and what it means for the reader.</p></div></div>
+    <div class="fmt-txt"><b>Read it</b><p>Two minutes with coffee. Only what is new, and what it means for the reader.</p><p class="fmt-date">13 Oct 2026</p></div></div>
   <div class="fmt-card" role="listitem"><div class="fmt-media"><a href="{M}listen-top.png"><img src="{M}listen-top.png" width="780" height="352" loading="lazy" alt="The top of the same email when Listen leads: a Listen to this issue button above the headline."></a></div>
-    <div class="fmt-txt"><b>Hear it</b><p>Often the whole issue as a conversation, for the drive in.</p>
-    <audio controls preload="none" src="{M}issue-audio.m4a" aria-label="A short clip of the issue's audio"></audio></div></div>
+    <div class="fmt-txt"><b>Hear it</b><p>The whole issue as a conversation, for the drive in.</p>
+    <audio controls preload="none" src="{M}issue-audio.m4a" aria-label="A short clip of the issue's audio"></audio><p class="fmt-date">13 Oct 2026, a short clip of 19 minutes</p></div></div>
   <div class="fmt-card" role="listitem"><div class="fmt-media"><a href="{M}issue-slide-1.png"><img src="{M}issue-slide-1.png" width="1280" height="714" loading="lazy" alt="The title slide of the same issue."></a></div>
-    <div class="fmt-txt"><b>Flip the slides</b><p>An extra for the Monday meeting, one story a slide.</p></div></div>
+    <div class="fmt-txt"><b>Flip the slides</b><p>A slide deck of the issue, ready for the Monday meeting.</p><p class="fmt-date">13 Oct 2026, the title slide</p></div></div>
+  <div class="fmt-card" role="listitem"><div class="fmt-media"><a href="{M}issue-infographic.jpg"><img src="{M}issue-infographic.jpg" width="1280" height="714" loading="lazy" alt="One picture of a whole issue: headed panels on bidding, pipelines and incentives, each with a drawing and a short line."></a></div>
+    <div class="fmt-txt"><b>See the picture</b><p>The whole issue on one picture. Tap to open it full size.</p><p class="fmt-date">30 Oct 2026</p></div></div>
+  <div class="fmt-card" role="listitem"><div class="fmt-media"><video controls preload="none" playsinline poster="{M}issue-explainer-poster.jpg" src="{M}issue-explainer.mp4" width="640" height="360" aria-label="The first 15 seconds of an explainer video"></video></div>
+    <div class="fmt-txt"><b>Watch it</b><p>A narrated explainer video of the issue, with drawings for each point.</p><p class="fmt-date">1 Nov 2026, the first 15 seconds of 7 minutes</p></div></div>
+  <div class="fmt-card" role="listitem"><div class="fmt-media tall"><video controls preload="none" playsinline poster="{M}issue-short-poster.jpg" src="{M}issue-short.mp4" width="540" height="960" aria-label="The first 15 seconds of a short vertical video"></video></div>
+    <div class="fmt-txt"><b>The short video</b><p>About a minute, upright for a phone, with captions on screen.</p><p class="fmt-date">4 Nov 2026, the first 15 seconds</p></div></div>
 </div>
-<p class="fmt-hint">All from one real issue: {EXAMPLE_LABEL}, 13 Oct 2026. Yours is about your field, under your name. The audio here is a short clip of the full 19 minutes.</p>'''
+<p class="fmt-hint">All real, from {EXAMPLE_LABEL}. Yours is about your field, under your name.</p>'''
 
 EDITOR_SHOT = f'''<figure class="shot"><a href="{M}edit-in-place.png"><img src="{M}edit-in-place.png" width="1100" height="770" loading="lazy" alt="The LongLens editor open on a real issue: a bar with Save, Discard and the inbox preview line on top, and every line of the issue below outlined, ready to click and change."></a><figcaption>The real editor, on {EXAMPLE_LABEL}, 13 Oct 2026.</figcaption></figure>'''
 
@@ -187,6 +193,33 @@ HOME = f'''<section class="hero">
       <a class="btn btn-a" href="/contact/">Book a short call. Read your first week, under your name.</a>
     </div>
     <p class="price-line">Free during the pilot. Invite only: Geoff sets up every account himself. <a href="/pricing/">See what the pilot includes</a>.</p>
+  </div>
+</section>
+
+<hr class="rule">
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Far more than a newsletter</span>
+      <h2>One issue your customers can read, hear, watch or flip through</h2>
+      <p>Your customers do not all take in news the same way. One reads with coffee, one listens on the drive in, one wants the picture before the Monday meeting. LongLens turns each issue into all of them, so every customer gets the same news in the way they like it.</p></div>
+    {FORMAT_STRIP}
+    <div class="cards two">
+      <div class="card"><h3>Where your customers get it today</h3><ul class="list">
+        <li><strong>In their inbox</strong>: send the letter through the email tool you already use, or simply forward it.</li>
+        <li><strong>On the web</strong>: each issue you publish gets a page of its own that anyone can open from a link, with no sign-in.</li>
+        <li><strong>On a public page of all your issues</strong>, with the audio, the videos, the slides and the picture that passed their check. Geoff sets it up with you.</li>
+        <li><strong>In a Slack or Discord channel</strong>: a short post with a link to each issue you publish, if you add a channel.</li>
+        <li><strong>In a feed reader</strong>: a private RSS link to your published issues.</li>
+      </ul></div>
+      <div class="card"><h3>Where it goes next</h3><ul class="list">
+        <li>{coming("<strong>Straight to each customer</strong> from your own address, for example news@yourbusiness.com, in the format each one picked, every issue.")}</li>
+        <li>{coming("<strong>In podcast apps</strong>: the audio of every issue as a podcast your customers can follow.")}</li>
+        <li>{coming("<strong>On Instagram and LinkedIn</strong>: posts made from each issue, ready for you to put up.")}</li>
+        <li>{coming("<strong>On your own website</strong>: a block that shows your latest issue.")}</li>
+        <li>{coming("<strong>On Telegram</strong>: each issue in a Telegram channel.")}</li>
+      </ul></div>
+    </div>
+    <p class="k">Today the public page of your issues carries every format side by side, so each customer picks the one they like. {coming("Each customer picks once, and LongLens sends it to them that way every time.")} <a href="/features/">See every format and every place it goes</a>.</p>
   </div>
 </section>
 
@@ -244,16 +277,6 @@ HOME = f'''<section class="hero">
 
 <hr class="rule">
 <section>
-  <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">See a real one</span>
-      <h2>One real morning, from the field LongLens was built in first</h2></div>
-    {FORMAT_STRIP}
-    <p class="coming-line">{coming("LongLens sends straight to each customer, in the format each one picks. Today every issue lands with you first, ready to send through the email tool you already use, or to forward.")}</p>
-  </div>
-</section>
-
-<hr class="rule">
-<section>
   <div class="wrap">{PROOF}</div>
 </section>
 
@@ -267,8 +290,8 @@ HOME = f'''<section class="hero">
 FEATURES = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">Features</span>
-    <h1>What changed in your industry, and what it means for your customers. To read, and often to hear.</h1>
-    <p class="lede">LongLens writes each issue as a short letter under your name, and often turns the same issue into audio your customers can play on the way in. Change any line right on the page, exactly as your readers will see it.</p>
+    <h1>What changed in your industry, and what it means for your customers. To read, hear, watch and flip through.</h1>
+    <p class="lede">Far more than a newsletter. LongLens writes each issue as a short letter under your name, then turns the same issue into audio, slides, one picture, an explainer video and a short video, so each customer gets the news the way they like it. Change any line right on the page, exactly as your readers will see it.</p>
     <p class="price-line">{AI_LINE}</p>
     {FORMAT_STRIP}
   </div>
@@ -277,20 +300,46 @@ FEATURES = f'''<section class="hero">
 <hr class="rule">
 <section>
   <div class="wrap">
-    <div class="feat">
-      <div class="txt">
-        <h2>Read it, skim it, hear it, flip it</h2>
-        <p>Pick the one that leads your own email. The extras you turn on play on the issue's page in your account.</p>
-        <ul>
-          <li><strong>Read it</strong>: the whole letter in your email.</li>
-          <li><strong>Skim it</strong>: a short email with a link to read it on the web.</li>
-          <li><strong>Listen</strong>: the audio overview on top, then the letter. Or a shorter plain read.</li>
-          <li><strong>Slides</strong>: the slide deck on top, then the letter.</li>
-          <li>{coming("<strong>See it</strong>: the whole issue on one screen, as a format of its own.")}</li>
-        </ul>
-        <p>Most issues come with a plain-voice audio read, and you get up to two extras a week in total: the full audio conversation or slides. Audio and slides come when the issue includes stories from public websites. LongLens checks every audio and slide against the stories before you see it.</p>
-      </div>
-      <figure class="shot"><img src="{M}listen-top.png" width="780" height="352" loading="lazy" alt="The top of a real issue when Listen leads: a Listen to this issue button above the headline."><figcaption>Real example: {EXAMPLE_LABEL}.</figcaption></figure>
+    <div class="sec-head"><span class="eyebrow">Every format</span>
+      <h2>The same news, in the way each customer likes it</h2>
+      <p>Every format is switched on for a new account. Each one is made once per issue, from the same stories, so whichever a customer picks, they get the same news.</p></div>
+    <div class="cards">
+      <div class="card"><h3>Read it</h3><p>The letter: what changed and what it means for them, with a link to every original story. By email, and on the web once you publish the issue.</p></div>
+      <div class="card"><h3>Skim it</h3><p>A short email with the one line that matters most and a button to read the whole issue on the web.</p></div>
+      <div class="card"><h3>Hear it</h3><p>The issue as a conversation between two voices, for the drive in. On a day that service is down, LongLens makes the audio itself instead.</p></div>
+      <div class="card"><h3>Flip the slides</h3><p>A slide deck of the issue, ready to put on screen in a meeting.</p></div>
+      <div class="card"><h3>See the picture</h3><p>The whole issue on one picture, with a drawing and a short line for each point.</p></div>
+      <div class="card"><h3>Watch it</h3><p>A narrated explainer video of the issue, a few minutes long.</p></div>
+      <div class="card"><h3>The short video</h3><p>About a minute, upright for a phone, with captions on screen.</p></div>
+      <div class="card"><h3>Story pictures</h3><p>Turn them on and your top stories each get a small picture in your colours. Off until you turn them on. {coming("A picture generated for each story, in your own style.")}</p></div>
+    </div>
+    <ul class="list">
+      <li><strong>When the audio, slides, picture and videos come</strong>: with any issue that includes stories from public websites. An issue with no stories from public websites goes out as the letter alone.</li>
+      <li><strong>Checked before anyone sees them</strong>: LongLens checks every audio, slide deck, picture and video against the stories. A piece that fails is held back, and the letter goes out without it.</li>
+      <li><strong>Slides, the picture and the videos</strong> come from one outside service. On a day it is down, the issue goes out without them.</li>
+      <li><strong>You pick what leads your own email</strong>: Read it, Skim it, Listen, Watch, See it, Slides or the short video. The letter always follows.</li>
+      <li><strong>Each customer, their own way</strong>: today the public page of your issues carries every format side by side, so each customer picks the one they like. {coming("Each customer picks once at the bottom of their email, and LongLens sends every issue that way: the audio first, the video first, or just the top stories.")}</li>
+    </ul>
+
+    <div class="sec-head"><span class="eyebrow">Where it goes</span>
+      <h2>Every place your customers can get each issue</h2>
+      <p>Your newsletter's name and issue number are on every one, wherever it lands.</p></div>
+    <div class="cards two">
+      <div class="card"><h3>Today</h3><ul class="list">
+        <li><strong>In their inbox</strong>: send the letter through the email tool you already use, or simply forward it.</li>
+        <li><strong>On the web</strong>: each issue you publish gets a page of its own that anyone can open from a link, with no sign-in.</li>
+        <li><strong>On a public page of all your issues</strong>, with the audio, the videos, the slides and the picture that passed their check. Geoff sets it up with you.</li>
+        <li><strong>In a Slack or Discord channel</strong>: a short post with a link to each issue you publish, if you add a channel.</li>
+        <li><strong>In a feed reader</strong>: a private RSS link to your published issues.</li>
+        <li><strong>In your own inbox first</strong>: every issue lands with you, with every format on its page in your account.</li>
+      </ul></div>
+      <div class="card"><h3>Coming</h3><ul class="list">
+        <li>{coming("<strong>Straight to each customer</strong> from your own address, for example news@yourbusiness.com, in the format each one picked, every issue.")}</li>
+        <li>{coming("<strong>In podcast apps</strong>: the audio of every issue as a podcast your customers can follow.")}</li>
+        <li>{coming("<strong>On Instagram and LinkedIn</strong>: posts made from each issue, ready for you to put up.")}</li>
+        <li>{coming("<strong>On your own website</strong>: a block that shows your latest issue.")}</li>
+        <li>{coming("<strong>On Telegram</strong>: each issue in a Telegram channel.")}</li>
+      </ul></div>
     </div>
 
     <div class="feat">
@@ -327,7 +376,7 @@ FEATURES = f'''<section class="hero">
         <ul>
           <li><strong>Never copied</strong>: LongLens never takes the picture from the article itself, so there is nothing to credit and nothing to take down.</li>
           <li><strong>Still reads well without them</strong>: the words come first, so the issue works in an inbox that hides pictures.</li>
-          <li>{coming("Free stock photos matched to each story, with the photographer named under each one.")}</li>
+          <li>{coming("A picture generated for each story, in your own style, never the article's own photo.")}</li>
         </ul>
       </div>
     </div>
@@ -361,22 +410,8 @@ FEATURES = f'''<section class="hero">
 
     <div class="feat">
       <div class="txt">
-        <h2>Your name on every issue. Your customers remember who told them.</h2>
-        <p>Every issue carries your newsletter's name and its issue number. Send it on through the email tool you already use, or simply forward it.</p>
-        <ul>
-          <li>Each issue posted to your Slack or Discord channel, if you add one.</li>
-          <li>Your own blog page, set up by Geoff, and you choose which issues go up.</li>
-          <li>{coming("LongLens sends straight to your customers from your own address, for example news@yourbusiness.com, each one in the format they picked, with a dated record of each yes and one-click unsubscribe.")}</li>
-          <li>{coming("Social posts for every issue, and your issue on Telegram.")}</li>
-        </ul>
-      </div>
-      <figure class="shot"><img src="/assets/links.png" width="600" height="385" loading="lazy" alt="The end of a real web issue, finishing with: 2 links checked when this went out, 0 dead."><figcaption>Real example, last lines: {EXAMPLE_LABEL}.</figcaption></figure>
-    </div>
-
-    <div class="feat">
-      <div class="txt">
-        <h2>You decide where LongLens looks</h2>
-        <p>Name the websites, feeds, forums, YouTube channels and keywords your industry lives on. LongLens catches anything new from every one of them before each issue.</p>
+        <h2>Built from the websites, forums and videos you already trust</h2>
+        <p>Every issue covers what is new on the websites, forums, YouTube channels and topics your industry follows. Name them to Geoff on your call, or paste a link into a reply any time.</p>
         <ul>
           <li><strong>Forward the newsletters you never open</strong>, or save a page from your phone or browser. What matters lands in your next issue under "You sent".</li>
           <li><strong>One tap to turn a website off</strong>, one more to turn it back on. LongLens never adds a website you turned off back by itself.</li>
