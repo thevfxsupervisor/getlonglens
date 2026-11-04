@@ -220,6 +220,24 @@ TODAY_PLACES = ("Your inbox first, then sent through the email tool you already 
 COMING_PLACES = ("Straight to each reader from your own address",
                  "Podcast apps", "Instagram and LinkedIn posts", "A block on your website", "Telegram")
 
+# The home headline's rotating word. The first is the static headline (no script, reduced motion,
+# screen readers). Each one makes a complete, true sentence: "Your ___ hear the news from you."
+ROT = ("clients", "prospects", "members", "customers", "readers")
+ROT_WORDS = "".join(('<span class="on">' if i == 0 else "<span>") + w + "</span>" for i, w in enumerate(ROT))
+ROT_JS = """<script>
+(function(){
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var h = document.querySelector('.rot-h1'); if (!h) return;
+  var w = h.querySelectorAll('.rot > span'), i = 0, paused = false;
+  h.addEventListener('mouseenter', function(){ paused = true; });
+  h.addEventListener('mouseleave', function(){ paused = false; });
+  setInterval(function(){
+    if (paused || document.hidden) return;
+    w[i].classList.remove('on'); i = (i + 1) % w.length; w[i].classList.add('on');
+  }, 2500);
+})();
+</script>"""
+
 # --------------------------------------------------------------------------------------------
 # Home
 # --------------------------------------------------------------------------------------------
@@ -227,7 +245,7 @@ COMING_PLACES = ("Straight to each reader from your own address",
 HOME = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow"><img src="/assets/mark-e1.svg" alt="" width="40" height="40">LongLens</span>
-    <h1>Your clients hear the news from you.</h1>
+    <h1 class="rot-h1"><span class="sr-only">Your clients hear the news from you.</span><span aria-hidden="true">Your <span class="rot">{ROT_WORDS}</span> hear the news from you.</span></h1>
     <p class="lede">LongLens writes a short newsletter under your name on what changed in your field and what it means for your clients, prospects or members. Every week, or every morning if your field moves fast, as a letter, audio, slides, a picture and video. You never start from a blank page.</p>
     <div class="cta-row">
       <a class="btn btn-a" href="/contact/">{CTA_TEXT}</a>
@@ -308,7 +326,8 @@ HOME = f'''<section class="hero">
 </section>
 
 {close_cta("See a week of issues for your business, free.",
-           "Tell Geoff who your readers are. He sets LongLens up with you on one short call, and you read a week of real issues before anyone else sees them.")}'''
+           "Tell Geoff who your readers are. He sets LongLens up with you on one short call, and you read a week of real issues before anyone else sees them.")}
+{ROT_JS}'''
 
 # --------------------------------------------------------------------------------------------
 # Features
