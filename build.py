@@ -25,7 +25,7 @@ SIGNIN = APP + "/login"
 APP_PRIVACY = APP + "/privacy"
 DAILY = "https://thevfxsupervisor.com/daily/"
 GEOFF_SITE = "https://thevfxsupervisor.com/"
-EMAIL = "geoff@thevfxsupervisor.com"
+EMAIL = "geoff@wanglemedia.com"
 
 # The inquiry form. The app's endpoint (POST /hooks/inquiry) refuses any Origin but
 # https://thevfxsupervisor.com today (NL_INQUIRY_ORIGINS), so the contact page uses email until
@@ -181,7 +181,7 @@ HOME = f'''<section class="hero">
       <a class="btn btn-a" href="/contact/">Email Geoff to book a call. See a week of your news, under your name.</a>
       <a class="btn btn-b" href="{DAILY}">Read this morning's Daily</a>
     </div>
-    <p class="price-line">Free, Solo at $19 a month, or Business at $95 a month. <a href="/pricing/">Compare the three plans</a>.</p>
+    <p class="price-line">Free during the pilot. <a href="/pricing/">See what the pilot includes</a>.</p>
     {FORMAT_STRIP}
     <p class="coming-line">{coming("LongLens sends straight to each customer, in the format each one picks. Today every format lands with you first, ready to send through the email tool you already use, or to forward.")}</p>
   </div>
@@ -255,7 +255,7 @@ FEATURES = f'''<section class="hero">
           <li><strong>Slides</strong>: the slide deck on top, then the letter.</li>
           <li>{coming("<strong>See it</strong>: the whole issue on one screen, as a format of its own.")}</li>
         </ul>
-        <p>Every plan gets a plain-voice audio read with each issue, and up to two extras a week in total: the full audio conversation, a short video or slides. Audio, video and slides come when the issue includes stories from public websites. LongLens checks every audio, slide and video against the stories before you see it.</p>
+        <p>Every issue comes with a plain-voice audio read with each issue, and up to two extras a week in total: the full audio conversation, a short video or slides. Audio, video and slides come when the issue includes stories from public websites. LongLens checks every audio, slide and video against the stories before you see it.</p>
       </div>
       <figure class="shot"><img src="/assets/formats-video.png" width="1280" height="720" loading="lazy" alt="The explainer video of one real issue, paused on a frame that reads: A human touch is absolutely essential."><figcaption>Real explainer video from one issue of Geoff's own VFX briefing.</figcaption></figure>
     </div>
@@ -362,70 +362,37 @@ FEATURES = f'''<section class="hero">
 # Pricing
 # --------------------------------------------------------------------------------------------
 
-def plan(name, price, per, outcome, items, cta_label, cta_href, lead=False):
-    lis = "".join(
-        f'<li class="plan-coming">{coming(i[7:].strip())}</li>' if i.startswith("Coming:") else f"<li>{i}</li>"
-        for i in items
-    )
-    cls = "btn btn-a" if lead else "btn btn-b"
-    per_html = f" <small>{per}</small>" if per else ""
-    return (f'<div class="plan{" lead" if lead else ""}"><h2>{name}</h2>'
-            f'<p class="plan-price">{price}{per_html}</p><p class="plan-outcome">{outcome}</p>'
-            f'<ul>{lis}</ul><a class="{cls}" href="{html.escape(cta_href)}">{cta_label}</a></div>')
-
-
-PLANS = "".join([
-    plan("Free", "$0", "", "Know what changed in your trade before your first coffee.",
-         ["Everything under Every plan today",
-          "Coming: a weekly summary as a letter, audio and video"],
-         "Get my free invite", mailto("LongLens Free invite")),
-    plan("Solo", "$19", "a month",
-         "Built for the reader who takes every format, with every issue.",
-         ["Everything under Every plan today",
-          "Coming: the full audio conversation, video and slides with every issue",
-          "Coming: the whole issue as one picture"],
-         "Get my Solo invite", mailto("LongLens Solo invite")),
-    plan("Business", "$95", "a month", "Be the expert your customers hear from first.",
-         ["Everything under Every plan today",
-          "Set up with you by Geoff, on one short call",
-          "Coming: LongLens sends straight to your audience from your own address",
-          "Coming: social posts for every issue",
-          "Coming: your issue on Telegram"],
-         "Put my name in front of my customers", "/contact/", lead=True),
-])
-
-EVERY_PLAN = f'''<div class="card" style="margin-top:14px"><h2 style="font-size:18px">Every plan today</h2>
-  <ul class="list" style="margin-top:8px">
-    <li>Your letter with each issue, daily or weekly, under your newsletter's name</li>
-    <li>A plain-voice audio read with each issue</li>
-    <li>{EXTRAS[0].upper() + EXTRAS[1:]}</li>
-    <li>Change anything by replying in plain words</li>
-    <li>Send each issue through the email tool you already use, or forward it</li>
-    <li>Each issue posted to your Slack or Discord channel, if you add one</li>
-  </ul>
-  <p class="tiny">Today Free and Solo include the same. What Solo adds is tagged coming.</p>
-</div>'''
-
 PRICING = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">Pricing</span>
-    <h1>Start free. Put your name in front of your customers for $95.</h1>
-    <p class="lede">Free, Solo at $19 a month, or Business at $95 a month. Anything tagged coming is not built yet.</p>
-    <div class="plans">{PLANS}</div>
-    {EVERY_PLAN}
+    <h1>Free during the pilot. Put your name in front of your customers at no cost.</h1>
+    <p class="lede">LongLens is in its pilot, and the pilot is free. Paid plans are coming.</p>
+    <div class="card" style="margin-top:28px;max-width:780px"><h2 style="font-size:20px">What the pilot includes today</h2>
+      <ul class="list" style="margin-top:8px">
+        <li>Your letter with each issue, daily or weekly, under your newsletter's name</li>
+        <li>A plain-voice audio read with each issue</li>
+        <li>{EXTRAS[0].upper() + EXTRAS[1:]}</li>
+        <li>Change anything by replying in plain words</li>
+        <li>Send each issue through the email tool you already use, or forward it</li>
+        <li>Each issue posted to your Slack or Discord channel, if you add one</li>
+        <li>Set up with you by Geoff, on one short call</li>
+      </ul>
+      <div class="cta-row"><a class="btn btn-a" href="/contact/">Email Geoff to join the free pilot</a></div>
+    </div>
   </div>
 </section>
 
 <hr class="rule">
 <section>
   <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">How paying works today</span>
+    <div class="sec-head"><span class="eyebrow">How the pilot works</span>
       <h2>No card form. Geoff sets you up himself.</h2></div>
     <ul class="list">
-      <li><strong>Invite only, for now.</strong> Geoff sets up every account himself. The invite buttons above open an email to him. {coming("Sign up on your own.")}</li>
-      <li><strong>Business starts with a short call.</strong> You and Geoff pin down who your customers are and what they should hear from you first. Then he quotes the setup, before anything starts.</li>
-      <li><strong>A set amount of writing each month.</strong> Every plan covers a set amount of writing a month. If you reach it, LongLens says so on your pages and picks up again next month.</li>
-      <li><strong>Up to two extras a week in total</strong> on every plan: the full audio conversation, a short video or slides. Once those two are used, the plain-voice audio still comes, and the rest waits until next week.</li>
+      <li><strong>Invite only, for now.</strong> Geoff sets up every account himself. {coming("Sign up on your own.")}</li>
+      <li><strong>It starts with a short call.</strong> You and Geoff pin down who your customers are and what they should hear from you first.</li>
+      <li><strong>A set amount of writing each month.</strong> The pilot covers a set amount of writing a month. If you reach it, LongLens says so on your pages and picks up again next month.</li>
+      <li><strong>Up to two extras a week in total</strong>: the full audio conversation, a short video or slides. Once those two are used, the plain-voice audio still comes, and the rest waits until next week.</li>
+      <li><strong>Paid plans</strong> {coming()}</li>
     </ul>
   </div>
 </section>
@@ -512,7 +479,7 @@ FAQ_ITEMS = [
         ("How do we start, and how does LongLens reach my customers?",
          "<p>A short call, then Geoff points LongLens at the websites, forums, videos and newsletters you trust, and you describe your customers in your own words. You see a week of real issues before anyone else does. Today each issue comes to you first, and you send it through the email tool you already use, or forward it. Email straight to your customers from your own address is coming.</p>"),
         ("Can I sign up on my own?",
-         f"<p>Not yet. LongLens is invite only for now, and Geoff sets up every account himself. <a href=\"/contact/\">Email Geoff to book a short call</a>, or ask for a Free or Solo invite on the <a href=\"/pricing/\">pricing page</a>.</p>"),
+         f"<p>Not yet. LongLens is invite only for now, and Geoff sets up every account himself. <a href=\"/contact/\">Email Geoff to book a short call</a>.</p>"),
         ("How do I sign in?",
          f"<p>With a link by email. There is no password. Type your email on the <a href=\"/sign-in/\">sign-in page</a> and a fresh link arrives, usually within a minute. Each link works once and keeps you signed in for 30 days on that device.</p>"),
     ]),
@@ -536,7 +503,7 @@ FAQ_ITEMS = [
     ]),
     ("Money and ownership", [
         ("What does LongLens cost?",
-         "<p>Free, Solo at $19 a month, or Business at $95 a month. For Business, Geoff quotes the setup after your call, before anything starts. <a href=\"/pricing/\">Compare the plans</a>.</p>"),
+         "<p>Nothing during the pilot: LongLens is free while it runs. Paid plans are coming. <a href=\"/pricing/\">See what the pilot includes</a>.</p>"),
         ("Who owns what LongLens makes?",
          "<p>You do. Every issue, every website you chose, every lesson you taught LongLens.</p>"),
         ("Who is behind LongLens?",
@@ -618,7 +585,7 @@ CONTACT = f'''<section class="hero">
     <div class="sec-head"><span class="eyebrow">What happens next</span><h2>From your message to your first week of issues</h2></div>
     <ol class="steps three">
       <li><h3>Geoff replies</h3><p>Personally, to set up a short call. Nothing is sent to you automatically.</p></li>
-      <li><h3>The call</h3><p>You pin down who your customers are and what they should hear from you first. Then Geoff quotes the setup.</p></li>
+      <li><h3>The call</h3><p>You pin down who your customers are and what they should hear from you first.</p></li>
       <li><h3>Your first week</h3><p>Geoff sets LongLens up with you, and you see a week of real issues before anyone else does.</p></li>
     </ol>
     <p class="k">Before the call: <a href="{DAILY}">read this morning's VFX Supervisor Daily</a>, crafted with LongLens. That is what LongLens crafts for your trade, under your name.</p>
@@ -664,13 +631,13 @@ NOT_FOUND = '''<section class="hero">
 PAGES = [
     # slug, title, description, body, nav-current
     ("", "LongLens: be the expert your customers hear from first",
-     "Daily or weekly, LongLens turns your trade's news into a letter under your name, to read or hear, with up to two extras a week. Free, or from $19 a month.",
+     "Daily or weekly, LongLens turns your trade's news into a letter under your name, to read or hear, with up to two extras a week. Free during the pilot.",
      HOME, ""),
     ("features", "Features | LongLens",
      "One morning of news, every way your customers take it in: read, skim, listen, watch or flip the slides, and change anything by replying in plain words.",
      FEATURES, "/features/"),
     ("pricing", "Pricing | LongLens",
-     "Free, Solo at $19 a month, or Business at $95 a month. What each plan includes today, and what is coming.",
+     "LongLens is free during the pilot. What the pilot includes today, and paid plans coming.",
      PRICING, "/pricing/"),
     ("how-it-works", "How it works | LongLens",
      "One short call, a sign-in link by email, and your first issue the same day. Then daily or weekly, and you change anything by replying.",
