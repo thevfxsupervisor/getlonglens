@@ -125,7 +125,11 @@ def page(slug: str, title: str, description: str, body: str, current: str = "",
 <meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(description)}">
 <meta property="og:url" content="{canonical}">
-<meta property="og:image" content="{SITE}/assets/media/issue-video-poster.jpg">
+<meta property="og:image" content="{SITE}/assets/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="LongLens: your artists hear the VFX news from someone every morning. Make it you.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
 <link rel="apple-touch-icon" href="/assets/mark-e1-96.png">
@@ -183,10 +187,10 @@ HOME = f'''<section class="hero home-hero">
   <div class="wrap">
     <span class="eyebrow"><img src="/assets/mark-e1.svg" alt="" width="40" height="40">LongLens</span>
     <h1>Your Artists Hear the VFX News From Someone Every Morning. Make It You.</h1>
-    <p class="lede">Right now they hear it from a feed, a forum or your competitor. LongLens puts each morning's VFX news under your name, with a line on why it matters to them. You send it on. They remember who told them.</p>
+    <p class="lede">Right now they hear it from a feed, a forum or your competitor. LongLens puts each morning's VFX news under your name, with what it means for them. You send it on. They remember who told them.</p>
     <div class="cta-row">
       <a class="btn btn-a btn-big" href="{PILOT_HREF}">Start my free pilot</a>
-      <a class="btn btn-b" href="{DAILY}">Read today's Daily</a>
+      <a class="btn btn-b" href="{DAILY}">Read the latest Daily</a>
     </div>
     <p class="price-line">Free during the pilot. No card. Say no thanks at any point and you owe nothing.</p>
   </div>
@@ -195,17 +199,15 @@ HOME = f'''<section class="hero home-hero">
 <section class="home-proof">
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">One Real Issue</span>
-      <h2>Read It, Hear It or Watch It, With the Meaning Already Attached.</h2>
-      <p>See exactly what your artists get: one real issue of Geoff Hancock's own VFX briefing, 13 October 2026. The news arrives with what it means for the reader, often with audio and video too.</p></div>
+      <h2>Read It or Hear It, With the Meaning Already Attached.</h2>
+      <p>See exactly what your artists get: one real issue of Geoff Hancock's own VFX briefing, 13 October 2026. The news arrives with what it means for the reader, often with audio too.</p></div>
     <div class="issue">
       <figure class="shot issue-read"><a href="{M}read-letter.png"><img src="{M}read-letter.png" width="780" height="1276" loading="lazy" alt="The 13 Oct 2026 issue on a phone: the headline, then a short paragraph ending: worth checking where both sit in your next pitch."></a>
         <figcaption>Read it: the email, on a phone</figcaption></figure>
       <div class="issue-side">
-        <figure class="shot"><video controls playsinline preload="none" poster="{M}issue-video-poster.jpg" width="1280" height="720" aria-label="A short silent clip of the issue's explainer video"><source src="{M}issue-video.mp4" type="video/mp4"></video>
-          <figcaption>Watch it: a clip of the 7 minute video</figcaption></figure>
         <figure class="shot issue-listen"><audio controls preload="none" src="{M}issue-audio.m4a" aria-label="A short clip of the issue's audio"></audio>
-          <figcaption>Hear it: a clip of the 19 minute audio</figcaption></figure>
-        <p class="k">The VFX Supervisor Daily, Geoff's own, goes out every morning. <a href="{DAILY}">Read today's issue</a>.</p>
+          <figcaption>Hear it: a clip of the same issue's audio</figcaption></figure>
+        <p class="k">The VFX Supervisor Daily, Geoff's own, goes out most mornings. <a href="{DAILY}">Read the latest issue</a>.</p>
       </div>
     </div>
   </div>
@@ -226,7 +228,7 @@ HOME = f'''<section class="hero home-hero">
 <section class="home-geoff">
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Who Built It</span>
-      <h2>Built by a VFX Supervisor Who Sends His Own VFX News Every Morning.</h2>
+      <h2>Built by a VFX Supervisor Who Publishes His Own VFX News.</h2>
       <p>I'm Geoff Hancock, a VFX producer and supervisor. I won a VES Award for <i>Changeling</i> and was nominated for <i>Invictus</i>. My own Daily shows producers what I know before they hire me. I'll set the same thing up for you, under your name.</p></div>
   </div>
 </section>
@@ -234,7 +236,7 @@ HOME = f'''<section class="hero home-hero">
 <section class="faq home-faq">
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Before You Email</span><h2>Three Straight Answers on AI, Time and Cost.</h2></div>
-    <details><summary>Does AI write the issues?</summary><p>{AI_LINE} Reply in plain words and the next issue changes.</p></details>
+    <details><summary>Does AI write the issues?</summary><p>{AI_LINE} Reply in plain words and the next issue follows it.</p></details>
     <details><summary>How much of my time does it take?</summary><p>One short call to set it up. After that, open the morning's issue, send it on through the email tool you already use, or forward it. Skip a day and the next one still arrives.</p></details>
     <details><summary>What does it cost?</summary><p>Nothing during the pilot. Paid plans are coming. Say no thanks at any point and you owe nothing.</p></details>
     <p class="k"><a href="/faq/">More answers</a> &middot; <a href="/how-it-works/">How it works</a> &middot; Not in VFX? LongLens follows any trade. <a href="{PILOT_HREF}">Email Geoff</a>.</p>
@@ -244,10 +246,10 @@ HOME = f'''<section class="hero home-hero">
 <section class="close">
   <div class="wrap"><div>
     <h2>Be the Name on Your Artists' Morning News.</h2>
-    <p class="k">Invite only for now, and Geoff sets up every account himself. One short call, then a week of real issues under your name before anyone else sees them.</p>
+    <p class="k">Invite only for now, and Geoff sets up every account himself. One short call, then a week of real issues under your name before anyone else sees them. No mail app on this device? Use the <a href="/contact/">contact page</a>.</p>
     <div class="cta-row">
       <a class="btn btn-a btn-big" href="{PILOT_HREF}">Start my free pilot</a>
-      <a class="btn btn-b" href="{DAILY}">Read today's Daily</a>
+      <a class="btn btn-b" href="{DAILY}">Read the latest Daily</a>
     </div>
   </div></div>
 </section>'''
@@ -396,7 +398,7 @@ PRICING = f'''<section class="hero">
     <div class="card" style="margin-top:28px;max-width:780px"><h2 style="font-size:20px">What the pilot includes today</h2>
       <ul class="list" style="margin-top:8px">
         <li>Your letter with each issue, daily or weekly, under your newsletter's name</li>
-        <li>A plain-voice audio read with each issue</li>
+        <li>Often, a plain-voice audio read of the issue</li>
         <li>{EXTRAS[0].upper() + EXTRAS[1:]}</li>
         <li>Change anything by replying in plain words</li>
         <li>Send each issue through the email tool you already use, or forward it</li>
