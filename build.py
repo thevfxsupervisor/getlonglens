@@ -35,7 +35,7 @@ INQUIRY_CONSENT = "I agree to be contacted about this message at the email addre
 
 NAV = [("Features", "/features/"), ("Pricing", "/pricing/"), ("How it works", "/how-it-works/"),
        ("FAQ", "/faq/")]
-CTA_LABEL = "Book a short call"
+CTA_LABEL = "Ask for a free week"
 
 
 def mailto(subject: str, body: str = "") -> str:
@@ -47,8 +47,8 @@ def mailto(subject: str, body: str = "") -> str:
 
 
 CALL_MAIL = mailto(
-    "LongLens: book my short call",
-    "Who are my customers, and what should they hear from me first?\n\n\n"
+    "LongLens: a free week for my business",
+    "Who reads my newsletter (or should), and what should they hear from me first?\n\n\n"
     "My name:\nMy business:\n",
 )
 
@@ -92,7 +92,7 @@ def footer() -> str:
       <p class="by">LongLens. Built by <a href="{GEOFF_SITE}">Geoffrey Hancock</a>.</p>
       <p class="tiny">No tracking, no cookies on this site.</p>
     </div>
-    <nav aria-label="Footer">{links}<a href="/contact/">Email Geoff</a><a href="/sign-in/">Sign in</a><a href="/privacy/">Privacy</a></nav>
+    <nav aria-label="Footer">{links}<a href="/contact/">Free week</a><a href="/sign-in/">Sign in</a><a href="/privacy/">Privacy</a></nav>
   </div>
 </footer>'''
 
@@ -139,45 +139,86 @@ def page(slug: str, title: str, description: str, body: str, current: str = "",
 '''
 
 
+CTA_TEXT = "Ask for a free week"
+OFFER_LINE = "Free pilot: one short call with Geoff, then a week of real issues for your business. After the pilot, from $19 a month."
+CONTROL_LINE = "Nothing goes to your clients until you approve it. Every issue comes to you first: read it, change any line, then send it yourself."
+
+
 def close_cta(h2: str, text: str) -> str:
     return f'''<section class="close">
   <div class="wrap"><div>
     <h2>{h2}</h2>
     <p class="k">{text}</p>
-    <div class="cta-row"><a class="btn btn-a" href="/contact/">Book a short call. Read your first week, under your name.</a></div>
+    <div class="cta-row"><a class="btn btn-a" href="/contact/">{CTA_TEXT}</a></div>
   </div></div>
 </section>'''
 
 
 M = "/assets/media/"
 
-EXAMPLE_LABEL = "Geoff's own issue for his own field, visual effects for film and TV"
+EXAMPLE_LABEL = "Geoff's own newsletter about his own field, visual effects for film and TV"
 
-FORMAT_STRIP = f'''<p class="eyebrow strip-label">Real examples from Geoff's own issue, each one labelled with its date</p>
-<div class="fmt-strip six" role="list" aria-label="One newsletter in six formats, real examples">
+# One name per format, used on every page.
+F_READ, F_SKIM, F_HEAR, F_WATCH, F_SHORT, F_SLIDES, F_PIC = (
+    "Read it", "Skim it", "Hear it", "Watch it", "One minute", "Slides", "One picture")
+
+FORMAT_STRIP = f'''<p class="eyebrow strip-label">Real examples from {EXAMPLE_LABEL}, each dated</p>
+<div class="fmt-strip six" role="list" aria-label="One issue in six formats, real examples">
   <div class="fmt-card" role="listitem"><div class="fmt-media tall"><a href="{M}read-letter.png"><img src="{M}read-letter.png" width="780" height="1276" loading="lazy" alt="Geoff's own issue of 13 Oct 2026 as an email on a phone: the date, the headline and a short paragraph on what it means for the reader."></a></div>
-    <div class="fmt-txt"><b>Read it</b><p>Two minutes with coffee. Only what is new, and what it means for the reader.</p><p class="fmt-date">13 Oct 2026</p></div></div>
-  <div class="fmt-card" role="listitem"><div class="fmt-media"><a href="{M}listen-top.png"><img src="{M}listen-top.png" width="780" height="352" loading="lazy" alt="The top of the same email when Listen leads: a Listen to this issue button above the headline."></a></div>
-    <div class="fmt-txt"><b>Hear it</b><p>The whole issue as a conversation, for the drive in.</p>
-    <audio controls preload="none" src="{M}issue-audio.m4a" aria-label="A short clip of the issue's audio"></audio><p class="fmt-date">13 Oct 2026, a short clip of 19 minutes</p></div></div>
+    <div class="fmt-txt"><b>{F_READ}</b><p>Two minutes with coffee. What is new, and what it means for the reader.</p><p class="fmt-date">13 Oct 2026</p></div></div>
+  <div class="fmt-card" role="listitem"><div class="fmt-media"><img src="{M}issue-audio-wave.png" width="780" height="352" loading="lazy" alt="The sound wave of the audio clip below."></div>
+    <div class="fmt-txt"><b>{F_HEAR}</b><p>The issue as audio, for the drive in. On some days, a longer conversation between two voices.</p>
+    <audio controls preload="none" src="{M}issue-audio.m4a" aria-label="The first 16 seconds of the issue's audio"></audio><p class="fmt-date">13 Oct 2026, the first 16 seconds</p></div></div>
   <div class="fmt-card" role="listitem"><div class="fmt-media"><a href="{M}issue-slide-1.png"><img src="{M}issue-slide-1.png" width="1280" height="714" loading="lazy" alt="The title slide of the same issue."></a></div>
-    <div class="fmt-txt"><b>Flip the slides</b><p>A slide deck of the issue, ready for the Monday meeting.</p><p class="fmt-date">13 Oct 2026, the title slide</p></div></div>
-  <div class="fmt-card" role="listitem"><div class="fmt-media"><a href="{M}issue-infographic.jpg"><img src="{M}issue-infographic.jpg" width="1280" height="714" loading="lazy" alt="One picture of a whole issue: headed panels on bidding, pipelines and incentives, each with a drawing and a short line."></a></div>
-    <div class="fmt-txt"><b>See the picture</b><p>The whole issue on one picture. Tap to open it full size.</p><p class="fmt-date">30 Oct 2026</p></div></div>
+    <div class="fmt-txt"><b>{F_SLIDES}</b><p>A slide deck of the issue, ready to put on screen in a meeting.</p><p class="fmt-date">13 Oct 2026, the title slide</p></div></div>
+  <div class="fmt-card" role="listitem"><div class="fmt-media"><a href="{M}issue-infographic.jpg"><img src="{M}issue-infographic.jpg" width="1280" height="714" loading="lazy" alt="One picture of a whole issue: headed panels, each with a drawing and a short line."></a></div>
+    <div class="fmt-txt"><b>{F_PIC}</b><p>The whole issue on one picture, for the reader who will not read. Tap to open it full size.</p><p class="fmt-date">30 Oct 2026</p></div></div>
   <div class="fmt-card" role="listitem"><div class="fmt-media"><video controls preload="none" playsinline poster="{M}issue-explainer-poster.jpg" src="{M}issue-explainer.mp4" width="640" height="360" aria-label="The first 15 seconds of an explainer video"></video></div>
-    <div class="fmt-txt"><b>Watch it</b><p>A narrated explainer video of the issue, with drawings for each point.</p><p class="fmt-date">1 Nov 2026, the first 15 seconds of 7 minutes</p></div></div>
-  <div class="fmt-card" role="listitem"><div class="fmt-media tall"><video controls preload="none" playsinline poster="{M}issue-short-poster.jpg" src="{M}issue-short.mp4" width="540" height="960" aria-label="The first 15 seconds of a short vertical video"></video></div>
-    <div class="fmt-txt"><b>The short video</b><p>About a minute, upright for a phone, with captions on screen.</p><p class="fmt-date">4 Nov 2026, the first 15 seconds</p></div></div>
+    <div class="fmt-txt"><b>{F_WATCH}</b><p>A narrated explainer video of the issue, with a drawing for each point.</p><p class="fmt-date">1 Nov 2026, the first 15 seconds of 7 minutes</p></div></div>
+  <div class="fmt-card" role="listitem"><div class="fmt-media tall"><video controls preload="none" playsinline poster="{M}issue-short-poster.jpg" src="{M}issue-short.mp4" width="540" height="960" aria-label="The first 15 seconds of a one-minute upright video"></video></div>
+    <div class="fmt-txt"><b>{F_SHORT}</b><p>About a minute, upright for a phone, with captions on screen.</p><p class="fmt-date">4 Nov 2026, the first 15 seconds</p></div></div>
 </div>
-<p class="fmt-hint">All real, from {EXAMPLE_LABEL}. Yours is about your field, under your name.</p>'''
+<p class="fmt-hint">The letter comes with every issue, and the other formats with many of them. Geoff's newsletter is about his field; yours is about yours.</p>'''
 
 EDITOR_SHOT = f'''<figure class="shot"><a href="{M}edit-in-place.png"><img src="{M}edit-in-place.png" width="1100" height="770" loading="lazy" alt="The LongLens editor open on a real issue: a bar with Save, Discard and the inbox preview line on top, and every line of the issue below outlined, ready to click and change."></a><figcaption>The real editor, on {EXAMPLE_LABEL}, 13 Oct 2026.</figcaption></figure>'''
 
 PROOF = f'''<div class="proof">
   <b>Who built it</b>
-  <p>Geoffrey Hancock built LongLens first for his own field, visual effects for film and TV, and publishes his own issue with it most mornings: The VFX Supervisor Daily. He won a VES Award for Changeling and was nominated for another for Invictus. Now he sets LongLens up for owners and experts in any field, one call at a time.</p>
-  <p class="links"><a href="{DAILY}">Read Geoff's own issue for his field</a></p>
+  <p>Geoffrey Hancock built LongLens for his own field first, visual effects for film and TV, and his own newsletter, The VFX Supervisor Daily, runs on it most mornings. He won a VES Award for Changeling and was nominated for another for Invictus. He now sets LongLens up for businesses in any field, one call at a time.</p>
+  <p class="links"><a href="{DAILY}">Read Geoff's own newsletter</a></p>
 </div>'''
+
+# Sample issues for other kinds of business. Each: (image, alt, what it is, date, link or "").
+# The section renders only when this list has entries, so nothing placeholder is ever published.
+SAMPLES: list[tuple[str, str, str, str, str]] = []
+
+
+def samples_section() -> str:
+    if not SAMPLES:
+        return ""
+    cards = "".join(
+        f'<div class="fmt-card" role="listitem"><div class="fmt-media tall">'
+        f'<a href="{link or img}"><img src="{img}" loading="lazy" alt="{html.escape(alt)}"></a></div>'
+        f'<div class="fmt-txt"><b>{html.escape(what)}</b><p class="fmt-date">Sample issue made by LongLens, {date}</p></div></div>'
+        for img, alt, what, date, link in SAMPLES)
+    return f'''<hr class="rule">
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Sample issues</span>
+      <h2>See an issue for a business like yours</h2>
+      <p>Each one written by LongLens for a different kind of business, from that field's real news on the date shown.</p></div>
+    <div class="fmt-strip" role="list" aria-label="Sample issues for other businesses">{cards}</div>
+  </div>
+</section>'''
+
+
+TODAY_PLACES = ("Your inbox first, then sent through the email tool you already use, or forwarded",
+                "A web page for every issue you publish",
+                "A public page of all your issues",
+                "Your Slack or Discord channel",
+                "A private RSS feed")
+COMING_PLACES = ("Straight to each reader from your own address",
+                 "Podcast apps", "Instagram and LinkedIn posts", "A block on your website", "Telegram")
 
 # --------------------------------------------------------------------------------------------
 # Home
@@ -186,92 +227,78 @@ PROOF = f'''<div class="proof">
 HOME = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow"><img src="/assets/mark-e1.svg" alt="" width="40" height="40">LongLens</span>
-    <h1>Your customers will hear what's changing from someone. Make it you.</h1>
-    <p class="lede">Every morning you pick, LongLens turns what changed in your industry into a short briefing your customers open, under your name, with what it means for them. You become the one they hear from and trust, without writing a word of it yourself. Two minutes to read, and often audio for the drive in.</p>
-    <p class="price-line">{AI_LINE}</p>
+    <h1>Your clients hear the news from you.</h1>
+    <p class="lede">LongLens writes a short newsletter under your name on what changed in your field and what it means for your clients, prospects or members. Every week, or every morning if your field moves fast, as a letter, audio, slides, a picture and video. You never start from a blank page.</p>
     <div class="cta-row">
-      <a class="btn btn-a" href="/contact/">Book a short call. Read your first week, under your name.</a>
+      <a class="btn btn-a" href="/contact/">{CTA_TEXT}</a>
     </div>
-    <p class="price-line">Free during the pilot. Invite only: Geoff sets up every account himself. <a href="/pricing/">See what the pilot includes</a>.</p>
+    <p class="price-line">{OFFER_LINE} <a href="/pricing/">See prices</a>.</p>
+    <p class="price-line"><strong>{CONTROL_LINE}</strong></p>
   </div>
 </section>
 
-<hr class="rule">
-<section>
-  <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Far more than a newsletter</span>
-      <h2>One issue your customers can read, hear, watch or flip through</h2>
-      <p>Your customers do not all take in news the same way. One reads with coffee, one listens on the drive in, one wants the picture before the Monday meeting. LongLens turns each issue into all of them, so every customer gets the same news in the way they like it.</p></div>
-    {FORMAT_STRIP}
-    <div class="cards two">
-      <div class="card"><h3>Where your customers get it today</h3><ul class="list">
-        <li><strong>In their inbox</strong>: send the letter through the email tool you already use, or simply forward it.</li>
-        <li><strong>On the web</strong>: each issue you publish gets a page of its own that anyone can open from a link, with no sign-in.</li>
-        <li><strong>On a public page of all your issues</strong>, with the audio, the videos, the slides and the picture that passed their check. Geoff sets it up with you.</li>
-        <li><strong>In a Slack or Discord channel</strong>: a short post with a link to each issue you publish, if you add a channel.</li>
-        <li><strong>In a feed reader</strong>: a private RSS link to your published issues.</li>
-      </ul></div>
-      <div class="card"><h3>Where it goes next</h3><ul class="list">
-        <li>{coming("<strong>Straight to each customer</strong> from your own address, for example news@yourbusiness.com, in the format each one picked, every issue.")}</li>
-        <li>{coming("<strong>In podcast apps</strong>: the audio of every issue as a podcast your customers can follow.")}</li>
-        <li>{coming("<strong>On Instagram and LinkedIn</strong>: posts made from each issue, ready for you to put up.")}</li>
-        <li>{coming("<strong>On your own website</strong>: a block that shows your latest issue.")}</li>
-        <li>{coming("<strong>On Telegram</strong>: each issue in a Telegram channel.")}</li>
-      </ul></div>
-    </div>
-    <p class="k">Today the public page of your issues carries every format side by side, so each customer picks the one they like. {coming("Each customer picks once, and LongLens sends it to them that way every time.")} <a href="/features/">See every format and every place it goes</a>.</p>
-  </div>
-</section>
+{samples_section()}
 
 <hr class="rule">
 <section>
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Who it is for</span>
-      <h2>Whoever your people are, be the name they hear from first</h2></div>
+      <h2>Three kinds of business that win work by knowing their field</h2></div>
     <div class="cards">
-      <div class="card"><h3>Owners who should be seen as the expert</h3><p>An accountant for small firms, a vet clinic, a builder's merchant, a law firm. A new rule, a recall, a price rise lands. Your customers read what it means for them from you that morning, not from a penalty letter next quarter.</p></div>
-      <div class="card"><h3>Experts starting a business</h3><p>A consultant, a coach, a specialist going out alone. Before your first big client, show what you know every morning, under your name, to the people you want to work with.</p></div>
-      <div class="card"><h3>Anyone building an audience they own</h3><p>A mentoring programme, an agency, a membership body, a school. Keep your whole community informed through your own email list, not followers a platform can take away.</p></div>
+      <div class="card"><h3>Firms whose clients ask "what does this mean for me?"</h3><p>An accountancy, a law firm, a vet practice, an insurance broker. A new rule, a deadline or a recall lands, and your clients read what it means for them in your newsletter, before it reaches them as a problem.</p></div>
+      <div class="card"><h3>Consultants and coaches out on their own</h3><p>No mailing list yet? Send each issue to the twenty people you would most like to work with. Week after week they see that you know what is moving in your field, long before you pitch them.</p></div>
+      <div class="card"><h3>Communities, clubs and associations</h3><p>Your members get something worth opening from you every week, so your list stays alive between events. Put a note of your own at the top of any issue.</p></div>
     </div>
-    <p class="k">Daily for a fast-moving field, weekly for everyone else. You choose what LongLens follows and who it is written for.</p>
+    <p class="k">Not sure how often? Start weekly. Daily is there for a field that changes by the hour. You choose what LongLens follows and who it writes for.</p>
   </div>
 </section>
 
 <hr class="rule">
 <section>
   <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">What you get</span>
-      <h2>Your customers get the news with the meaning attached. You get the credit.</h2></div>
-    <div class="cards">
-      <div class="card"><h3>What changed, and what it means for them</h3>
-        <p>Every issue says what changed in your industry and what it means for your customers, with the original link, checked before the issue goes out.</p></div>
-      <div class="card"><h3>Your name in front of them, morning after morning</h3>
-        <p>Send each issue on through the email tool you already use, or forward it. Week after week they see who knew first. Issue #41 is the proof you were right in issue #12.</p></div>
-      <div class="card"><h3>Sounds like you, because you taught LongLens</h3>
-        <p>"Shorter." "More on the new rules, less on conferences." Reply in your own words and the next issue changes. Reply UNDO to take it back.</p></div>
+    <div class="sec-head"><span class="eyebrow">Read, hear, see, watch</span>
+      <h2>Your readers can read it, hear it, flip the slides or watch it</h2>
+      <p>One reader skims with coffee, another listens in the car, a third only looks at a picture. LongLens turns each issue into a letter, audio, slides, a picture and a short video, so the same news reaches all of them.</p></div>
+    {FORMAT_STRIP}
+    <div class="cards two">
+      <div class="card"><h3>Where your readers find it today</h3><p>{" · ".join(TODAY_PLACES)}.</p></div>
+      <div class="card"><h3>Where it goes next</h3><p>{coming(" · ".join(COMING_PLACES) + ".")}</p></div>
     </div>
-    <p class="k"><a href="/features/">See every feature</a></p>
+    <p class="k"><a href="/features/">See every format and every place it goes</a></p>
   </div>
 </section>
 
 <hr class="rule">
 <section>
   <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Make it yours, on the page</span>
-      <h2>Change any line right on your issue, exactly as your readers will see it.</h2></div>
+    <div class="sec-head"><span class="eyebrow">Your name, your words</span>
+      <h2>Change any line right on the issue, exactly as your readers will see it</h2></div>
     <div class="feat">
       <div class="txt">
-        <p>No forms and no code. Open your issue, click the words you want to change, type, and press Save. LongLens rewrites the whole issue with your words in it and keeps every earlier version, so nothing you save is ever lost.</p>
+        <p>Open the issue, click the words you want to change, type, and press Save. The issue updates everywhere with your words, and every earlier version is kept. Or reply in plain words, "shorter" or "more on the new rules", and the next issue follows.</p>
         <ul>
-          <li><strong>Your words on top</strong>: the headline, the opening, the line people see in their inbox before they open it.</li>
+          <li><strong>Your words on top</strong>: the headline, the opening, and the line people see in their inbox before they open it.</li>
           <li><strong>Your say on every story</strong>: the line on what it means for them, and each short summary.</li>
-          <li><strong>The facts stay put</strong>: story titles and links stay as the original publisher wrote them, so every story still points to its source.</li>
-          <li><strong>Your sections, your order</strong>: drag the sections of a daily newsletter into the order you like, hide the ones you do not need, rename the headings and add a note from you. A preview shows your latest issue as you go.</li>
+          <li><strong>The facts stay put</strong>: story titles and links stay as the original publisher wrote them, so every story still points to where it came from.</li>
+          <li><strong>Your layout</strong>: put the sections in your order, hide the ones you do not need, and add a note from you.</li>
         </ul>
       </div>
       {EDITOR_SHOT}
     </div>
-    <p class="k"><a href="/features/">See everything you can change</a></p>
+  </div>
+</section>
+
+<hr class="rule">
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Price</span>
+      <h2>Free during the pilot. $19 or $95 a month after it.</h2></div>
+    <div class="cards">
+      <div class="card"><h3>Pilot: free</h3><p>Invite only. Geoff sets up your newsletter with you on a short call, and you get everything LongLens does today.</p></div>
+      <div class="card"><h3>Solo: $19 a month</h3><p>One newsletter under your name, daily or weekly, with the letter, the audio, the slides, the picture and both videos.</p></div>
+      <div class="card"><h3>Business: $95 a month</h3><p>Everything in Solo, plus a public page of your issues, your Slack or Discord channel and an RSS feed. {coming("Sending straight to your readers from your own address.")}</p></div>
+    </div>
+    <p class="k"><a href="/pricing/">See exactly what each plan includes</a></p>
   </div>
 </section>
 
@@ -280,8 +307,8 @@ HOME = f'''<section class="hero">
   <div class="wrap">{PROOF}</div>
 </section>
 
-{close_cta("Your customers hear the news from someone. Make it you.",
-           "One short call. Geoff points LongLens at the websites, forums, videos and newsletters you trust, and you see a week of real issues before anyone else does.")}'''
+{close_cta("See a week of issues for your business, free.",
+           "Tell Geoff who your readers are. He sets LongLens up with you on one short call, and you read a week of real issues before anyone else sees them.")}'''
 
 # --------------------------------------------------------------------------------------------
 # Features
@@ -290,8 +317,8 @@ HOME = f'''<section class="hero">
 FEATURES = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">Features</span>
-    <h1>What changed in your industry, and what it means for your customers. To read, hear, watch and flip through.</h1>
-    <p class="lede">Far more than a newsletter. LongLens writes each issue as a short letter under your name, then turns the same issue into audio, slides, one picture, an explainer video and a short video, so each customer gets the news the way they like it. Change any line right on the page, exactly as your readers will see it.</p>
+    <h1>One issue on what changed in your field, as a letter, audio, slides, a picture and video.</h1>
+    <p class="lede">LongLens writes each issue under your name, then turns the same issue into every format, so each reader takes the news in the way they like. You change any line on the page before anyone else sees it.</p>
     <p class="price-line">{AI_LINE}</p>
     {FORMAT_STRIP}
   </div>
@@ -301,42 +328,40 @@ FEATURES = f'''<section class="hero">
 <section>
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Every format</span>
-      <h2>The same news, in the way each customer likes it</h2>
-      <p>Every format is switched on for a new account. Each one is made once per issue, from the same stories, so whichever a customer picks, they get the same news.</p></div>
+      <h2>The same news, in the way each reader likes it</h2>
+      <p>Every format is switched on for a new account. Each one comes from the same stories, so whichever a reader picks, they get the same news.</p></div>
     <div class="cards">
-      <div class="card"><h3>Read it</h3><p>The letter: what changed and what it means for them, with a link to every original story. By email, and on the web once you publish the issue.</p></div>
-      <div class="card"><h3>Skim it</h3><p>A short email with the one line that matters most and a button to read the whole issue on the web.</p></div>
-      <div class="card"><h3>Hear it</h3><p>The issue as a conversation between two voices, for the drive in. On a day that service is down, LongLens makes the audio itself instead.</p></div>
-      <div class="card"><h3>Flip the slides</h3><p>A slide deck of the issue, ready to put on screen in a meeting.</p></div>
-      <div class="card"><h3>See the picture</h3><p>The whole issue on one picture, with a drawing and a short line for each point.</p></div>
-      <div class="card"><h3>Watch it</h3><p>A narrated explainer video of the issue, a few minutes long.</p></div>
-      <div class="card"><h3>The short video</h3><p>About a minute, upright for a phone, with captions on screen.</p></div>
-      <div class="card"><h3>Story pictures</h3><p>Turn them on and your top stories each get a small picture in your colours. Off until you turn them on. {coming("A picture generated for each story, in your own style.")}</p></div>
+      <div class="card"><h3>{F_READ}</h3><p>The letter: what changed and what it means for them, with a link to every original story. By email, and on the web once you publish the issue.</p></div>
+      <div class="card"><h3>{F_SKIM}</h3><p>A short email with the one line that matters most and a button to read the whole issue on the web.</p></div>
+      <div class="card"><h3>{F_HEAR}</h3><p>A spoken version of the issue. On some days, a longer conversation between two voices, for the drive in.</p></div>
+      <div class="card"><h3>{F_SLIDES}</h3><p>A slide deck of the issue, ready to put on screen in a meeting. On some issues.</p></div>
+      <div class="card"><h3>{F_PIC}</h3><p>The whole issue on one picture, with a drawing and a short line for each point. On some issues.</p></div>
+      <div class="card"><h3>{F_WATCH}</h3><p>A narrated explainer video of the issue, a few minutes long. On some issues.</p></div>
+      <div class="card"><h3>{F_SHORT}</h3><p>About a minute, upright for a phone, with captions on screen.</p></div>
+      <div class="card"><h3>Story pictures</h3><p>Turn them on and your top stories each get a small picture in your colours. {coming("A picture generated for each story, in your own style.")}</p></div>
     </div>
     <ul class="list">
-      <li><strong>When the audio, slides, picture and videos come</strong>: with any issue that includes stories from public websites. An issue with no stories from public websites goes out as the letter alone.</li>
-      <li><strong>Checked before anyone sees them</strong>: LongLens checks every audio, slide deck, picture and video against the stories. A piece that fails is held back, and the letter goes out without it.</li>
-      <li><strong>Slides, the picture and the videos</strong> come from one outside service. On a day it is down, the issue goes out without them.</li>
-      <li><strong>You pick what leads your own email</strong>: Read it, Skim it, Listen, Watch, See it, Slides or the short video. The letter always follows.</li>
-      <li><strong>Each customer, their own way</strong>: today the public page of your issues carries every format side by side, so each customer picks the one they like. {coming("Each customer picks once at the bottom of their email, and LongLens sends every issue that way: the audio first, the video first, or just the top stories.")}</li>
+      <li><strong>Not every issue gets every format.</strong> The letter always goes out. Each other format is checked against the stories first, and one that fails is left off.</li>
+      <li><strong>You pick what leads your own email</strong>: {F_READ}, {F_SKIM}, {F_HEAR}, {F_WATCH}, {F_PIC}, {F_SLIDES} or {F_SHORT}. The letter always follows.</li>
+      <li><strong>Each reader, their own way</strong>: today the public page of your issues carries every format side by side. {coming("Each reader picks once at the bottom of their email, and LongLens sends every issue that way.")}</li>
     </ul>
 
     <div class="sec-head"><span class="eyebrow">Where it goes</span>
-      <h2>Every place your customers can get each issue</h2>
+      <h2>Every place your readers can get each issue</h2>
       <p>Your newsletter's name and issue number are on every one, wherever it lands.</p></div>
     <div class="cards two">
       <div class="card"><h3>Today</h3><ul class="list">
+        <li><strong>In your own inbox first</strong>, with every format on its page in your account.</li>
         <li><strong>In their inbox</strong>: send the letter through the email tool you already use, or simply forward it.</li>
         <li><strong>On the web</strong>: each issue you publish gets a page of its own that anyone can open from a link, with no sign-in.</li>
-        <li><strong>On a public page of all your issues</strong>, with the audio, the videos, the slides and the picture that passed their check. Geoff sets it up with you.</li>
-        <li><strong>In a Slack or Discord channel</strong>: a short post with a link to each issue you publish, if you add a channel.</li>
+        <li><strong>On a public page of all your issues</strong>, with every format that passed its check. Geoff sets it up with you.</li>
+        <li><strong>In a Slack or Discord channel</strong>: a short post with a link to each issue you publish.</li>
         <li><strong>In a feed reader</strong>: a private RSS link to your published issues.</li>
-        <li><strong>In your own inbox first</strong>: every issue lands with you, with every format on its page in your account.</li>
       </ul></div>
       <div class="card"><h3>Coming</h3><ul class="list">
-        <li>{coming("<strong>Straight to each customer</strong> from your own address, for example news@yourbusiness.com, in the format each one picked, every issue.")}</li>
-        <li>{coming("<strong>In podcast apps</strong>: the audio of every issue as a podcast your customers can follow.")}</li>
-        <li>{coming("<strong>On Instagram and LinkedIn</strong>: posts made from each issue, ready for you to put up.")}</li>
+        <li>{coming("<strong>Straight to each reader</strong> from your own address, for example news@yourbusiness.com, in the format each one picked.")}</li>
+        <li>{coming("<strong>In podcast apps</strong>: the audio of every issue as a podcast your readers can follow.")}</li>
+        <li>{coming("<strong>On Instagram and LinkedIn</strong>: posts from each issue, ready for you to put up.")}</li>
         <li>{coming("<strong>On your own website</strong>: a block that shows your latest issue.")}</li>
         <li>{coming("<strong>On Telegram</strong>: each issue in a Telegram channel.")}</li>
       </ul></div>
@@ -349,26 +374,27 @@ FEATURES = f'''<section class="hero">
         <ul>
           <li><strong>What you can change</strong>: the headline, the opening paragraph, the inbox preview line, each section heading, the line on what each story means for your readers, each story summary, the quick links and the points to watch next.</li>
           <li><strong>What stays as published</strong>: story titles, links and the names of the websites they came from, so every fact still points home.</li>
-          <li><strong>Plain words in, the full issue out</strong>: type as you would in an email. On Save, LongLens rewrites the whole issue with your words in it, in every copy it keeps.</li>
-          <li><strong>Every version kept</strong>: the issue as LongLens first wrote it, and every save after that, so any change can be traced and copied back.</li>
+          <li><strong>Type as you would in an email</strong>: on Save, the issue updates everywhere with your words.</li>
+          <li><strong>Every version kept</strong>: the issue as LongLens first wrote it, and every save after that.</li>
           <li><strong>Locked once it goes out</strong>: once an issue is approved or sent, it stays exactly as it went.</li>
         </ul>
+        <p class="tiny">Edit in place works on daily newsletters. A weekly newsletter has its own editor, section by section.</p>
       </div>
       {EDITOR_SHOT}
     </div>
 
     <div class="feat">
       <div class="txt">
-        <h2>Arrange your issue the way you would lay out a page</h2>
-        <p>The Sections page puts every part of a daily newsletter in a list you can rearrange, with a live preview of your latest issue beside it.</p>
+        <h2>Lay out your issue the way you would lay out a page</h2>
+        <p>On a daily newsletter, the Sections page lists every part of the issue, with a live preview of your latest issue beside it.</p>
         <ul>
           <li><strong>Your order</strong>: drag a section, or use the arrows, to move it.</li>
-          <li><strong>Only what you need</strong>: hide a section with one tick, or show at most a set number of stories in it.</li>
-          <li><strong>Your headings</strong>: rename any section in your own words.</li>
+          <li><strong>Only what you need</strong>: hide a section with one tick, and show only as many topics as you want.</li>
+          <li><strong>Your headings</strong>: rename the extra sections, such as quick links and what to watch, in your own words.</li>
           <li><strong>A note from you</strong>: add your own note, with its own heading, or a divider, anywhere in the issue.</li>
           <li><strong>Back to the usual</strong>: one button puts the usual sections back.</li>
         </ul>
-        <p>Your next issue uses the new layout in the email. Issues already written stay as they were.</p>
+        <p>Your next issue uses the new layout. Issues already written stay as they were.</p>
       </div>
       <div class="txt">
         <h2>Pictures that are yours to use</h2>
@@ -383,15 +409,15 @@ FEATURES = f'''<section class="hero">
 
     <div class="feat">
       <div class="txt">
-        <h2>Hit reply. The next issue listens.</h2>
-        <p>Teach LongLens the way you would teach a new hire: reply to any issue in your own words. LongLens answers in the same thread with what it understood, and the next issue follows it.</p>
+        <h2>Reply in plain words to change the next issue</h2>
+        <p>Teach LongLens the way you would brief a new hire: reply to any issue in your own words. LongLens answers in the same thread with what it understood, and the next issue follows it.</p>
         <ul>
           <li><strong>Length</strong>: shorter, longer, or how many stories.</li>
           <li><strong>Topics</strong>: more of one thing, less of another.</li>
-          <li><strong>Your customers</strong>: a new sentence about who they are and what matters to them.</li>
+          <li><strong>Your readers</strong>: a new sentence about who they are and what matters to them.</li>
           <li><strong>Websites</strong>: paste a link to add one, name one to drop it.</li>
           <li><strong>Tone and layout</strong>: how it sounds, how each story is laid out.</li>
-          <li><strong>Extras</strong>: add or drop the full audio or the slides.</li>
+          <li><strong>Formats</strong>: add or drop the two-voice audio or the slides.</li>
         </ul>
         <p>Reply UNDO to take back the last change. LongLens acts only on replies from you: a forward to a colleague changes nothing.</p>
       </div>
@@ -410,21 +436,21 @@ FEATURES = f'''<section class="hero">
 
     <div class="feat">
       <div class="txt">
-        <h2>Built from the websites, forums and videos you already trust</h2>
-        <p>Every issue covers what is new on the websites, forums, YouTube channels and topics your industry follows. Name them to Geoff on your call, or paste a link into a reply any time.</p>
+        <h2>Built from the websites, forums and videos your field already trusts</h2>
+        <p>Every issue covers what is new on the websites, forums, YouTube channels and topics your field follows. Name them to Geoff on your call, or paste a link into a reply any time.</p>
         <ul>
           <li><strong>Forward the newsletters you never open</strong>, or save a page from your phone or browser. What matters lands in your next issue under "You sent".</li>
           <li><strong>One tap to turn a website off</strong>, one more to turn it back on. LongLens never adds a website you turned off back by itself.</li>
-          <li><strong>New websites, found for you</strong>: LongLens lists the ones your stories came from under "New sources for you", each with a way to remove it.</li>
+          <li><strong>New websites, found for you</strong>: LongLens lists the ones your stories came from, each with a way to remove it.</li>
         </ul>
       </div>
       <div class="txt">
-        <h2>LongLens checks every story before your customers read it</h2>
+        <h2>LongLens checks every story before your readers see it</h2>
         <ul>
-          <li><strong>What it means for them</strong>: most stories carry one line on why they matter to your customers, so the issue is never a link dump.</li>
+          <li><strong>What it means for them</strong>: most stories carry one line on why they matter to your readers, so the issue is never a list of links.</li>
           <li><strong>No repeats</strong>: a story they have already seen stays out until something changes, then comes back marked as an update.</li>
           <li><strong>Names and figures</strong> are checked against the original story.</li>
-          <li><strong>Every link is tried</strong> before the issue goes out. A story whose only link is dead is left out, and the last line says how many links were checked and how many were dead.</li>
+          <li><strong>Links are checked</strong> before the issue goes out. A story whose only link is dead is left out, and the last line says how many links were checked.</li>
         </ul>
       </div>
     </div>
@@ -432,12 +458,12 @@ FEATURES = f'''<section class="hero">
     <div class="feat">
       <div class="txt">
         <h2>On your desk when you sit down</h2>
-        <p>LongLens arrives on the days and at the time you pick, in your time zone. Daily for a fast-moving field, weekly for everyone else.</p>
+        <p>LongLens arrives on the days and at the time you pick, in your time zone. Weekly suits most fields; daily suits a field that moves fast.</p>
         <p>Away for a week? Press Pause this newsletter at the bottom of any issue. The same page starts it again.</p>
       </div>
       <div class="txt">
         <h2>Yours to keep</h2>
-        <p>You own what LongLens makes: every issue, every website you chose, every lesson you taught LongLens.</p>
+        <p>You own what LongLens writes for you: every issue, every website you chose, every lesson you taught LongLens.</p>
       </div>
     </div>
   </div>
@@ -447,23 +473,23 @@ FEATURES = f'''<section class="hero">
 <section>
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">An honest comparison</span>
-      <h2>Three other ways to be the expert, and what each one costs you</h2></div>
+      <h2>Three other ways to keep your clients up to date, and what each one costs you</h2></div>
     <div class="cards">
-      <div class="card"><h3>By hand</h3><p>Read the industry press every morning and write it up yourself. Full control. It costs the hours you do not have, and it dies the first busy week.</p></div>
-      <div class="card"><h3>A newsletter platform</h3><p>Great at sending and at growing a list. No idea what to say. You still find the news and write every word.</p></div>
-      <div class="card"><h3>A personal AI summary</h3><p>Fast, often free, and fine for keeping yourself informed. Written for you alone. Nobody else reads it, nobody learns what you know, and your name is nowhere on it.</p></div>
+      <div class="card"><h3>By hand</h3><p>Read the industry press and write it up yourself. Full control. It costs the hours you do not have, and it stops the first busy week.</p></div>
+      <div class="card"><h3>A newsletter platform</h3><p>Good at sending and at growing a list. No idea what to say. You still find the news and write every word.</p></div>
+      <div class="card"><h3>A personal AI summary</h3><p>Fast, often free, and fine for keeping yourself informed. Written for you alone. Nobody else reads it, and your name is nowhere on it.</p></div>
     </div>
-    <p class="k">LongLens tells your customers what today's news means for them, ready to send as text and often as audio. You keep the name, the last word and the customers.</p>
+    <p class="k">LongLens tells your readers what the news in your field means for them, ready to send, as a letter and in every other format. You keep the name, the last word and the readers.</p>
     <div class="notfor"><h3>What LongLens does not do</h3><ul>
-      <li><strong>Write your own company news.</strong> LongLens works from what the industry press, the forums and the videos say about your field. Your own announcements are still yours to write.</li>
+      <li><strong>Write your own company news.</strong> LongLens works from what the press, the forums and the videos in your field say. Your own announcements are still yours to write, and you can add them as a note in any issue.</li>
       <li><strong>Run ads or paid subscriptions.</strong> Use a newsletter platform built for that.</li>
-      <li><strong>Replace you.</strong> Your judgment is the point. LongLens makes it reach further, issue after issue.</li>
+      <li><strong>Replace you.</strong> Your judgment is the point. LongLens puts it in front of more people, issue after issue.</li>
     </ul></div>
   </div>
 </section>
 
-{close_cta("Put the news in your customers' hands before anyone else does.",
-           "Tell Geoff who your customers are and what they should hear from you first. He sets LongLens up with you on one short call.")}'''
+{close_cta("See a week of issues for your business, free.",
+           "Tell Geoff who your readers are and what they should hear from you first. He sets LongLens up with you on one short call.")}'''
 
 # --------------------------------------------------------------------------------------------
 # Pricing
@@ -472,20 +498,37 @@ FEATURES = f'''<section class="hero">
 PRICING = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">Pricing</span>
-    <h1>Free during the pilot. Put your name in front of your customers at no cost.</h1>
-    <p class="lede">LongLens is in its pilot, and the pilot is free. Paid plans are coming.</p>
-    <div class="card" style="margin-top:28px;max-width:780px"><h2 style="font-size:20px">What the pilot includes today</h2>
-      <ul class="list" style="margin-top:8px">
-        <li>Your letter with each issue, daily or weekly, under your newsletter's name</li>
-        <li>A plain-voice audio read with most issues</li>
-        <li>{EXTRAS[0].upper() + EXTRAS[1:]}</li>
-        <li>Change anything by replying in plain words</li>
-        <li>Send each issue through the email tool you already use, or forward it</li>
-        <li>Each issue posted to your Slack or Discord channel, if you add one</li>
-        <li>Set up with you by Geoff, on one short call</li>
-      </ul>
-      <div class="cta-row"><a class="btn btn-a" href="/contact/">Join the free pilot. Book a short call.</a></div>
+    <h1>Free during the pilot. From $19 a month after it.</h1>
+    <p class="lede">The pilot is invite only and free: Geoff sets up your newsletter with you, and you get everything LongLens does today. When the pilot ends, pick a plan or stop. Nothing is owed for the pilot, and no card is asked for.</p>
+    <div class="cards" style="margin-top:28px">
+      <div class="card"><h2 style="font-size:20px">Pilot: free</h2>
+        <ul class="list" style="margin-top:8px">
+          <li>Your newsletter, daily or weekly, under your name</li>
+          <li>With most issues: the letter, a spoken version and the one-minute video</li>
+          <li>Up to two a week: the two-voice audio, the slides, the explainer video or the one picture</li>
+          <li>Change any line on the page, or reply in plain words</li>
+          <li>A web page for every issue, a public page of all of them, your Slack or Discord channel and an RSS feed</li>
+          <li>Set up with you by Geoff, on one short call</li>
+        </ul></div>
+      <div class="card"><h2 style="font-size:20px">Solo: $19 a month</h2>
+        <ul class="list" style="margin-top:8px">
+          <li>One newsletter under your name, daily or weekly</li>
+          <li>The letter, the audio, the slides, the one picture and both videos</li>
+          <li>Change any line on the page, or reply in plain words</li>
+          <li>Every issue in your inbox and on a web page of its own, ready to send on</li>
+        </ul></div>
+      <div class="card"><h2 style="font-size:20px">Business: $95 a month</h2>
+        <ul class="list" style="margin-top:8px">
+          <li>Everything in Solo</li>
+          <li>A public page of all your issues, with every format</li>
+          <li>Each issue posted to your Slack or Discord channel, and an RSS feed</li>
+          <li>{coming("Sent straight to each reader from your own address")}</li>
+          <li>{coming("Podcast apps, Instagram and LinkedIn posts, Telegram, and a block on your website")}</li>
+        </ul></div>
     </div>
+    <div class="cta-row"><a class="btn btn-a" href="/contact/">{CTA_TEXT}</a></div>
+    <p class="price-line">Prices in US dollars, after the pilot. The first plans are paid by invoice.</p>
+    <p class="price-line"><strong>{CONTROL_LINE}</strong></p>
   </div>
 </section>
 
@@ -496,15 +539,15 @@ PRICING = f'''<section class="hero">
       <h2>No card form. Geoff sets you up himself.</h2></div>
     <ul class="list">
       <li><strong>Invite only, for now.</strong> Geoff sets up every account himself. {coming("Sign up on your own.")}</li>
-      <li><strong>It starts with a short call.</strong> You and Geoff pin down who your customers are and what they should hear from you first.</li>
-      <li><strong>A set amount of writing each month.</strong> The pilot covers a set amount of writing a month. If you reach it, LongLens says so on your pages and picks up again next month.</li>
-      <li><strong>Up to two extras a week in total</strong>: the full audio conversation or slides. Once those two are used, the plain-voice audio can still come, and the rest waits until next week.</li>
-      <li><strong>Paid plans</strong> {coming()}</li>
+      <li><strong>It starts with a short call.</strong> You and Geoff pin down who your readers are and what they should hear from you first.</li>
+      <li><strong>A monthly writing limit.</strong> The pilot covers a set amount of writing each month. If your newsletter reaches it, LongLens tells you on your pages and carries on the next month.</li>
+      <li><strong>Up to two of the bigger formats a week</strong>: the two-voice audio, the slides, the explainer video or the one picture. The letter, the spoken version and the one-minute video carry on as usual.</li>
+      <li><strong>Stop any time.</strong> Tell Geoff, and nothing is owed.</li>
     </ul>
   </div>
 </section>
 
-{close_cta("Be the name on your customers' morning news.",
+{close_cta("See a week of issues for your business, free.",
            "One short call, then a week of real issues under your name before anyone else sees them.")}'''
 
 # --------------------------------------------------------------------------------------------
@@ -514,8 +557,8 @@ PRICING = f'''<section class="hero">
 HOW = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">How it works</span>
-    <h1>One short call. Then what's changing for your customers lands daily or weekly, under your name.</h1>
-    <p class="lede">No software to learn and no password to remember. Geoff sets LongLens up with you, and from then on you change anything by replying to an issue.</p>
+    <h1>One short call. Then your newsletter lands every week, or every morning, under your name.</h1>
+    <p class="lede">No software to learn and no password to remember. Geoff sets LongLens up with you. From then on, change any line right on the issue, or reply to it in plain words.</p>
   </div>
 </section>
 
@@ -524,11 +567,11 @@ HOW = f'''<section class="hero">
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Getting started</span><h2>From a short call to your first issue</h2></div>
     <ol class="steps two">
-      <li><h3>Book a short call</h3>
-        <p>Tell Geoff who your customers are and what they should hear from you first. He reads every message himself and replies from {EMAIL}.</p>
-        <p><a href="/contact/">Book a short call</a></p></li>
+      <li><h3>Ask for a free week</h3>
+        <p>Tell Geoff who your readers are and what they should hear from you first. He reads every message himself and replies from {EMAIL}.</p>
+        <p><a href="/contact/">{CTA_TEXT}</a></p></li>
       <li><h3>Geoff sets LongLens up with you</h3>
-        <p>He points LongLens at the websites, forums, videos and newsletters you trust, and you describe your customers in your own words. You see a week of real issues before anyone else does.</p></li>
+        <p>He points LongLens at the websites, forums, videos and newsletters you trust, and you describe your readers in your own words. You see a week of real issues before anyone else does.</p></li>
       <li><h3>Sign in with the link Geoff emails you</h3>
         <p>Open it and press Get started. There is no password. Three short questions follow, on your own or with Geoff:</p>
         <ul><li>What should LongLens follow, said the way you would tell a friend?</li>
@@ -543,15 +586,15 @@ HOW = f'''<section class="hero">
 <hr class="rule">
 <section>
   <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Every morning</span><h2>What lands in your inbox, and why you can trust it</h2>
-      <p>At the time you picked, LongLens turns the day's news in your industry into one issue with your newsletter's name on it.</p></div>
+    <div class="sec-head"><span class="eyebrow">Every issue</span><h2>What lands in your inbox, and why you can trust it</h2>
+      <p>At the time you picked, LongLens turns the news in your field into one issue with your newsletter's name on it.</p></div>
     <ol class="steps three">
       <li><h3>LongLens catches anything new</h3><p>From every website, feed, forum and channel you follow.</p></li>
-      <li><h3>LongLens keeps what matters to your customers</h3><p>A story you have already had stays out, unless something changed. Then it comes back marked as an update.</p></li>
-      <li><h3>Every story says what it means for them</h3><p>Most stories carry a short line on why they matter to your customers, and every story links to the original.</p></li>
-      <li><h3>Every link is tried first</h3><p>A story whose only link is dead is left out, and a line at the foot of the issue says how many links were checked and how many were dead.</p></li>
+      <li><h3>LongLens keeps what matters to your readers</h3><p>A story you have already had stays out, unless something changed. Then it comes back marked as an update.</p></li>
+      <li><h3>Every story says what it means for them</h3><p>Most stories carry a short line on why they matter to your readers, and every story links to the original.</p></li>
+      <li><h3>Links are checked first</h3><p>A story whose only link is dead is left out, and a line at the foot of the issue says how many links were checked.</p></li>
       <li><h3>Your copy arrives by email</h3><p>Nothing to press. Every issue is also kept on the Issues page when you sign in.</p></li>
-      <li><h3>Audio and slides follow</h3><p>Often, on the issue's page, once they pass their check. On extras days your copy can arrive up to a few hours later.</p></li>
+      <li><h3>The other formats follow</h3><p>Audio, slides, the picture and the videos appear on the issue's page once they pass their check, not on every issue.</p></li>
     </ol>
   </div>
 </section>
@@ -559,19 +602,20 @@ HOW = f'''<section class="hero">
 <hr class="rule">
 <section>
   <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Your daily routine</span><h2>Four answers cover most mornings</h2></div>
+    <div class="sec-head"><span class="eyebrow">Day to day</span><h2>Five things cover most days</h2></div>
     <ul class="list">
-      <li><strong>Change your issue</strong>: reply to any issue in plain words, for example "shorter please". The next issue follows it.</li>
+      <li><strong>Change a line</strong>: open the issue, press Edit in place, click any line and type (daily newsletters; a weekly newsletter has its own editor).</li>
+      <li><strong>Change the next issue</strong>: reply in plain words, for example "shorter please". The next issue follows it.</li>
       <li><strong>Undo a change</strong>: reply UNDO.</li>
       <li><strong>Pause it</strong>: press Pause this newsletter at the bottom of any issue. The same page starts it again.</li>
       <li><strong>Sign in</strong>: type your email on the <a href="/sign-in/">sign-in page</a> and a fresh link arrives by email, usually within a minute. Each link works once, and keeps you signed in for 30 days on that device.</li>
     </ul>
-    <p class="k">Sending to your customers: today each issue comes to you first, and you send it through the email tool you already use, or forward it. {coming("Email straight to your customers from your own address.")}</p>
+    <p class="k">Every issue comes to you first. Today you send it through the email tool you already use, or forward it. {coming("Email straight to your readers from your own address.")}</p>
   </div>
 </section>
 
-{close_cta("Book the call. Read your first week.",
-           "You see a week of real issues before anyone else does.")}'''
+{close_cta("See a week of issues for your business, free.",
+           "You read a week of real issues before anyone else does.")}'''
 
 # --------------------------------------------------------------------------------------------
 # FAQ
@@ -583,22 +627,36 @@ def qa(q, a):
 
 FAQ_ITEMS = [
     ("Getting started", [
-        ("How do we start, and how does LongLens reach my customers?",
-         "<p>A short call, then Geoff points LongLens at the websites, forums, videos and newsletters you trust, and you describe your customers in your own words. You see a week of real issues before anyone else does. Today each issue comes to you first, and you send it through the email tool you already use, or forward it. Email straight to your customers from your own address is coming.</p>"),
+        ("How do we start, and how does LongLens reach my readers?",
+         "<p>A short call, then Geoff points LongLens at the websites, forums, videos and newsletters you trust, and you describe your readers in your own words. You see a week of real issues before anyone else does. Today each issue comes to you first, and you send it through the email tool you already use, or forward it. Email straight to your readers from your own address is coming.</p>"),
         ("Can I sign up on my own?",
-         f"<p>Not yet. LongLens is invite only for now, and Geoff sets up every account himself. <a href=\"/contact/\">Book a short call with Geoff</a>.</p>"),
+         "<p>Not yet. LongLens is invite only for now, and Geoff sets up every account himself. <a href=\"/contact/\">Ask Geoff for a free week</a>.</p>"),
         ("How do I sign in?",
-         f"<p>With a link by email. There is no password. Type your email on the <a href=\"/sign-in/\">sign-in page</a> and a fresh link arrives, usually within a minute. Each link works once and keeps you signed in for 30 days on that device.</p>"),
+         "<p>With a link by email. There is no password. Type your email on the <a href=\"/sign-in/\">sign-in page</a> and a fresh link arrives, usually within a minute. Each link works once and keeps you signed in for 30 days on that device.</p>"),
+    ]),
+    ("Trust and control", [
+        ("Does anything reach my clients before I see it?",
+         "<p>No. Nothing goes to your clients until you approve it. Every issue comes to you first: you read it, change any line, and decide what to send and to whom.</p>"),
+        ("What if LongLens gets something wrong?",
+         "<p>You read every issue before your readers do, and you can change or cut any line. LongLens checks names and figures against the original story and links every story to it, so each fact can be checked in one click. Your name is on it, so the last word is yours.</p>"),
+        ("Is AI writing it?",
+         "<p>Yes. LongLens writes with AI, checks names and figures against the original story, and checks links before the issue goes out. You change anything on the page or by replying.</p>"),
+        ("Can I edit the issue myself?",
+         "<p>Yes. Open the issue, press Edit in place, click any line and type, then Save. Every version is kept. This works on daily newsletters; a weekly newsletter has its own editor, section by section.</p>"),
+    ]),
+    ("Your clients' details", [
+        ("Does LongLens need my client list?",
+         "<p>Not today. Issues come to you, and you send them from the email tool you already use, so your client list stays where it is.</p>"),
+        ("Can LongLens follow news from my country?",
+         "<p>Yes. LongLens follows the websites, feeds and forums you name, wherever they are: a tax authority's news page, an industry association, a regulator.</p>"),
     ]),
     ("What you get", [
-        ("Is AI writing it?",
-         "<p>Yes. LongLens writes with AI, checks names and figures against the original story, tries every link before the issue goes out, and you change anything by replying. Your name is on it, so the last word is yours.</p>"),
         ("Is LongLens only for one kind of business?",
-         "<p>No. LongLens works for any business whose customers need to know what is changing: an accountant, a vet clinic, a builder's merchant, a law firm, a recruiter, a school, a mentoring programme or a consultancy. Geoff built it first for his own field, visual effects, and that is the example you can read on this site. Yours follows the websites, forums and newsletters of your industry.</p>"),
-        ("What if the audio or slides are missing?",
-         "<p>Each week you get up to two extras: the full audio or the slides. Once those two are used, audio still comes as the plainer spoken version. If the piece that leads your email is missing, you get the full letter with one line saying so.</p>"),
+         "<p>No. LongLens works for any business whose readers need to know what is changing: an accountancy, a vet practice, a law firm, a recruiter, a consultancy, a school or a members' association. Geoff built it first for his own field, visual effects, and that is the example on this site. Yours follows the websites, forums and newsletters of your field.</p>"),
+        ("What if the audio, slides or videos are missing?",
+         "<p>Not every issue gets every format. During the pilot, up to two of the bigger formats come each week: the two-voice audio, the slides, the explainer video or the one picture. The letter always goes out, and the spoken version and the one-minute video come with most issues. If the format that leads your email is missing, you get the full letter with one line saying so.</p>"),
         ("Can LongLens write my own company news?",
-         "<p>No. LongLens works from what the industry press, the forums and the videos say about your field. Your own announcements are still yours to write.</p>"),
+         "<p>No. LongLens works from what the press, the forums and the videos in your field say. Your own announcements are still yours to write, and you can add them as a note in an issue.</p>"),
     ]),
     ("Day to day", [
         ("How do I change what I get?",
@@ -610,19 +668,19 @@ FAQ_ITEMS = [
     ]),
     ("Money and ownership", [
         ("What does LongLens cost?",
-         "<p>Nothing during the pilot: LongLens is free while it runs. Paid plans are coming. <a href=\"/pricing/\">See what the pilot includes</a>.</p>"),
-        ("Who owns what LongLens makes?",
+         "<p>Nothing during the pilot. After it, Solo is $19 a month and Business is $95 a month. <a href=\"/pricing/\">See what each plan includes</a>.</p>"),
+        ("Who owns what LongLens writes?",
          "<p>You do. Every issue, every website you chose, every lesson you taught LongLens.</p>"),
         ("Who is behind LongLens?",
-         f"<p>Geoffrey Hancock. He built LongLens first for his own field, visual effects for film and TV, and publishes his own issue with it most mornings: <a href=\"{DAILY}\">The VFX Supervisor Daily</a>. He won a VES Award for Changeling and was nominated for another for Invictus.</p>"),
+         f"<p>Geoffrey Hancock. He built LongLens first for his own field, visual effects for film and TV, and his own newsletter runs on it most mornings: <a href=\"{DAILY}\">The VFX Supervisor Daily</a>. He won a VES Award for Changeling and was nominated for another for Invictus.</p>"),
     ]),
 ]
 
 FAQ = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">FAQ</span>
-    <h1>Straight answers. Including what LongLens does not do yet.</h1>
-    <p class="lede">Getting started, signing in, what you get, day to day, price and ownership.</p>
+    <h1>Straight answers, including what LongLens does not do yet.</h1>
+    <p class="lede">Getting started, trust and control, what you get, day to day, price and ownership.</p>
   </div>
 </section>
 <section style="padding-top:0">
@@ -636,10 +694,9 @@ FAQ = f'''<section class="hero">
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Coming</span><h2>Not built yet, and we say so</h2></div>
     <ul class="coming">
-      <li><strong>Email straight to your customers</strong> {coming()}<br>Issues sent from your own address (for example news@yourbusiness.com), each customer in the format they picked, with a dated record of each customer's yes and one-click unsubscribe.</li>
-      <li><strong>Each customer picks their format</strong> {coming()}<br>Read it, Skim it, Listen, Slides or See it, from a link at the bottom of every issue they get.</li>
-      <li><strong>The one picture</strong> {coming()}<br>The whole issue on one screen, for the person who will not read.</li>
-      <li><strong>Your issue on Telegram</strong> {coming()}<br>Today it comes by email, on the web, and in your Slack or Discord channel.</li>
+      <li><strong>Email straight to your readers</strong> {coming()}<br>Issues sent from your own address (for example news@yourbusiness.com), each reader in the format they picked, with a dated record of each reader's yes and one-click unsubscribe.</li>
+      <li><strong>Each reader picks their format</strong> {coming()}<br>{F_READ}, {F_SKIM}, {F_HEAR}, {F_WATCH}, {F_PIC}, {F_SLIDES} or {F_SHORT}, from a link at the bottom of every issue they get.</li>
+      <li><strong>Podcast apps, Instagram and LinkedIn, Telegram, your website</strong> {coming()}<br>Today each issue goes by email, on the web, to your Slack or Discord channel and to an RSS feed.</li>
       <li><strong>Sign up on your own</strong> {coming()}<br>Today Geoff sets it up with you.</li>
     </ul>
   </div>
@@ -658,10 +715,11 @@ def inquiry_form() -> str:
   <p><label for="f-email">Email</label><br><input id="f-email" type="email" name="email" required maxlength="320" autocomplete="email"></p>
   <p><label for="f-company">Your business (optional)</label><br><input id="f-company" name="company" maxlength="200" autocomplete="organization"></p>
   <input type="hidden" name="offer" value="brief"><input type="hidden" name="source" value="longlens">
-  <p><label for="f-message">Who are your customers, and what should they hear from you first?</label><br><textarea id="f-message" name="message" required maxlength="5000"></textarea></p>
+  <p><label for="f-message">Who reads your newsletter (or should), and what should they hear from you first?</label><br><textarea id="f-message" name="message" required maxlength="5000"></textarea></p>
   <p style="position:absolute;left:-9999px" aria-hidden="true"><label for="f-website">Leave this empty</label><input id="f-website" name="website" tabindex="-1" autocomplete="off"></p>
   <p><label><input type="checkbox" name="consent" value="yes" required> {INQUIRY_CONSENT}</label></p>
-  <button class="btn btn-a" type="submit">Book my short call</button>
+  <button class="btn btn-a" type="submit">Ask for my free week</button>
+  <p class="email-line">{CONTROL_LINE}</p>
   <p class="email-line">Rather email? Write to <a href="{html.escape(CALL_MAIL)}">{EMAIL}</a>. Writing does not add you to any list.</p>
 </form>'''
 
@@ -669,20 +727,20 @@ def inquiry_form() -> str:
 CONTACT_BODY = inquiry_form() if FORM_LIVE else f'''<div class="contact-card">
   <h2 style="font-size:22px">Email Geoff. Three lines are enough.</h2>
   <ol>
-    <li>Who your customers are.</li>
+    <li>Who your readers are.</li>
     <li>What they should hear from you first.</li>
     <li>Your name and your business.</li>
   </ol>
-  <a class="btn btn-a" href="{html.escape(CALL_MAIL)}">Email Geoff to book a call</a>
+  <a class="btn btn-a" href="{html.escape(CALL_MAIL)}">Email Geoff for a free week</a>
   <p class="email-line">Or write to <a href="mailto:{EMAIL}">{EMAIL}</a></p>
   <p class="tiny">Writing does not add you to any list. Geoff replies personally to set up the call.</p>
 </div>'''
 
 CONTACT = f'''<section class="hero">
   <div class="wrap">
-    <span class="eyebrow">Book a call</span>
-    <h1>Book a short call. Read your first week, under your name.</h1>
-    <p class="lede">Tell Geoff who your customers are and what they should hear from you first. He reads every message himself and replies from {EMAIL} to set up a short call. Free during the pilot, invite only.</p>
+    <span class="eyebrow">Free pilot</span>
+    <h1>Read a week of your own newsletter, free.</h1>
+    <p class="lede">Tell Geoff about your business and who you would send it to. He reads every message himself and replies from {EMAIL} to set up a short call. The pilot is free and invite only.</p>
     {CONTACT_BODY}
   </div>
 </section>
@@ -692,11 +750,20 @@ CONTACT = f'''<section class="hero">
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">What happens next</span><h2>From your message to your first week of issues</h2></div>
     <ol class="steps three">
-      <li><h3>Geoff replies</h3><p>Personally, to set up a short call. Nothing is sent to you automatically.</p></li>
-      <li><h3>The call</h3><p>You pin down who your customers are and what they should hear from you first.</p></li>
-      <li><h3>Your first week</h3><p>Geoff sets LongLens up with you, and you see a week of real issues before anyone else does.</p></li>
+      <li><h3>Geoff replies</h3><p>Personally, by email, to set up a short call. Nothing is sent to you automatically.</p></li>
+      <li><h3>The call</h3><p>You pin down who your readers are and what they should hear from you first.</p></li>
+      <li><h3>Your first week</h3><p>Geoff sets LongLens up with you, and you read a week of real issues before anyone else does.</p></li>
     </ol>
-    <p class="k">Before the call, see a real one: <a href="{DAILY}">The VFX Supervisor Daily</a>, Geoff's own issue for his own field, written with LongLens. Yours covers your field, under your name.</p>
+    <p class="k">Before the call, read a real one: <a href="{DAILY}">The VFX Supervisor Daily</a>, Geoff's own newsletter about his own field. Yours covers your field, for your readers.</p>
+  </div>
+</section>'''
+
+THANKS = f'''<section class="hero">
+  <div class="wrap prose">
+    <span class="eyebrow">Message sent</span>
+    <h1>Thanks. Geoff has your message.</h1>
+    <p>He reads every message himself and will reply by email from {EMAIL} to set up a short call. Nothing else is sent to you, and you are not added to any list.</p>
+    <p>While you wait, read <a href="{DAILY}">Geoff's own newsletter</a>, or go back to the <a href="/">LongLens home page</a>.</p>
   </div>
 </section>'''
 
@@ -708,9 +775,9 @@ SIGNIN_PAGE = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">Sign in</span>
     <h1>Sign in with one link. No password.</h1>
-    <p class="lede">The LongLens app lives at <strong>newsletter-edge.thevfxsupervisor.workers.dev</strong>. The button below takes you to its sign-in page: type your email and a link arrives by email, usually within a minute. The link keeps you signed in for 30 days on that device.</p>
-    <div class="cta-row"><a class="btn btn-a" href="{SIGNIN}">Open the LongLens app and get my sign-in link</a></div>
-    <p class="k">Not set up yet? LongLens is invite only for now. <a href="/contact/">Book a short call with Geoff</a>.</p>
+    <p class="lede">The button below opens the LongLens app's sign-in page. Type your email and a link arrives by email, usually within a minute. The link keeps you signed in for 30 days on that device.</p>
+    <div class="cta-row"><a class="btn btn-a" href="{SIGNIN}">Get my sign-in link</a></div>
+    <p class="k">Not set up yet? LongLens is invite only for now. <a href="/contact/">Ask Geoff for a free week</a>.</p>
   </div>
 </section>'''
 
@@ -730,7 +797,7 @@ NOT_FOUND = '''<section class="hero">
   <div class="wrap prose">
     <span class="eyebrow">Not found</span>
     <h1>That page is not here.</h1>
-    <p><a href="/">Go to the LongLens home page</a>, or <a href="/contact/">book a short call with Geoff</a>.</p>
+    <p><a href="/">Go to the LongLens home page</a>, or <a href="/contact/">ask Geoff for a free week</a>.</p>
   </div>
 </section>'''
 
@@ -738,23 +805,23 @@ NOT_FOUND = '''<section class="hero">
 
 PAGES = [
     # slug, title, description, body, nav-current
-    ("", "LongLens: your customers hear what's changing from you",
-     "Every morning, LongLens turns what changed in your industry into a short briefing your customers open, under your name, with what it means for them. Free during the pilot.",
+    ("", "LongLens: a newsletter for your clients, written for you",
+     "LongLens writes a newsletter under your name on what changed in your field and what it means for your clients, as a letter, audio, slides, a picture and video. Free during the pilot, then from $19 a month.",
      HOME, ""),
     ("features", "Features | LongLens",
-     "What changed in your industry and what it means for your customers: to read, often to hear, and changed by replying in plain words.",
+     "Every format (letter, audio, slides, one picture, explainer and one-minute video), every place an issue goes, editing any line on the page, and what is coming.",
      FEATURES, "/features/"),
     ("pricing", "Pricing | LongLens",
-     "LongLens is free during the pilot. What the pilot includes today, and paid plans coming.",
+     "Free during the invite-only pilot. After it, Solo at $19 a month or Business at $95 a month, and what each includes today.",
      PRICING, "/pricing/"),
     ("how-it-works", "How it works | LongLens",
-     "One short call, a sign-in link by email, and your first issue the same day. Then daily or weekly, and you change anything by replying.",
+     "One short call, a sign-in link by email, and your first issue the same day. Then weekly or daily, and you change any line on the page or by replying.",
      HOW, "/how-it-works/"),
     ("faq", "FAQ | LongLens",
-     "Straight answers about LongLens: getting started, signing in, what you get, changing it by replying, price and ownership.",
+     "Straight answers about LongLens: getting started, what reaches your clients and when, editing, formats, price and ownership.",
      FAQ, "/faq/"),
-    ("contact", "Book a call | LongLens",
-     "Email Geoffrey Hancock for a short call and read your first week, under your name.",
+    ("contact", "Free week | LongLens",
+     "Ask Geoffrey Hancock for a free week: one short call, then a week of your own newsletter before anyone else sees it.",
      CONTACT, ""),
     ("sign-in", "Sign in | LongLens",
      "Sign in to LongLens with a link by email. No password.", SIGNIN_PAGE, ""),
@@ -772,6 +839,10 @@ def write_site() -> list[tuple[str, str]]:
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(doc, encoding="utf-8")
         out.append((slug, doc))
+    (ROOT / "thanks").mkdir(exist_ok=True)
+    (ROOT / "thanks" / "index.html").write_text(
+        page("thanks", "Thanks | LongLens", "Your message is with Geoff.", THANKS, robots="noindex"),
+        encoding="utf-8")
     (ROOT / "404.html").write_text(
         page("404", "Not found | LongLens", "That page is not here.", NOT_FOUND, robots="noindex"),
         encoding="utf-8")
