@@ -30,7 +30,7 @@ EMAIL = "geoff@wanglemedia.com"
 # The inquiry form. The app's endpoint (POST /hooks/inquiry) refuses any Origin but
 # https://thevfxsupervisor.com today (NL_INQUIRY_ORIGINS), so the contact page uses email until
 # the app accepts https://getlonglens.com. Flip FORM_LIVE to True once it does, then rebuild.
-FORM_LIVE = False
+FORM_LIVE = True
 INQUIRY_ENDPOINT = APP + "/hooks/inquiry"
 INQUIRY_CONSENT = "I agree to be contacted about this message at the email address I gave."
 
@@ -586,7 +586,8 @@ def inquiry_form() -> str:
 </form>'''
 
 
-CONTACT_BODY = inquiry_form() if FORM_LIVE else f'''<div class="contact-card">
+CONTACT_BODY = (inquiry_form() + f'''
+<p class="email-line">Rather email? Write to <a href="{html.escape(CALL_MAIL)}">{EMAIL}</a></p>''') if FORM_LIVE else f'''<div class="contact-card">
   <h2 style="font-size:22px">Email Geoff. Three lines are enough.</h2>
   <ol>
     <li>Who your customers are.</li>
