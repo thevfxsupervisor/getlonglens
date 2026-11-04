@@ -211,3 +211,16 @@ footer .by a{display:inline-flex;align-items:center;min-height:44px}
 footer a:hover{color:var(--txt)}
 footer .by a{text-decoration:underline}
 @media(max-width:600px){footer .wrap{flex-direction:column}}
+
+/* Home page (landing v2): big type, lots of air, one real issue shown */
+.btn-big{font-size:15px;padding:16px 26px}
+.home-hero h1{font-size:clamp(38px,7.2vw,76px);max-width:16ch}
+.home-hero .lede{font-size:clamp(18px,2.1vw,22px);max-width:46ch;color:var(--txt)}
+.home-hero .cta-row{margin-top:30px}
+.issue{display:grid;gap:18px;margin-top:30px}
+.issue-read{max-width:420px}
+.issue-side{display:flex;flex-direction:column;gap:18px}
+.issue-listen audio{display:block;width:100%;padding:14px}
+@media(min-width:860px){.issue{grid-template-columns:minmax(0,380px) 1fr;align-items:start;gap:28px}}
+.home-geoff .sec-head p{font-size:clamp(17px,1.9vw,20px);max-width:56ch}
+.home-faq details summary{font-size:clamp(17px,1.9vw,20px)}

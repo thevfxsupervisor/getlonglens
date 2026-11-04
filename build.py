@@ -36,7 +36,7 @@ INQUIRY_CONSENT = "I agree to be contacted about this message at the email addre
 
 NAV = [("Features", "/features/"), ("Pricing", "/pricing/"), ("How it works", "/how-it-works/"),
        ("FAQ", "/faq/")]
-CTA_LABEL = "Email Geoff to book a call"
+CTA_LABEL = "Start my free pilot"
 
 
 def mailto(subject: str, body: str = "") -> str:
@@ -46,6 +46,14 @@ def mailto(subject: str, body: str = "") -> str:
         q += "&body=" + quote(body)
     return f"mailto:{EMAIL}?{q}"
 
+
+PILOT_MAIL = mailto(
+    "Start my free LongLens pilot",
+    "Hi Geoff,\n\nI'd like to start the free pilot.\n\n"
+    "My business:\nOur website:\nWho reads our news (students, artists, clients):\n",
+)
+
+PILOT_HREF = html.escape(PILOT_MAIL)
 
 CALL_MAIL = mailto(
     "LongLens: book my short call",
@@ -79,8 +87,8 @@ def header(current: str) -> str:
 <header class="top">
   <div class="wrap">
     <a class="brand" href="/" aria-label="LongLens home"><img src="/assets/mark-e1.svg" alt="" width="32" height="32"><span>LongLens</span></a>
-    <a class="btn btn-a hdr-cta" href="/contact/">{CTA_LABEL}</a>
-    <nav aria-label="Main">{links}<a href="/sign-in/">Sign in</a><a class="btn btn-a" href="/contact/">{CTA_LABEL}</a></nav>
+    <a class="btn btn-a hdr-cta" href="{PILOT_HREF}">{CTA_LABEL}</a>
+    <nav aria-label="Main">{links}<a href="/sign-in/">Sign in</a><a class="btn btn-a" href="{PILOT_HREF}">{CTA_LABEL}</a></nav>
   </div>
 </header>'''
 
@@ -139,7 +147,7 @@ def close_cta(h2: str, text: str) -> str:
   <div class="wrap"><div>
     <h2>{h2}</h2>
     <p class="k">{text}</p>
-    <div class="cta-row"><a class="btn btn-a" href="/contact/">Email Geoff to book a call. See a week of your news, under your name.</a></div>
+    <div class="cta-row"><a class="btn btn-a" href="{PILOT_HREF}">{CTA_LABEL}</a></div>
   </div></div>
 </section>'''
 
@@ -171,60 +179,78 @@ PROOF = f'''<div class="proof">
 # Home
 # --------------------------------------------------------------------------------------------
 
-HOME = f'''<section class="hero">
+HOME = f'''<section class="hero home-hero">
   <div class="wrap">
     <span class="eyebrow"><img src="/assets/mark-e1.svg" alt="" width="40" height="40">LongLens</span>
-    <h1>Stop being quietly brilliant. Be the expert your customers hear from first.</h1>
-    <p class="lede">Daily or weekly, LongLens turns your trade's news into a letter under your name: what changed, and why it matters to your customers. Read it or hear it, with up to two extras a week in total: the full audio conversation, a short video or slides, and change anything by replying in plain words.</p>
-    <p class="price-line">LongLens uses AI to write each issue, then checks names and figures against the original story before you see it.</p>
+    <h1>Your Artists Hear the VFX News From Someone Every Morning. Make It You.</h1>
+    <p class="lede">Right now they hear it from a feed, a forum or your competitor. LongLens puts each morning's VFX news under your name, with a line on why it matters to them. You send it on. They remember who told them.</p>
     <div class="cta-row">
-      <a class="btn btn-a" href="/contact/">Email Geoff to book a call. See a week of your news, under your name.</a>
-      <a class="btn btn-b" href="{DAILY}">Read this morning's Daily</a>
+      <a class="btn btn-a btn-big" href="{PILOT_HREF}">Start my free pilot</a>
+      <a class="btn btn-b" href="{DAILY}">Read today's Daily</a>
     </div>
-    <p class="price-line">Free during the pilot. <a href="/pricing/">See what the pilot includes</a>.</p>
-    {FORMAT_STRIP}
-    <p class="coming-line">{coming("LongLens sends straight to each customer, in the format each one picks. Today every format lands with you first, ready to send through the email tool you already use, or to forward.")}</p>
+    <p class="price-line">Free during the pilot. No card. Say no thanks at any point and you owe nothing.</p>
   </div>
 </section>
 
-<hr class="rule">
-<section>
-  <div class="wrap">{PROOF}</div>
+<section class="home-proof">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">One Real Issue</span>
+      <h2>Read It, Hear It or Watch It, With the Meaning Already Attached.</h2>
+      <p>See exactly what your artists get: one real issue of Geoff Hancock's own VFX briefing, 13 October 2026. The news arrives with what it means for the reader, often with audio and video too.</p></div>
+    <div class="issue">
+      <figure class="shot issue-read"><a href="{M}read-letter.png"><img src="{M}read-letter.png" width="780" height="1276" loading="lazy" alt="The 13 Oct 2026 issue on a phone: the headline, then a short paragraph ending: worth checking where both sit in your next pitch."></a>
+        <figcaption>Read it: the email, on a phone</figcaption></figure>
+      <div class="issue-side">
+        <figure class="shot"><video controls playsinline preload="none" poster="{M}issue-video-poster.jpg" width="1280" height="720" aria-label="A short silent clip of the issue's explainer video"><source src="{M}issue-video.mp4" type="video/mp4"></video>
+          <figcaption>Watch it: a clip of the 7 minute video</figcaption></figure>
+        <figure class="shot issue-listen"><audio controls preload="none" src="{M}issue-audio.m4a" aria-label="A short clip of the issue's audio"></audio>
+          <figcaption>Hear it: a clip of the 19 minute audio</figcaption></figure>
+        <p class="k">The VFX Supervisor Daily, Geoff's own, goes out every morning. <a href="{DAILY}">Read today's issue</a>.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
-<hr class="rule">
 <section>
   <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">What you get</span>
-      <h2>Your customers get the news with the meaning attached. You get the credit.</h2></div>
-    <div class="cards">
-      <div class="card"><h3>The news, and why it matters to them</h3>
-        <p>Every issue says what changed in your trade and why it matters to your customers, with the original link, checked before the issue goes out.</p></div>
-      <div class="card"><h3>Your name in front of them, issue after issue</h3>
-        <p>Send each issue on through the email tool you already use, or forward it. Week after week they see who knew first. Issue #41 is the proof you were right in issue #12.</p></div>
-      <div class="card"><h3>Sounds like you, because you taught LongLens</h3>
-        <p>"Shorter." "More on the new rules, less on trade shows." Reply in your own words and the next issue changes. Reply UNDO to take it back.</p></div>
-    </div>
-    <p class="k"><a href="/features/">See every feature</a></p>
+    <div class="sec-head"><span class="eyebrow">How You Start</span>
+      <h2>From One Email to Your Name on the Morning News, in Three Steps.</h2></div>
+    <ol class="steps three">
+      <li><h3>Email Geoff</h3><p>Tell him who reads your news: students, artists or clients.</p></li>
+      <li><h3>One Short Call</h3><p>You pick the topics, the tone and the name on top. Geoff sets it up.</p></li>
+      <li><h3>Your News, Every Morning</h3><p>Send it on, or reply in plain words to change the next one.</p></li>
+    </ol>
   </div>
 </section>
 
-<hr class="rule">
-<section>
+<section class="home-geoff">
   <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Who it is for</span>
-      <h2>The plumber, the adviser, the trade body: the one customers should hear the news from first</h2></div>
-    <div class="cards">
-      <div class="card"><h3>A local trade</h3><p>A plumber, an electrician, a builder. New rules, prices and kit, explained by the person who will fit it. Your customers hear it from you first, and remember who told them.</p></div>
-      <div class="card"><h3>Advisers and consultancies</h3><p>You are paid for knowing. Send your issue on and your clients get a taste of it every week, under your name, and a reply turns into a conversation.</p></div>
-      <div class="card"><h3>Trade bodies and brands</h3><p>Send one issue to the whole field, and everyone hears what changed from one source it trusts, with a person's name on every issue.</p></div>
-    </div>
-    <p class="k">Daily for a fast-moving trade, weekly for everyone else.</p>
+    <div class="sec-head"><span class="eyebrow">Who Built It</span>
+      <h2>Built by a VFX Supervisor Who Sends His Own VFX News Every Morning.</h2>
+      <p>I'm Geoff Hancock, a VFX producer and supervisor. I won a VES Award for <i>Changeling</i> and was nominated for <i>Invictus</i>. My own Daily shows producers what I know before they hire me. I'll set the same thing up for you, under your name.</p></div>
   </div>
 </section>
 
-{close_cta("Your customers hear the news from someone. Make it you.",
-           "One short call. Geoff points LongLens at the websites, forums, videos and newsletters you trust, and you see a week of real issues before anyone else does.")}'''
+<section class="faq home-faq">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Before You Email</span><h2>Three Straight Answers on AI, Time and Cost.</h2></div>
+    <details><summary>Does AI write the issues?</summary><p>{AI_LINE} Reply in plain words and the next issue changes.</p></details>
+    <details><summary>How much of my time does it take?</summary><p>One short call to set it up. After that, open the morning's issue, send it on through the email tool you already use, or forward it. Skip a day and the next one still arrives.</p></details>
+    <details><summary>What does it cost?</summary><p>Nothing during the pilot. Paid plans are coming. Say no thanks at any point and you owe nothing.</p></details>
+    <p class="k"><a href="/faq/">More answers</a> &middot; <a href="/how-it-works/">How it works</a> &middot; Not in VFX? LongLens follows any trade. <a href="{PILOT_HREF}">Email Geoff</a>.</p>
+  </div>
+</section>
+
+<section class="close">
+  <div class="wrap"><div>
+    <h2>Be the Name on Your Artists' Morning News.</h2>
+    <p class="k">Invite only for now, and Geoff sets up every account himself. One short call, then a week of real issues under your name before anyone else sees them.</p>
+    <div class="cta-row">
+      <a class="btn btn-a btn-big" href="{PILOT_HREF}">Start my free pilot</a>
+      <a class="btn btn-b" href="{DAILY}">Read today's Daily</a>
+    </div>
+  </div></div>
+</section>'''
 
 # --------------------------------------------------------------------------------------------
 # Features
@@ -630,8 +656,8 @@ NOT_FOUND = '''<section class="hero">
 
 PAGES = [
     # slug, title, description, body, nav-current
-    ("", "LongLens: be the expert your customers hear from first",
-     "Daily or weekly, LongLens turns your trade's news into a letter under your name, to read or hear, with up to two extras a week. Free during the pilot.",
+    ("", "LongLens: the VFX news, every morning, under your name",
+     "LongLens puts each morning's VFX news under your name, with a line on why it matters to your students or clients. Free during the pilot.",
      HOME, ""),
     ("features", "Features | LongLens",
      "One morning of news, every way your customers take it in: read, skim, listen, watch or flip the slides, and change anything by replying in plain words.",
@@ -726,6 +752,17 @@ header.top{{position:static}}
     (ROOT / "preview.html").write_text(preview, encoding="utf-8")
 
 
+def write_landing_preview(pages: list[tuple[str, str]]) -> None:
+    """The home page alone as one self-contained file (CSS and media inlined), for review.
+    Git-ignored, never published."""
+    doc = dict(pages)[""]
+    css = (ROOT / "assets" / "site.css").read_text(encoding="utf-8")
+    doc = doc.replace('<link rel="stylesheet" href="/assets/site.css">', f"<style>{css}</style>")
+    doc = re.sub(r'(src|href|poster)="(/assets/[^"]+)"', lambda m: f'{m.group(1)}="{data_uri(m.group(2))}"', doc)
+    doc = doc.replace('<meta name="theme-color"', '<meta name="robots" content="noindex">\n<meta name="theme-color"')
+    (ROOT / "preview-landing.html").write_text(doc, encoding="utf-8")
+
+
 def write_seo() -> None:
     urls = "".join(f"  <url><loc>{SITE}{'/' if s == '' else '/' + s + '/'}</loc></url>\n" for s, *_ in PAGES)
     (ROOT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -735,5 +772,7 @@ def write_seo() -> None:
 
 if __name__ == "__main__":
     write_seo()
-    write_preview(write_site())
+    built = write_site()
+    write_preview(built)
+    write_landing_preview(built)
     print("built", len(PAGES) + 1, "pages and preview.html")
