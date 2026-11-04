@@ -8,5 +8,5 @@ lives in `build.py`; edit it there, run `python3 build.py`, and commit the gener
 (`index.html`, `<page>/index.html`, `404.html`). `build.py` also writes `preview.html`, every page
 in one self-contained file for review (git-ignored, never published).
 
-The contact page uses email until the app's inquiry endpoint accepts this origin; then set
-`FORM_LIVE = True` in `build.py` and rebuild.
+The contact page posts a form to the app's inquiry endpoint (`FORM_LIVE = True` in `build.py`),
+with an email link as the fallback. Set it to False to fall back to email only.

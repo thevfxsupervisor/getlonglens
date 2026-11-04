@@ -211,3 +211,9 @@ footer .by a{display:inline-flex;align-items:center;min-height:44px}
 footer a:hover{color:var(--txt)}
 footer .by a{text-decoration:underline}
 @media(max-width:600px){footer .wrap{flex-direction:column}}
+/* Contact form */
+.contact-card label{font-family:var(--mono);font-size:13px;color:var(--dim)}
+.contact-card input:not([type=checkbox]),.contact-card textarea{width:100%;box-sizing:border-box;margin-top:6px;padding:11px 12px;border:1px solid var(--line2);border-radius:8px;background:var(--bg);color:var(--txt);font:inherit;font-size:16px}
+.contact-card textarea{min-height:140px;resize:vertical}
+.contact-card input:focus,.contact-card textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.contact-card input[type=checkbox]{margin-right:8px;accent-color:var(--accent)}
