@@ -37,7 +37,7 @@
 <section class="hero">
   <div class="wrap">
     <span class="eyebrow"><img src="/assets/mark-e1.svg" alt="" width="40" height="40">LongLens</span>
-    <h1 class="rot-h1"><span class="sr-only">Your clients hear the news from you.</span><span aria-hidden="true">Your <span class="rot"><span class="on">clients</span><span>prospects</span><span>members</span><span>customers</span><span>readers</span></span> hear the news from you.</span></h1>
+    <h1 class="rot-h1"><span class="sr-only">Your clients hear the news from you.</span><span aria-hidden="true">Your <span class="rot"><span class="on">clients</span><span>prospects</span><span>members</span><span>customers</span><span>readers</span></span> <span class="rot rot-v"><span class="on">hear</span><span>read</span><span>watch</span><span>get</span></span> the news from you.</span></h1>
     <p class="lede">LongLens follows the news sites, forums and videos you name, and writes a short newsletter under your name on what changed in your field and what it means for your clients, prospects or members. Every week, or every morning if your field moves fast, as a letter, audio, slides, a picture and video. You never start from a blank page.</p>
     <div class="cta-row">
       <a class="btn btn-a" href="/contact/">Ask for a free week of issues</a>
@@ -156,13 +156,25 @@
 <script>
 (function(){
   var h = document.querySelector('.rot-h1'); if (!h) return;
-  var w = h.querySelectorAll('.rot > span'), i = 0, paused = false;
+  var groups = h.querySelectorAll('.rot'), paused = false, t = 0;
+  var g = Array.prototype.map.call(groups, function(r){ return {w: r.querySelectorAll(':scope > span'), i: 0}; });
+  function step(x){
+    // The old word keeps its place while it fades (.out), so the next word never slides under it;
+    // only then does the line take the new word's width and the new word fades in.
+    var old = x.w[x.i]; x.i = (x.i + 1) % x.w.length; var nw = x.w[x.i];
+    old.classList.add('out'); old.classList.remove('on');
+    setTimeout(function(){ old.classList.remove('out'); nw.classList.add('on'); }, 160);
+  }
   h.addEventListener('mouseenter', function(){ paused = true; });
   h.addEventListener('mouseleave', function(){ paused = false; });
+  // One 700 ms clock. The audience word moves on even ticks (every 1.4 s), the verb on
+  // every fourth odd tick (every 2.8 s), so the two never change on the same frame.
   setInterval(function(){
     if (paused || document.hidden) return;
-    w[i].classList.remove('on'); i = (i + 1) % w.length; w[i].classList.add('on');
-  }, 1400);
+    t++;
+    if (t % 2 === 0 && g[0]) step(g[0]);
+    if (t % 4 === 1 && g[1]) step(g[1]);
+  }, 700);
 })();
 </script>
 </main>

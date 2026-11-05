@@ -225,5 +225,6 @@ footer .by a{text-decoration:underline}
 .rot{display:inline-block;position:relative;vertical-align:bottom;color:var(--accent-soft);white-space:nowrap}
 .rot>span{position:absolute;left:0;top:0;opacity:0;transform:translateY(.25em);transition:opacity .25s ease,transform .25s ease;white-space:nowrap}
 .rot>span.on{position:static;opacity:1;transform:none}
+.rot>span.out{position:static;opacity:0;transform:none;transition:opacity .15s ease}
 @media(prefers-reduced-motion:reduce){.rot>span{transform:none;transition:opacity .35s ease}}
 @media(max-width:420px){.hero h1.rot-h1{font-size:30px}}
