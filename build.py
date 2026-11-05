@@ -230,13 +230,13 @@ TODAY_PLACES = ("Your inbox first, then sent through the email tool you already 
 COMING_PLACES = ("Straight to each reader from your own address",
                  "Podcast apps", "Instagram and LinkedIn posts", "A block on your website", "Telegram")
 
-# The home headline's rotating word. The first is the static headline (no script, reduced motion,
-# screen readers). Each one makes a complete, true sentence: "Your ___ hear the news from you."
+# The home headline's rotating word. The first is the static headline (no script, screen readers).
+# Reduced motion still swaps the word, as a plain fade with no slide. The box is the width of the
+# word showing, so a short word leaves no gap. Each one makes a complete, true sentence: "Your ___ hear the news from you."
 ROT = ("clients", "prospects", "members", "customers", "readers")
 ROT_WORDS = "".join(('<span class="on">' if i == 0 else "<span>") + w + "</span>" for i, w in enumerate(ROT))
 ROT_JS = """<script>
 (function(){
-  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var h = document.querySelector('.rot-h1'); if (!h) return;
   var w = h.querySelectorAll('.rot > span'), i = 0, paused = false;
   h.addEventListener('mouseenter', function(){ paused = true; });
