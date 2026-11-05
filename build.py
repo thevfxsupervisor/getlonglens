@@ -341,7 +341,7 @@ HOME = f'''<section class="hero">
 </section>
 
 {close_cta("See a week of issues for your business, free.",
-           "Tell Geoff who your readers are. A start link reaches your inbox at once, your first issue lands the next morning, and you read a week of real issues before anyone else sees them.")}
+           "Tell Geoff who your readers are. A start link reaches your inbox at once, your first issue arrives on the schedule you pick, and you read a week of real issues before anyone else sees them.")}
 {ROT_JS}'''
 
 # --------------------------------------------------------------------------------------------
@@ -523,7 +523,7 @@ FEATURES = f'''<section class="hero">
 </section>
 
 {close_cta("See a week of issues for your business, free.",
-           "Tell Geoff who your readers are and what they should hear from you first. A start link reaches your inbox at once, and your first issue lands the next morning.")}'''
+           "Tell Geoff who your readers are and what they should hear from you first. A start link reaches your inbox at once, and your first issue arrives on the schedule you pick.")}'''
 
 # --------------------------------------------------------------------------------------------
 # Pricing
@@ -573,7 +573,7 @@ PRICING = f'''<section class="hero">
       <h2>No card form. One email link starts your free week.</h2></div>
     <ul class="list">
       <li><strong>Start from the form.</strong> LongLens emails you a one-time start link at once, and Geoff still reads every message himself.</li>
-      <li><strong>Three short questions, no call.</strong> What LongLens should follow, where and when it arrives, and where it starts looking. Your first issue arrives the next morning.</li>
+      <li><strong>Three short questions, no call.</strong> What LongLens should follow, where and when it arrives, and where it starts looking. Your first issue arrives on the schedule you pick.</li>
       <li><strong>A monthly cap on writing.</strong> If a newsletter reaches it, LongLens says so on your pages, and new issues start again the next month.</li>
       <li><strong>Up to two of the bigger formats a week</strong>: the two-voice audio, the slides, the explainer video or the one picture. The letter, the spoken version and the one-minute video carry on as usual.</li>
       <li><strong>Stop any time.</strong> Tell Geoff, and nothing is owed.</li>
@@ -611,8 +611,8 @@ HOW = f'''<section class="hero">
         <ul><li>What should LongLens follow, said the way you would tell a friend?</li>
           <li>Where and when: by email and on a web page, or the web page only, how often, what time, your time zone.</li>
           <li>Where should LongLens start looking: websites, feeds or keywords, or a starter set.</li></ul></li>
-      <li><h3>Your first issue arrives the next morning</h3>
-        <p>Press Make my newsletter, and your first issue reaches your inbox the next morning. Sooner? Open Issues and press Make an issue now: LongLens starts on it within ten minutes and emails it to you.</p></li>
+      <li><h3>Your first issue arrives on the schedule you pick</h3>
+        <p>Press Make my newsletter, and your first issue reaches your inbox on the schedule you picked. Sooner? Open Issues and press Make an issue now: LongLens starts on it within ten minutes and emails it to you.</p></li>
     </ol>
   </div>
 </section>
@@ -662,7 +662,7 @@ def qa(q, a):
 FAQ_ITEMS = [
     ("Getting started", [
         ("How do we start, and how does LongLens reach my readers?",
-         "<p>Send the form and LongLens emails you a one-time start link at once. Click it, answer three short questions (what to follow, where and when, and where to start looking), and your first issue arrives the next morning. You see a week of real issues before anyone else does. Today each issue comes to you first, and you send it through the email tool you already use, or forward it. Email straight to your readers from your own address is coming.</p>"),
+         "<p>Send the form and LongLens emails you a one-time start link at once. Click it, answer three short questions (what LongLens should follow, where and when it arrives, and where it starts looking), and your first issue arrives on the schedule you pick. You see a week of real issues before anyone else does. Today each issue comes to you first, and you send it through the email tool you already use, or forward it. Email straight to your readers from your own address is coming.</p>"),
         ("Can I sign up on my own?",
          "<p>Yes, from the form. <a href=\"/contact/\">Start your free week</a> and a one-time start link arrives by email at once. Geoff still reads every message himself.</p>"),
         ("How do I sign in?",
@@ -773,7 +773,7 @@ CONTACT = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">Free pilot</span>
     <h1>Read a week of your own newsletter, free.</h1>
-    <p class="lede">Tell Geoff about your business and who you would send it to. LongLens emails you a one-time start link at once: click it, answer three short questions, and your first issue arrives the next morning. Geoff still reads every message himself. The pilot is free.</p>
+    <p class="lede">Tell Geoff about your business and who you would send it to. LongLens emails you a one-time start link at once: click it, answer three short questions (what LongLens should follow, where and when it arrives, and where it starts looking), and your first issue arrives on the schedule you pick. Geoff still reads every message himself. The pilot is free.</p>
     {CONTACT_BODY}
   </div>
 </section>
@@ -785,7 +785,7 @@ CONTACT = f'''<section class="hero">
     <ol class="steps three">
       <li><h3>Your start link arrives</h3><p>By email, straight away. The link works once, for 24 hours. Geoff still reads every message himself.</p></li>
       <li><h3>Three short questions</h3><p>What LongLens should follow, where and when it arrives, and where it starts looking. No call needed.</p></li>
-      <li><h3>Your first week</h3><p>Your first issue arrives the next morning, and your free week starts there. You read a week of real issues before anyone else does.</p></li>
+      <li><h3>Your first week</h3><p>Your first issue arrives on the schedule you pick, and your free week starts there. You read a week of real issues before anyone else does.</p></li>
     </ol>
     <p class="k">Before you start, read a real one: <a href="{DAILY}">The VFX Supervisor Daily</a>, Geoff's own newsletter about his own field. Yours covers your field, for your readers.</p>
   </div>
@@ -795,7 +795,7 @@ THANKS = f'''<section class="hero">
   <div class="wrap prose">
     <span class="eyebrow">Message sent</span>
     <h1>Thanks. Check your inbox for your start link.</h1>
-    <p>LongLens has emailed you a one-time link. Click it, answer three short questions, and your first issue arrives the next morning. Your free week starts there. The link works once, for 24 hours.</p>
+    <p>LongLens has emailed you a one-time link. Click it and answer three short questions: what LongLens should follow, where and when it arrives, and where it starts looking. Your first issue arrives on the schedule you pick, and your free week starts there. The link works once, for 24 hours.</p>
     <p>Already have an account? The email holds your sign-in link instead. On a busy day, Geoff replies personally in place of the link. He reads every message himself. Nothing else is sent to you, and you are not added to any list.</p>
     <p>Before you start, read <a href="{DAILY}">Geoff's own newsletter</a>, or go back to the <a href="/">LongLens home page</a>.</p>
   </div>
@@ -849,7 +849,7 @@ PAGES = [
      "Free during the invite-only pilot. After it, Solo at $19 a month or Business at $95 a month, and what each includes today.",
      PRICING, "/pricing/"),
     ("how-it-works", "How it works | LongLens",
-     "One link by email, three short questions, and your first issue the next morning. Then weekly or daily, and you change any line on the page or by replying.",
+     "One link by email, three short questions, and your first issue on the schedule you pick. Then weekly or daily, and you change any line on the page or by replying.",
      HOW, "/how-it-works/"),
     ("faq", "FAQ | LongLens",
      "Straight answers about LongLens: getting started, what reaches your clients and when, editing, formats, price and ownership.",
