@@ -140,8 +140,8 @@ def page(slug: str, title: str, description: str, body: str, current: str = "",
 
 
 CTA_TEXT = "Ask for a free week of issues"
-OFFER_LINE = "Free pilot: one short call with Geoff, then a week of real issues for your business. After the pilot, from $19 a month."
-CONTROL_LINE = "Nothing goes to your clients until you approve it. Every issue comes to you first: read it, change any line, then send it yourself."
+OFFER_LINE = "Free pilot: a start link by email the moment you ask, then a week of real issues for your business. After the pilot, from $19 a month."
+CONTROL_LINE = "Nothing reaches your clients unless you send it. Every issue comes to you first: read it, change any line, then send it on yourself."
 
 
 def close_cta(h2: str, text: str) -> str:
@@ -184,7 +184,7 @@ EDITOR_SHOT = f'''<figure class="shot"><a href="{M}edit-in-place.png"><img src="
 
 PROOF = f'''<div class="proof">
   <b>Who built it</b>
-  <p>Geoffrey Hancock built LongLens for his own field first, visual effects for film and TV, and his own newsletter, The VFX Supervisor Daily, runs on it most mornings. He won a VES Award for Changeling and was nominated for another for Invictus. He now sets LongLens up for businesses in any field, one call at a time.</p>
+  <p>Geoffrey Hancock built LongLens for his own field first, visual effects for film and TV, and his own newsletter, The VFX Supervisor Daily, runs on it most mornings. He won a VES Award for Changeling and was nominated for another for Invictus. Now businesses in any field start LongLens from one short form, and Geoff reads every message.</p>
   <p class="links"><a href="{DAILY}">Read Geoff's own newsletter</a></p>
 </div>'''
 
@@ -327,7 +327,7 @@ HOME = f'''<section class="hero">
     <div class="sec-head"><span class="eyebrow">Price</span>
       <h2>Free during the pilot. $19 or $95 a month after it.</h2></div>
     <div class="cards">
-      <div class="card"><h3>Pilot: free</h3><p>Invite only. Geoff sets up your newsletter with you on a short call, and you get everything LongLens does today.</p></div>
+      <div class="card"><h3>Pilot: free</h3><p>Send the form and a start link arrives by email at once. You get everything LongLens does today.</p></div>
       <div class="card"><h3>Solo: $19 a month</h3><p>One newsletter under your name, daily or weekly, with the letter, the audio, the slides, the picture and both videos.</p></div>
       <div class="card"><h3>Business: $95 a month</h3><p>Everything in Solo, plus a public page of your issues, your Slack or Discord channel and an RSS feed. {coming("Sending straight to your readers from your own address.")}</p></div>
     </div>
@@ -341,7 +341,7 @@ HOME = f'''<section class="hero">
 </section>
 
 {close_cta("See a week of issues for your business, free.",
-           "Tell Geoff who your readers are. He sets LongLens up with you on one short call, and you read a week of real issues before anyone else sees them.")}
+           "Tell Geoff who your readers are. A start link reaches your inbox at once, your first issue lands the next morning, and you read a week of real issues before anyone else sees them.")}
 {ROT_JS}'''
 
 # --------------------------------------------------------------------------------------------
@@ -471,7 +471,7 @@ FEATURES = f'''<section class="hero">
     <div class="feat">
       <div class="txt">
         <h2>Built from the websites, forums and videos your field already trusts</h2>
-        <p>Every issue covers what is new on the websites, forums, YouTube channels and topics your field follows. Name them to Geoff on your call, or paste a link into a reply any time.</p>
+        <p>Every issue covers what is new on the websites, forums, YouTube channels and topics your field follows. Name them when you start, or paste a link into a reply any time.</p>
         <ul>
           <li><strong>Forward the newsletters you never open</strong>, or save a page from your phone or browser. What matters lands in your next issue under "You sent".</li>
           <li><strong>One tap to turn a website off</strong>, one more to turn it back on. LongLens never adds a website you turned off back by itself.</li>
@@ -523,7 +523,7 @@ FEATURES = f'''<section class="hero">
 </section>
 
 {close_cta("See a week of issues for your business, free.",
-           "Tell Geoff who your readers are and what they should hear from you first. He sets LongLens up with you on one short call.")}'''
+           "Tell Geoff who your readers are and what they should hear from you first. A start link reaches your inbox at once, and your first issue lands the next morning.")}'''
 
 # --------------------------------------------------------------------------------------------
 # Pricing
@@ -533,7 +533,7 @@ PRICING = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">Pricing</span>
     <h1>Free during the pilot. From $19 a month after it.</h1>
-    <p class="lede">The pilot is invite only and free: Geoff sets up your newsletter with you, and you get everything LongLens does today. When the pilot ends, pick a plan or stop. Nothing is owed for the pilot, and no card is asked for.</p>
+    <p class="lede">The pilot is free: send the form, a start link arrives by email at once, and you get everything LongLens does today. When the pilot ends, pick a plan or stop. Nothing is owed for the pilot, and no card is asked for.</p>
     <div class="cards" style="margin-top:28px">
       <div class="card"><h2 style="font-size:20px">Pilot: free</h2>
         <ul class="list" style="margin-top:8px">
@@ -542,7 +542,7 @@ PRICING = f'''<section class="hero">
           <li>Up to two a week: the two-voice audio, the slides, the explainer video or the one picture</li>
           <li>Change any line on the page, or reply in plain words</li>
           <li>A web page for every issue, a public page of all of them, your Slack or Discord channel and an RSS feed</li>
-          <li>Set up with you by Geoff, on one short call</li>
+          <li>Started from one email link and three short questions</li>
         </ul></div>
       <div class="card"><h2 style="font-size:20px">Solo: $19 a month</h2>
         <ul class="list" style="margin-top:8px">
@@ -570,10 +570,10 @@ PRICING = f'''<section class="hero">
 <section>
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">How the pilot works</span>
-      <h2>No card form. Geoff sets you up himself.</h2></div>
+      <h2>No card form. One email link starts your free week.</h2></div>
     <ul class="list">
-      <li><strong>Invite only, for now.</strong> Geoff sets up every account himself. {coming("Sign up on your own.")}</li>
-      <li><strong>It starts with a short call.</strong> You and Geoff pin down who your readers are and what they should hear from you first.</li>
+      <li><strong>Start from the form.</strong> LongLens emails you a one-time start link at once, and Geoff still reads every message himself.</li>
+      <li><strong>Three short questions, no call.</strong> What LongLens should follow, where and when it arrives, and where it starts looking. Your first issue arrives the next morning.</li>
       <li><strong>A monthly cap on writing.</strong> If a newsletter reaches it, LongLens says so on your pages, and new issues start again the next month.</li>
       <li><strong>Up to two of the bigger formats a week</strong>: the two-voice audio, the slides, the explainer video or the one picture. The letter, the spoken version and the one-minute video carry on as usual.</li>
       <li><strong>Stop any time.</strong> Tell Geoff, and nothing is owed.</li>
@@ -582,7 +582,7 @@ PRICING = f'''<section class="hero">
 </section>
 
 {close_cta("See a week of issues for your business, free.",
-           "One short call, then a week of real issues under your name before anyone else sees them.")}'''
+           "One email link, then a week of real issues under your name before anyone else sees them.")}'''
 
 # --------------------------------------------------------------------------------------------
 # How it works
@@ -591,28 +591,28 @@ PRICING = f'''<section class="hero">
 HOW = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">How it works</span>
-    <h1>One short call. Then your newsletter lands every week, or every morning, under your name.</h1>
-    <p class="lede">No software to learn and no password to remember. Geoff sets LongLens up with you. From then on, change any line right on the issue, or reply to it in plain words.</p>
+    <h1>One email link. Then your newsletter lands every week, or every morning, under your name.</h1>
+    <p class="lede">No software to learn and no password to remember. Answer three short questions and LongLens is set up. From then on, change any line right on the issue, or reply to it in plain words.</p>
   </div>
 </section>
 
 <hr class="rule">
 <section>
   <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Getting started</span><h2>From a short call to your first issue</h2></div>
+    <div class="sec-head"><span class="eyebrow">Getting started</span><h2>From one email link to your first issue</h2></div>
     <ol class="steps two">
       <li><h3>Ask for a free week</h3>
-        <p>Tell Geoff who your readers are and what they should hear from you first. He reads every message himself and replies from {EMAIL}.</p>
+        <p>Tell Geoff who your readers are and what they should hear from you first. LongLens emails you a one-time start link at once, and Geoff still reads every message himself.</p>
         <p><a href="/contact/">{CTA_TEXT}</a></p></li>
-      <li><h3>Geoff sets LongLens up with you</h3>
-        <p>He points LongLens at the websites, forums, videos and newsletters you trust, and you describe your readers in your own words. You see a week of real issues before anyone else does.</p></li>
-      <li><h3>Sign in with the link Geoff emails you</h3>
-        <p>Open it and press Get started. There is no password. Three short questions follow, on your own or with Geoff:</p>
+      <li><h3>Your start link arrives at once</h3>
+        <p>The link works once, for 24 hours, and your free week starts there. Already have an account? The email holds your sign-in link instead. You see a week of real issues before anyone else does.</p></li>
+      <li><h3>Open the link LongLens emails you</h3>
+        <p>Open it and press Get started. There is no password. Three short questions follow, no call needed:</p>
         <ul><li>What should LongLens follow, said the way you would tell a friend?</li>
           <li>Where and when: by email and on a web page, or the web page only, how often, what time, your time zone.</li>
           <li>Where should LongLens start looking: websites, feeds or keywords, or a starter set.</li></ul></li>
-      <li><h3>Your first issue can land today</h3>
-        <p>Press Make my newsletter. Then open Issues and press Make an issue now: LongLens starts on it within ten minutes and emails it to you.</p></li>
+      <li><h3>Your first issue arrives the next morning</h3>
+        <p>Press Make my newsletter, and your first issue reaches your inbox the next morning. Sooner? Open Issues and press Make an issue now: LongLens starts on it within ten minutes and emails it to you.</p></li>
     </ol>
   </div>
 </section>
@@ -662,9 +662,9 @@ def qa(q, a):
 FAQ_ITEMS = [
     ("Getting started", [
         ("How do we start, and how does LongLens reach my readers?",
-         "<p>A short call, then Geoff points LongLens at the websites, forums, videos and newsletters you trust, and you describe your readers in your own words. You see a week of real issues before anyone else does. Today each issue comes to you first, and you send it through the email tool you already use, or forward it. Email straight to your readers from your own address is coming.</p>"),
+         "<p>Send the form and LongLens emails you a one-time start link at once. Click it, answer three short questions (what to follow, where and when, and where to start looking), and your first issue arrives the next morning. You see a week of real issues before anyone else does. Today each issue comes to you first, and you send it through the email tool you already use, or forward it. Email straight to your readers from your own address is coming.</p>"),
         ("Can I sign up on my own?",
-         "<p>Not yet. LongLens is invite only for now, and Geoff sets up every account himself. <a href=\"/contact/\">Ask Geoff for a free week</a>.</p>"),
+         "<p>Yes, from the form. <a href=\"/contact/\">Start your free week</a> and a one-time start link arrives by email at once. Geoff still reads every message himself.</p>"),
         ("How do I sign in?",
          "<p>With a link by email. There is no password. Type your email on the <a href=\"/sign-in/\">sign-in page</a> and a fresh link arrives, usually within a minute. Each link works once and keeps you signed in for 30 days on that device.</p>"),
     ]),
@@ -731,7 +731,6 @@ FAQ = f'''<section class="hero">
       <li><strong>Email straight to your readers</strong> {coming()}<br>Issues sent from your own address (for example news@yourbusiness.com), each reader in the format they picked, with a dated record of each reader's yes and one-click unsubscribe.</li>
       <li><strong>Each reader picks their format</strong> {coming()}<br>{F_READ}, {F_SKIM}, {F_HEAR}, {F_WATCH}, {F_PIC}, {F_SLIDES} or {F_SHORT}, from a link at the bottom of every issue they get.</li>
       <li><strong>Podcast apps, Instagram and LinkedIn, Telegram, your website</strong> {coming()}<br>Today each issue goes by email, on the web, to your Slack or Discord channel and to an RSS feed.</li>
-      <li><strong>Sign up on your own</strong> {coming()}<br>Today Geoff sets it up with you.</li>
     </ul>
   </div>
 </section>
@@ -752,9 +751,9 @@ def inquiry_form() -> str:
   <p><label for="f-message">Who reads your newsletter (or should), and what should they hear from you first?</label><br><textarea id="f-message" name="message" required maxlength="5000"></textarea></p>
   <p style="position:absolute;left:-9999px" aria-hidden="true"><label for="f-website">Leave this empty</label><input id="f-website" name="website" tabindex="-1" autocomplete="off"></p>
   <p><label><input type="checkbox" name="consent" value="yes" required> {INQUIRY_CONSENT}</label></p>
-  <button class="btn btn-a" type="submit">Ask for my free week</button>
+  <button class="btn btn-a" type="submit">Start my free week</button>
   <p class="email-line">{CONTROL_LINE}</p>
-  <p class="email-line">Rather email? Write to <a href="{html.escape(CALL_MAIL)}">{EMAIL}</a>. Writing does not add you to any list.</p>
+  <p class="email-line">Rather email? Write to <a href="{html.escape(CALL_MAIL)}">{EMAIL}</a> and Geoff replies personally. Writing does not add you to any list.</p>
 </form>'''
 
 
@@ -767,14 +766,14 @@ CONTACT_BODY = inquiry_form() if FORM_LIVE else f'''<div class="contact-card">
   </ol>
   <a class="btn btn-a" href="{html.escape(CALL_MAIL)}">Email Geoff for a free week</a>
   <p class="email-line">Or write to <a href="mailto:{EMAIL}">{EMAIL}</a></p>
-  <p class="tiny">Writing does not add you to any list. Geoff replies personally to set up the call.</p>
+  <p class="tiny">Writing does not add you to any list. Geoff replies personally.</p>
 </div>'''
 
 CONTACT = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">Free pilot</span>
     <h1>Read a week of your own newsletter, free.</h1>
-    <p class="lede">Tell Geoff about your business and who you would send it to. He reads every message himself and replies from {EMAIL} to set up a short call. The pilot is free and invite only.</p>
+    <p class="lede">Tell Geoff about your business and who you would send it to. LongLens emails you a one-time start link at once: click it, answer three short questions, and your first issue arrives the next morning. Geoff still reads every message himself. The pilot is free.</p>
     {CONTACT_BODY}
   </div>
 </section>
@@ -784,20 +783,21 @@ CONTACT = f'''<section class="hero">
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">What happens next</span><h2>From your message to your first week of issues</h2></div>
     <ol class="steps three">
-      <li><h3>Geoff replies</h3><p>Personally, by email, to set up a short call. Nothing is sent to you automatically.</p></li>
-      <li><h3>The call</h3><p>You pin down who your readers are and what they should hear from you first.</p></li>
-      <li><h3>Your first week</h3><p>Geoff sets LongLens up with you, and you read a week of real issues before anyone else does.</p></li>
+      <li><h3>Your start link arrives</h3><p>By email, straight away. The link works once, for 24 hours. Geoff still reads every message himself.</p></li>
+      <li><h3>Three short questions</h3><p>What LongLens should follow, where and when it arrives, and where it starts looking. No call needed.</p></li>
+      <li><h3>Your first week</h3><p>Your first issue arrives the next morning, and your free week starts there. You read a week of real issues before anyone else does.</p></li>
     </ol>
-    <p class="k">Before the call, read a real one: <a href="{DAILY}">The VFX Supervisor Daily</a>, Geoff's own newsletter about his own field. Yours covers your field, for your readers.</p>
+    <p class="k">Before you start, read a real one: <a href="{DAILY}">The VFX Supervisor Daily</a>, Geoff's own newsletter about his own field. Yours covers your field, for your readers.</p>
   </div>
 </section>'''
 
 THANKS = f'''<section class="hero">
   <div class="wrap prose">
     <span class="eyebrow">Message sent</span>
-    <h1>Thanks. Geoff has your message.</h1>
-    <p>He reads every message himself and will reply by email from {EMAIL} to set up a short call. Nothing else is sent to you, and you are not added to any list.</p>
-    <p>While you wait, read <a href="{DAILY}">Geoff's own newsletter</a>, or go back to the <a href="/">LongLens home page</a>.</p>
+    <h1>Thanks. Check your inbox for your start link.</h1>
+    <p>LongLens has emailed you a one-time link. Click it, answer three short questions, and your first issue arrives the next morning. Your free week starts there. The link works once, for 24 hours.</p>
+    <p>Already have an account? The email holds your sign-in link instead. On a busy day, Geoff replies personally in place of the link. He reads every message himself. Nothing else is sent to you, and you are not added to any list.</p>
+    <p>Before you start, read <a href="{DAILY}">Geoff's own newsletter</a>, or go back to the <a href="/">LongLens home page</a>.</p>
   </div>
 </section>'''
 
@@ -811,7 +811,7 @@ SIGNIN_PAGE = f'''<section class="hero">
     <h1>Sign in with one link. No password.</h1>
     <p class="lede">The button below opens the LongLens app's sign-in page. Type your email and a link arrives by email, usually within a minute. The link keeps you signed in for 30 days on that device.</p>
     <div class="cta-row"><a class="btn btn-a" href="{SIGNIN}">Get my sign-in link</a></div>
-    <p class="k">Not set up yet? LongLens is invite only for now. <a href="/contact/">Ask Geoff for a free week</a>.</p>
+    <p class="k">Not set up yet? <a href="/contact/">Start your free week</a> and a start link arrives by email at once.</p>
   </div>
 </section>'''
 
@@ -821,7 +821,7 @@ PRIVACY = f'''<section class="hero">
     <h1>No tracking. No cookies. Your email reaches one person.</h1>
     <p>This website, getlonglens.com, runs no analytics or tracking scripts and sets no cookies. It is a set of plain pages hosted on GitHub Pages.</p>
     <h2>When you write to Geoff</h2>
-    <p>Your email goes to Geoffrey Hancock at {EMAIL}. He uses it only to reply to you. Writing does not add you to any list.</p>
+    <p>Your email goes to Geoffrey Hancock at {EMAIL}. LongLens uses it to email you your start link, and Geoff uses it only to reply to you. Writing does not add you to any list.</p>
     <h2>Once you use LongLens</h2>
     <p>What the LongLens app keeps about you, where it lives and who else sees anything is set out on the app's own privacy page: <a href="{APP_PRIVACY}">LongLens app privacy</a>.</p>
   </div>
@@ -849,13 +849,13 @@ PAGES = [
      "Free during the invite-only pilot. After it, Solo at $19 a month or Business at $95 a month, and what each includes today.",
      PRICING, "/pricing/"),
     ("how-it-works", "How it works | LongLens",
-     "One short call, a sign-in link by email, and your first issue the same day. Then weekly or daily, and you change any line on the page or by replying.",
+     "One link by email, three short questions, and your first issue the next morning. Then weekly or daily, and you change any line on the page or by replying.",
      HOW, "/how-it-works/"),
     ("faq", "FAQ | LongLens",
      "Straight answers about LongLens: getting started, what reaches your clients and when, editing, formats, price and ownership.",
      FAQ, "/faq/"),
     ("contact", "Free week | LongLens",
-     "Ask Geoffrey Hancock for a free week: one short call, then a week of your own newsletter before anyone else sees it.",
+     "Start a free week of LongLens: a one-time link by email at once, three short questions, then a week of your own newsletter before anyone else sees it.",
      CONTACT, ""),
     ("sign-in", "Sign in | LongLens",
      "Sign in to LongLens with a link by email. No password.", SIGNIN_PAGE, ""),
@@ -875,7 +875,7 @@ def write_site() -> list[tuple[str, str]]:
         out.append((slug, doc))
     (ROOT / "thanks").mkdir(exist_ok=True)
     (ROOT / "thanks" / "index.html").write_text(
-        page("thanks", "Thanks | LongLens", "Your message is with Geoff.", THANKS, robots="noindex"),
+        page("thanks", "Thanks | LongLens", "Your start link is on its way.", THANKS, robots="noindex"),
         encoding="utf-8")
     (ROOT / "404.html").write_text(
         page("404", "Not found | LongLens", "That page is not here.", NOT_FOUND, robots="noindex"),
