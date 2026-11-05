@@ -244,7 +244,7 @@ ROT_JS = """<script>
   setInterval(function(){
     if (paused || document.hidden) return;
     w[i].classList.remove('on'); i = (i + 1) % w.length; w[i].classList.add('on');
-  }, 2500);
+  }, 1400);
 })();
 </script>"""
 

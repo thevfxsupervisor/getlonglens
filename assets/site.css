@@ -222,7 +222,7 @@ footer .by a{text-decoration:underline}
 @media(min-width:960px){.fmt-strip.six{grid-template-columns:repeat(3,1fr)}}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .rot{display:inline-block;position:relative;vertical-align:bottom;color:var(--accent-soft);white-space:nowrap}
-.rot>span{position:absolute;left:0;top:0;opacity:0;transform:translateY(.25em);transition:opacity .35s ease,transform .35s ease;white-space:nowrap}
+.rot>span{position:absolute;left:0;top:0;opacity:0;transform:translateY(.25em);transition:opacity .25s ease,transform .25s ease;white-space:nowrap}
 .rot>span.on{position:static;opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.rot>span{transform:none;transition:opacity .35s ease}}
 @media(max-width:420px){.hero h1.rot-h1{font-size:30px}}
