@@ -227,3 +227,9 @@ footer .by a{text-decoration:underline}
 .rot>span.on{position:static;opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.rot>span{transform:none;transition:opacity .35s ease}}
 @media(max-width:420px){.hero h1.rot-h1{font-size:30px}}
+.preview-card{margin-top:34px}
+.preview-card h3{margin:0 0 8px;font-size:22px}
+.preview-card .tiny{margin-top:-4px}
+.preview-card .cf-turnstile{margin-top:14px;min-height:65px}
+.preview-msg{margin-top:12px;min-height:1.4em}
+.preview-msg:empty{display:none}

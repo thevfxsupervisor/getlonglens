@@ -15,6 +15,7 @@ from __future__ import annotations
 import base64
 import html
 import mimetypes
+import os
 import re
 from pathlib import Path
 
@@ -32,6 +33,39 @@ EMAIL = "geoff@wanglemedia.com"
 FORM_LIVE = True
 INQUIRY_ENDPOINT = APP + "/hooks/inquiry"
 INQUIRY_CONSENT = "I agree to be contacted about this message at the email address I gave."
+
+# The "see a sample issue for your business" form on the home page, under the sample issues. It
+# posts to the app's POST /hooks/preview (web/preview_pages.py on the app's preview-slices
+# branch), which checks the origin (NL_PREVIEW_ORIGINS must list https://getlonglens.com), a
+# honeypot, a minimum fill time (the "elapsed" field this page's script fills in), then
+# Cloudflare Turnstile server-side, then the daily caps.
+#
+# TURNSTILE_SITEKEY is the build setting: the public site key of the Turnstile widget Geoff makes
+# in the Cloudflare dashboard (action "preview", hostname getlonglens.com). While it is empty the
+# form, its script and its privacy-page lines are not built at all, so this file can reach main
+# before the app's routes are published without showing a form that cannot work.
+TURNSTILE_SITEKEY = ""
+PREVIEW_ENDPOINT_PATH = "/hooks/preview"
+PREVIEW_ACTION = "preview"  # must match the app's botgate.ACTION
+# Cloudflare's published test site keys (developers.cloudflare.com/turnstile/troubleshooting/
+# testing/). Only for a local test build: LONGLENS_LOCAL_TEST=1 plus LONGLENS_OUT=<a folder
+# outside this repo>, so a test key can never be written into the committed pages.
+TEST_SITEKEYS = frozenset({"1x00000000000000000000AA", "2x00000000000000000000AB",
+                           "1x00000000000000000000BB", "2x00000000000000000000BB",
+                           "3x00000000000000000000FF"})
+LOCAL_TEST = os.environ.get("LONGLENS_LOCAL_TEST") == "1"
+OUT = ROOT
+if LOCAL_TEST:
+    TURNSTILE_SITEKEY = os.environ.get("LONGLENS_TURNSTILE_SITEKEY", TURNSTILE_SITEKEY)
+    APP = os.environ.get("LONGLENS_APP", APP).rstrip("/")
+    APP_PRIVACY = APP + "/privacy"
+    OUT = Path(os.environ.get("LONGLENS_OUT", "")).resolve()
+    if not os.environ.get("LONGLENS_OUT") or OUT == ROOT or ROOT in OUT.parents:
+        raise SystemExit("LONGLENS_LOCAL_TEST needs LONGLENS_OUT, a folder outside this repo")
+elif TURNSTILE_SITEKEY in TEST_SITEKEYS:
+    raise SystemExit("TURNSTILE_SITEKEY is a Cloudflare test key; use it only with LONGLENS_LOCAL_TEST=1")
+PREVIEW_LIVE = bool(TURNSTILE_SITEKEY.strip())
+PREVIEW_ENDPOINT = APP + PREVIEW_ENDPOINT_PATH
 
 NAV = [("Features", "/features/"), ("Pricing", "/pricing/"), ("How it works", "/how-it-works/"),
        ("FAQ", "/faq/")]
@@ -221,9 +255,58 @@ def samples_section() -> str:
     <div class="sec-head"><span class="eyebrow">Sample issues</span>
       <h2>Read an issue written for a business like yours</h2>
       <p>Three sample issues LongLens wrote on {SAMPLE_DATE} from that week's real news, each for a made-up business: an accounting firm, a UX researcher and a bakery owners' community. Each one has its own look, made with the same tools you get: the Sections page, story pictures, or a plain reply to an issue. Every story links to the original.</p></div>
-    <div class="fmt-strip six" role="list" aria-label="Sample issues for other businesses">{cards}</div>
+    <div class="fmt-strip six" role="list" aria-label="Sample issues for other businesses">{cards}</div>{preview_form()}
   </div>
 </section>'''
+
+
+def preview_form() -> str:
+    """The "see one for your business" box. Empty while no real Turnstile site key is set."""
+    if not PREVIEW_LIVE:
+        return ""
+    return f'''
+    <form class="contact-card preview-card" id="sample-form" method="post" action="{html.escape(PREVIEW_ENDPOINT)}" accept-charset="utf-8">
+  <h3 id="sample-form-h">See one for your own business</h3>
+  <p>Paste your website and LongLens writes you a sample issue from this week's news in your field. It takes about three minutes. Free, no sign-up.</p>
+  <p><label for="p-url">Your website</label><br><input id="p-url" name="url" required maxlength="300" inputmode="url" autocomplete="url" placeholder="yourbusiness.com"></p>
+  <p><label for="p-email">Email (optional)</label><br><input id="p-email" type="email" name="email" maxlength="320" autocomplete="email"></p>
+  <p class="tiny">Your email is used only for this sample, and deleted with it.</p>
+  <p style="position:absolute;left:-9999px" aria-hidden="true"><label for="p-website">Leave this empty</label><input id="p-website" name="website" tabindex="-1" autocomplete="off"></p>
+  <input type="hidden" name="elapsed" value="">
+  <div class="cf-turnstile" data-sitekey="{html.escape(TURNSTILE_SITEKEY)}" data-action="{PREVIEW_ACTION}" data-size="flexible"></div>
+  <button class="btn btn-a" type="submit">Make my sample issue</button>
+  <p class="preview-msg" role="status" aria-live="polite"></p>
+  <noscript><p class="tiny">To use this form, allow scripts in your browser. Or <a href="/contact/">ask Geoff for a free week</a>.</p></noscript>
+  <p class="email-line">We read only your public website and public news. Your sample is not sent to anyone, and it is deleted after 30 days. <a href="/privacy/#samples">Privacy</a></p>
+</form>'''
+
+
+# The form's script: counts the seconds since the page opened (the app refuses a post faster
+# than a person types), then posts and opens the sample's own page. Without fetch, the plain
+# form post still works: the app answers with a redirect to the sample page.
+PREVIEW_JS = """<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script>
+(function(){
+  var f = document.getElementById('sample-form'); if (!f) return;
+  var t0 = Date.now(), msg = f.querySelector('.preview-msg'), btn = f.querySelector('button[type=submit]');
+  f.addEventListener('submit', function(e){
+    f.elements.elapsed.value = ((Date.now() - t0) / 1000).toFixed(1);
+    var tok = f.querySelector('[name="cf-turnstile-response"]');
+    if (!tok || !tok.value) { e.preventDefault(); msg.textContent = 'One moment: we are checking that you are a person. Then press the button again.'; return; }
+    if (!window.fetch || !window.URLSearchParams) return;
+    e.preventDefault();
+    btn.disabled = true; msg.textContent = 'Starting your sample...';
+    fetch(f.action, {method: 'POST', body: new URLSearchParams(new FormData(f)), headers: {'Accept': 'application/json'}, credentials: 'omit'})
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if (d && d.ok && d.url) { window.location.href = d.url; return; }
+        msg.textContent = (d && d.message) || 'Something went wrong. Please try again.';
+        btn.disabled = false; if (window.turnstile) window.turnstile.reset();
+      })
+      .catch(function(){ msg.textContent = 'We could not reach LongLens just now. Please try again in a minute.'; btn.disabled = false; if (window.turnstile) window.turnstile.reset(); });
+  });
+})();
+</script>"""
 
 
 TODAY_PLACES = ("Your inbox first, then sent through the email tool you already use, or forwarded",
@@ -342,7 +425,7 @@ HOME = f'''<section class="hero">
 
 {close_cta("See a week of issues for your business, free.",
            "Tell Geoff who your readers are. He sets LongLens up with you on one short call, and you read a week of real issues before anyone else sees them.")}
-{ROT_JS}'''
+{ROT_JS}{PREVIEW_JS if PREVIEW_LIVE else ""}'''
 
 # --------------------------------------------------------------------------------------------
 # Features
@@ -815,13 +898,27 @@ SIGNIN_PAGE = f'''<section class="hero">
   </div>
 </section>'''
 
+# Only while the sample form is built (PREVIEW_LIVE): the one outside script, and the pointer to
+# the app's own "Sample issues" section, which is written from the settings the app obeys.
+# The wording is Claude's draft for Geoff to approve (the spec says the privacy text is his).
+PRIVACY_SAMPLES = f'''
+    <h2 id="samples">When you ask for a sample issue</h2>
+    <p>The sample form on the home page loads Cloudflare Turnstile, a check that you are a person, from Cloudflare. It is the only outside script on this site, and only the home page loads it.</p>
+    <p>We read your public website and public news in your field to write the sample. Anthropic (Claude) reads that text to write it, and we search Google News with a few words about your field. The sample is not sent to anyone. The sample, the website address and your email, if you gave one, are deleted after 30 days. The full list of what is kept, and for how long, is on the app's privacy page: <a href="{APP_PRIVACY}#samples">sample issues</a>.</p>''' if PREVIEW_LIVE else ""
+# The privacy page's opening, which must stay true once the home page loads Turnstile.
+PRIVACY_H1 = ("No analytics. Your email reaches one person." if PREVIEW_LIVE
+              else "No tracking. No cookies. Your email reaches one person.")
+PRIVACY_LEAD = ("This website, getlonglens.com, runs no analytics and sets no cookies of its own. It is a set of plain pages hosted on GitHub Pages. The one outside script is described below."
+                if PREVIEW_LIVE else
+                "This website, getlonglens.com, runs no analytics or tracking scripts and sets no cookies. It is a set of plain pages hosted on GitHub Pages.")
+
 PRIVACY = f'''<section class="hero">
   <div class="wrap prose">
     <span class="eyebrow">Privacy</span>
-    <h1>No tracking. No cookies. Your email reaches one person.</h1>
-    <p>This website, getlonglens.com, runs no analytics or tracking scripts and sets no cookies. It is a set of plain pages hosted on GitHub Pages.</p>
+    <h1>{PRIVACY_H1}</h1>
+    <p>{PRIVACY_LEAD}</p>
     <h2>When you write to Geoff</h2>
-    <p>Your email goes to Geoffrey Hancock at {EMAIL}. He uses it only to reply to you. Writing does not add you to any list.</p>
+    <p>Your email goes to Geoffrey Hancock at {EMAIL}. He uses it only to reply to you. Writing does not add you to any list.</p>{PRIVACY_SAMPLES}
     <h2>Once you use LongLens</h2>
     <p>What the LongLens app keeps about you, where it lives and who else sees anything is set out on the app's own privacy page: <a href="{APP_PRIVACY}">LongLens app privacy</a>.</p>
   </div>
@@ -869,15 +966,15 @@ def write_site() -> list[tuple[str, str]]:
     out = []
     for slug, title, desc, body, cur in PAGES:
         doc = page(slug, title, desc, body, cur)
-        target = ROOT / "index.html" if slug == "" else ROOT / slug / "index.html"
+        target = OUT / "index.html" if slug == "" else OUT / slug / "index.html"
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(doc, encoding="utf-8")
         out.append((slug, doc))
-    (ROOT / "thanks").mkdir(exist_ok=True)
-    (ROOT / "thanks" / "index.html").write_text(
+    (OUT / "thanks").mkdir(parents=True, exist_ok=True)
+    (OUT / "thanks" / "index.html").write_text(
         page("thanks", "Thanks | LongLens", "Your message is with Geoff.", THANKS, robots="noindex"),
         encoding="utf-8")
-    (ROOT / "404.html").write_text(
+    (OUT / "404.html").write_text(
         page("404", "Not found | LongLens", "That page is not here.", NOT_FOUND, robots="noindex"),
         encoding="utf-8")
     return out
@@ -936,17 +1033,22 @@ header.top{{position:static}}
 </body>
 </html>
 '''
-    (ROOT / "preview.html").write_text(preview, encoding="utf-8")
+    (OUT / "preview.html").write_text(preview, encoding="utf-8")
 
 
 def write_seo() -> None:
     urls = "".join(f"  <url><loc>{SITE}{'/' if s == '' else '/' + s + '/'}</loc></url>\n" for s, *_ in PAGES)
-    (ROOT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
+    (OUT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + '</urlset>\n', encoding="utf-8")
-    (ROOT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n", encoding="utf-8")
+    (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n", encoding="utf-8")
 
 
 if __name__ == "__main__":
+    OUT.mkdir(parents=True, exist_ok=True)
+    if LOCAL_TEST:  # the pages link /assets/ and /samples/ from the site root
+        for d in ("assets", "samples"):
+            if not (OUT / d).exists():
+                (OUT / d).symlink_to(ROOT / d)
     write_seo()
     write_preview(write_site())
     print("built", len(PAGES) + 1, "pages and preview.html")
