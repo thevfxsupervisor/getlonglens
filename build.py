@@ -796,7 +796,16 @@ THANKS = f'''<section class="hero">
     <span class="eyebrow">Message sent</span>
     <h1>Thanks. Check your inbox for your start link.</h1>
     <p>LongLens has emailed you a one-time link. Click it and answer three short questions: what LongLens should follow, where and when it arrives, and where it starts looking. Your first issue arrives on the schedule you pick, and your free week starts there. The link works once, for 24 hours.</p>
-    <p>Already have an account? The email holds your sign-in link instead. On a busy day, Geoff replies personally in place of the link. He reads every message himself. Nothing else is sent to you, and you are not added to any list.</p>
+    <p>Already have an account? The email holds your sign-in link instead. Geoff reads every message himself. Nothing else is sent to you, and you are not added to any list.</p>
+    <p>Before you start, read <a href="{DAILY}">Geoff's own newsletter</a>, or go back to the <a href="/">LongLens home page</a>.</p>
+  </div>
+</section>'''
+
+THANKS_PERSONAL = f'''<section class="hero">
+  <div class="wrap prose">
+    <span class="eyebrow">Message sent</span>
+    <h1>Thanks. Geoff will reply to you personally.</h1>
+    <p>LongLens has had a busy day, so Geoff will email you himself with your start link. He reads every message himself. Nothing else is sent to you.</p>
     <p>Before you start, read <a href="{DAILY}">Geoff's own newsletter</a>, or go back to the <a href="/">LongLens home page</a>.</p>
   </div>
 </section>'''
@@ -876,6 +885,11 @@ def write_site() -> list[tuple[str, str]]:
     (ROOT / "thanks").mkdir(exist_ok=True)
     (ROOT / "thanks" / "index.html").write_text(
         page("thanks", "Thanks | LongLens", "Your start link is on its way.", THANKS, robots="noindex"),
+        encoding="utf-8")
+    (ROOT / "contact" / "thanks-personal").mkdir(parents=True, exist_ok=True)
+    (ROOT / "contact" / "thanks-personal" / "index.html").write_text(
+        page("contact/thanks-personal", "Thanks | LongLens", "Geoff will reply to you personally.",
+             THANKS_PERSONAL, robots="noindex"),
         encoding="utf-8")
     (ROOT / "404.html").write_text(
         page("404", "Not found | LongLens", "That page is not here.", NOT_FOUND, robots="noindex"),
