@@ -219,6 +219,7 @@ footer .by a{text-decoration:underline}
 .contact-card input[type=checkbox]{margin-right:8px;accent-color:var(--accent)}
 .fmt-media.tall video{height:100%;width:100%;object-fit:cover}
 .fmt-txt p.fmt-date{font-family:var(--mono);font-size:11px;color:var(--mute);margin-top:8px}
+.fmt-txt p.fmt-how{color:var(--txt);border-left:2px solid var(--accent);padding-left:8px;margin-top:10px}
 @media(min-width:960px){.fmt-strip.six{grid-template-columns:repeat(3,1fr)}}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .rot{display:inline-block;position:relative;vertical-align:bottom;color:var(--accent-soft);white-space:nowrap}
