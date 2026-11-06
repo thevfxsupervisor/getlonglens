@@ -236,7 +236,7 @@ COMING_PLACES = ("Straight to each reader from your own address",
 # fade with no movement. Each box is the width of the word showing, so a short word leaves no gap.
 # Every pair makes a complete, true sentence: "Your ___ ___ the news from you."
 ROT = ("clients", "prospects", "members", "customers", "readers")
-ROT_VERBS = ("hear", "read", "watch", "get")
+ROT_VERBS = ("hear", "read", "watch")
 
 
 def rot_words(words) -> str:
