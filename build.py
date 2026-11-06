@@ -35,8 +35,8 @@ INQUIRY_CONSENT = "I agree to be contacted about this message at the email addre
 # Cloudflare Turnstile on the form (the app checks the token when NL_TURNSTILE_SECRET is set).
 # The site key is PUBLIC; paste it from Cloudflare > Turnstile > the getlonglens.com widget.
 # Empty = no widget is rendered and the page is exactly as before. Deploy order: the app first,
-# then the keys in nl.env, then this key here (a widget the app does not check is harmless; an app
-# that checks with no widget on the page refuses every post).
+# then this key here, then the secret in nl.env LAST (a widget the app does not check is
+# harmless; an app that checks with no widget on the page refuses every post).
 TURNSTILE_SITE_KEY = ""
 TURNSTILE_ACTION = "start"  # must match newsletter.turnstile.FORM_ACTION in the app
 
