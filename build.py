@@ -37,7 +37,7 @@ INQUIRY_CONSENT = "I agree to be contacted about this message at the email addre
 # Empty = no widget is rendered and the page is exactly as before. Deploy order: the app first,
 # then this key here, then the secret in nl.env LAST (a widget the app does not check is
 # harmless; an app that checks with no widget on the page refuses every post).
-TURNSTILE_SITE_KEY = ""
+TURNSTILE_SITE_KEY = "0x4AAAAAAF2l6EOGFK5dERe5"
 TURNSTILE_ACTION = "start"  # must match newsletter.turnstile.FORM_ACTION in the app
 
 NAV = [("Features", "/features/"), ("Pricing", "/pricing/"), ("How it works", "/how-it-works/"),
