@@ -49,11 +49,11 @@ TURNSTILE_ACTION = "start"  # must match newsletter.turnstile.FORM_ACTION in the
 # older form too, so app-first is safe in both directions.
 SOURCES_REQUIRED = False
 # Geoff 2026-11-06: the start form writes the first issue at once; no start link to click first.
-# The minutes are the MEASURED typical time from sending the form to the first issue arriving
-# (the app branch first-issue-confirms, GEOFF-TODO.md has the runs). Change it here only after a
-# new measurement. DEPLOY ORDER: the app first (it sends the visitor to the new thanks page
+# The minutes come from a measurement on 2026-11-06 (scratch instance, real model calls, fake
+# mailer): 27 s and 122 s from sending the form to the first issue. 5 leaves room for a queue of
+# sign-ups and the job starting. Change it here only after a new measurement. DEPLOY ORDER: the app first (it sends the visitor to the new thanks page
 # below), then this site; this site with an older app would promise an issue that never comes.
-FIRST_ISSUE_MINUTES = 10
+FIRST_ISSUE_MINUTES = 5
 
 NAV = [("Features", "/features/"), ("Pricing", "/pricing/"), ("How it works", "/how-it-works/"),
        ("FAQ", "/faq/")]
