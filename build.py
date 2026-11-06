@@ -32,6 +32,13 @@ EMAIL = "geoff@wanglemedia.com"
 FORM_LIVE = True
 INQUIRY_ENDPOINT = APP + "/hooks/inquiry"
 INQUIRY_CONSENT = "I agree to be contacted about this message at the email address I gave."
+# Cloudflare Turnstile on the form (the app checks the token when NL_TURNSTILE_SECRET is set).
+# The site key is PUBLIC; paste it from Cloudflare > Turnstile > the getlonglens.com widget.
+# Empty = no widget is rendered and the page is exactly as before. Deploy order: the app first,
+# then the keys in nl.env, then this key here (a widget the app does not check is harmless; an app
+# that checks with no widget on the page refuses every post).
+TURNSTILE_SITE_KEY = ""
+TURNSTILE_ACTION = "start"  # must match newsletter.turnstile.FORM_ACTION in the app
 
 NAV = [("Features", "/features/"), ("Pricing", "/pricing/"), ("How it works", "/how-it-works/"),
        ("FAQ", "/faq/")]
@@ -761,6 +768,18 @@ FAQ = f'''<section class="hero">
 # Contact
 # --------------------------------------------------------------------------------------------
 
+def turnstile_widget() -> str:
+    """The Turnstile widget (managed mode is set on the widget in Cloudflare), or nothing while
+    TURNSTILE_SITE_KEY is empty. It adds the hidden cf-turnstile-response field to the form."""
+    if not TURNSTILE_SITE_KEY:
+        return ""
+    return (
+        f'\n  <div class="cf-turnstile" data-sitekey="{html.escape(TURNSTILE_SITE_KEY)}"'
+        f' data-action="{TURNSTILE_ACTION}" data-theme="auto"></div>'
+        '\n  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>'
+    )
+
+
 def inquiry_form() -> str:
     return f'''<form class="contact-card" method="post" action="{INQUIRY_ENDPOINT}" accept-charset="utf-8">
   <p><label for="f-name">Your name</label><br><input id="f-name" name="name" required maxlength="200" autocomplete="name"></p>
@@ -769,7 +788,7 @@ def inquiry_form() -> str:
   <input type="hidden" name="offer" value="brief"><input type="hidden" name="source" value="longlens">
   <p><label for="f-message">Who reads your newsletter (or should), and what should they hear from you first?</label><br><textarea id="f-message" name="message" required maxlength="5000"></textarea></p>
   <p style="position:absolute;left:-9999px" aria-hidden="true"><label for="f-website">Leave this empty</label><input id="f-website" name="website" tabindex="-1" autocomplete="off"></p>
-  <p><label><input type="checkbox" name="consent" value="yes" required> {INQUIRY_CONSENT}</label></p>
+  <p><label><input type="checkbox" name="consent" value="yes" required> {INQUIRY_CONSENT}</label></p>{turnstile_widget()}
   <button class="btn btn-a" type="submit">Start my free week</button>
   <p class="email-line">{CONTROL_LINE}</p>
   <p class="email-line">Rather email? Write to <a href="{html.escape(CALL_MAIL)}">{EMAIL}</a> and Geoff replies personally. Writing does not add you to any list.</p>
