@@ -39,6 +39,10 @@ INQUIRY_CONSENT = "I agree to be contacted about this message at the email addre
 # harmless; an app that checks with no widget on the page refuses every post).
 TURNSTILE_SITE_KEY = "0x4AAAAAAF2l6EOGFK5dERe5"
 TURNSTILE_ACTION = "start"  # must match newsletter.turnstile.FORM_ACTION in the app
+# Claude's default, not Geoff's (2026-11-06): the sources box may be left empty, because
+# LongLens finds sources from the topics. True makes it required; flip the app's
+# newsletter.inquiry.SOURCES_REQUIRED to match, or the app accepts what the page refuses.
+SOURCES_REQUIRED = False
 
 NAV = [("Features", "/features/"), ("Pricing", "/pricing/"), ("How it works", "/how-it-works/"),
        ("FAQ", "/faq/")]
@@ -366,7 +370,7 @@ HOME = f'''<section class="hero">
 </section>
 
 {close_cta("See a week of issues for your business, free.",
-           "Tell Geoff who your readers are. A start link reaches your inbox at once, your first issue arrives on the schedule you pick, and you read a week of real issues before anyone else sees them.")}
+           "Paste a few sources, list your topics, add your email. A start link reaches your inbox at once, your first issue arrives on the schedule you pick, and you read a week of real issues before anyone else sees them.")}
 {ROT_JS}'''
 
 # --------------------------------------------------------------------------------------------
@@ -547,7 +551,7 @@ FEATURES = f'''<section class="hero">
 </section>
 
 {close_cta("See a week of issues for your business, free.",
-           "Tell Geoff who your readers are and what they should hear from you first. A start link reaches your inbox at once, and your first issue arrives on the schedule you pick.")}'''
+           "Paste a few sources, list your topics, add your email. A start link reaches your inbox at once, and your first issue arrives on the schedule you pick.")}'''
 
 # --------------------------------------------------------------------------------------------
 # Pricing
@@ -626,7 +630,7 @@ HOW = f'''<section class="hero">
     <div class="sec-head"><span class="eyebrow">Getting started</span><h2>From one email link to your first issue</h2></div>
     <ol class="steps two">
       <li><h3>Ask for a free week</h3>
-        <p>Tell Geoff who your readers are and what they should hear from you first. LongLens emails you a one-time start link at once, and Geoff still reads every message himself.</p>
+        <p>Paste a few sources, list your topics, add your email. LongLens emails you a one-time start link at once, and Geoff still reads every message himself.</p>
         <p><a href="/contact/">{CTA_TEXT}</a></p></li>
       <li><h3>Your start link arrives at once</h3>
         <p>The link works once, for 24 hours, and your free week starts there. Already have an account? The email holds your sign-in link instead. You see a week of real issues before anyone else does.</p></li>
@@ -781,25 +785,27 @@ def turnstile_widget() -> str:
 
 
 def inquiry_form() -> str:
+    """The start form, three fields (Geoff 2026-11-06: "just paste sources and list concepts and
+    give your email. that starts it"). The app fills setup with the answers and asks the rest
+    (who reads it, the name competition) on the next page."""
+    sources_label = "Sources to follow" + ("" if SOURCES_REQUIRED else " (optional)")
+    required = " required" if SOURCES_REQUIRED else ""
     return f'''<form class="contact-card" method="post" action="{INQUIRY_ENDPOINT}" accept-charset="utf-8">
-  <p><label for="f-name">Your name</label><br><input id="f-name" name="name" required maxlength="200" autocomplete="name"></p>
-  <p><label for="f-email">Email</label><br><input id="f-email" type="email" name="email" required maxlength="320" autocomplete="email"></p>
-  <p><label for="f-company">Your business (optional)</label><br><input id="f-company" name="company" maxlength="200" autocomplete="organization"></p>
+  <p><label for="f-sources">{sources_label}: paste websites or feeds, one per line</label><br><textarea id="f-sources" name="sources" rows="4" maxlength="4000"{required} placeholder="https://www.accountingtoday.com&#10;https://www.journalofaccountancy.com"></textarea></p>
+  <p><label for="f-concepts">Topics to follow</label><br><textarea id="f-concepts" name="concepts" rows="4" required maxlength="4000" placeholder="New tax and payroll rules for small businesses, and what my clients should do before each deadline."></textarea></p>
+  <p><label for="f-email">Your email</label><br><input id="f-email" type="email" name="email" required maxlength="320" autocomplete="email"></p>
   <input type="hidden" name="offer" value="brief"><input type="hidden" name="source" value="longlens">
-  <p><label for="f-message">Who reads your newsletter (or should), and what should they hear from you first?</label><br><textarea id="f-message" name="message" required maxlength="5000"></textarea></p>
-  <p style="position:absolute;left:-9999px" aria-hidden="true"><label for="f-website">Leave this empty</label><input id="f-website" name="website" tabindex="-1" autocomplete="off"></p>
-  <p><label><input type="checkbox" name="consent" value="yes" required> {INQUIRY_CONSENT}</label></p>{turnstile_widget()}
+  <p style="position:absolute;left:-9999px" aria-hidden="true"><label for="f-website">Leave this empty</label><input id="f-website" name="website" tabindex="-1" autocomplete="off"></p>{turnstile_widget()}
   <button class="btn btn-a" type="submit">Start my free week</button>
-  <p class="email-line">{CONTROL_LINE}</p>
-  <p class="email-line">Rather email? Write to <a href="{html.escape(CALL_MAIL)}">{EMAIL}</a> and Geoff replies personally. Writing does not add you to any list.</p>
+  <p class="email-line">LongLens emails your start link to this address, and Geoff reads every form himself. You are not added to any list. Rather email? Write to <a href="{html.escape(CALL_MAIL)}">{EMAIL}</a> and Geoff replies personally.</p>
 </form>'''
 
 
 CONTACT_BODY = inquiry_form() if FORM_LIVE else f'''<div class="contact-card">
   <h2 style="font-size:22px">Email Geoff. Three lines are enough.</h2>
   <ol>
-    <li>Who your readers are.</li>
-    <li>What they should hear from you first.</li>
+    <li>The websites or feeds you read.</li>
+    <li>The topics you follow.</li>
     <li>Your name and your business.</li>
   </ol>
   <a class="btn btn-a" href="{html.escape(CALL_MAIL)}">Email Geoff for a free week</a>
@@ -811,7 +817,7 @@ CONTACT = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">Free pilot</span>
     <h1>Read a week of your own newsletter, free.</h1>
-    <p class="lede">Tell Geoff about your business and who you would send it to. LongLens emails you a one-time start link at once: click it, answer three short questions (what LongLens should follow, where and when it arrives, and where it starts looking), and your first issue arrives on the schedule you pick. Geoff still reads every message himself. The pilot is free.</p>
+    <p class="lede">Paste a few sources, list your topics, add your email. LongLens emails you a one-time start link at once: click it, check what you wrote (already filled in), pick where and when it arrives, and your first issue arrives on the schedule you pick. Geoff still reads every message himself. The pilot is free.</p>
     {CONTACT_BODY}
   </div>
 </section>
@@ -822,7 +828,7 @@ CONTACT = f'''<section class="hero">
     <div class="sec-head"><span class="eyebrow">What happens next</span><h2>From your message to your first week of issues</h2></div>
     <ol class="steps three">
       <li><h3>Your start link arrives</h3><p>By email, straight away. The link works once, for 24 hours. Geoff still reads every message himself.</p></li>
-      <li><h3>Three short questions</h3><p>What LongLens should follow, where and when it arrives, and where it starts looking. No call needed.</p></li>
+      <li><h3>Three short questions</h3><p>Your topics and sources, already filled in from this form, plus who reads it and where and when it arrives. No call needed.</p></li>
       <li><h3>Your first week</h3><p>Your first issue arrives on the schedule you pick, and your free week starts there. You read a week of real issues before anyone else does.</p></li>
     </ol>
     <p class="k">Before you start, read a real one: <a href="{DAILY}">The VFX Supervisor Daily</a>, Geoff's own newsletter about his own field. Yours covers your field, for your readers.</p>
@@ -833,7 +839,7 @@ THANKS = f'''<section class="hero">
   <div class="wrap prose">
     <span class="eyebrow">Message sent</span>
     <h1>Thanks. Check your inbox for your start link.</h1>
-    <p>LongLens has emailed you a one-time link. Click it and answer three short questions: what LongLens should follow, where and when it arrives, and where it starts looking. Your first issue arrives on the schedule you pick, and your free week starts there. The link works once, for 24 hours.</p>
+    <p>LongLens has emailed you a one-time link. Click it: your topics and sources are already filled in. Check them, add who reads it, and pick where and when it arrives. Your first issue arrives on the schedule you pick, and your free week starts there. The link works once, for 24 hours.</p>
     <p>Already have an account? The email holds your sign-in link instead. Geoff reads every message himself. Nothing else is sent to you, and you are not added to any list.</p>
     <p>Before you start, read <a href="{DAILY}">Geoff's own newsletter</a>, or go back to the <a href="/">LongLens home page</a>.</p>
   </div>
