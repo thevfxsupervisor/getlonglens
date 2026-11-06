@@ -39,9 +39,14 @@ INQUIRY_CONSENT = "I agree to be contacted about this message at the email addre
 # harmless; an app that checks with no widget on the page refuses every post).
 TURNSTILE_SITE_KEY = "0x4AAAAAAF2l6EOGFK5dERe5"
 TURNSTILE_ACTION = "start"  # must match newsletter.turnstile.FORM_ACTION in the app
-# Claude's default, not Geoff's (2026-11-06): the sources box may be left empty, because
-# LongLens finds sources from the topics. True makes it required; flip the app's
-# newsletter.inquiry.SOURCES_REQUIRED to match, or the app accepts what the page refuses.
+# Geoff 2026-11-06: the sources box stays optional (topics are required). True makes it
+# required; flip the app's newsletter.inquiry.SOURCES_REQUIRED to match, or the app accepts
+# what the page refuses.
+# DEPLOY ORDER for the three-field start form (inquiry_form below): the APP first (branch
+# signup-one-step, with `nl db upgrade` to alembic e3a9c6b1d047), then this site. An app older
+# than that refuses every post from this form (no name, no message, no checkbox) with a page
+# asking for fields the visitor cannot see, and nothing is stored or mailed. The app accepts the
+# older form too, so app-first is safe in both directions.
 SOURCES_REQUIRED = False
 
 NAV = [("Features", "/features/"), ("Pricing", "/pricing/"), ("How it works", "/how-it-works/"),
@@ -690,7 +695,7 @@ def qa(q, a):
 FAQ_ITEMS = [
     ("Getting started", [
         ("How do we start, and how does LongLens reach my readers?",
-         "<p>Send the form and LongLens emails you a one-time start link at once. Click it, answer three short questions (what LongLens should follow, where and when it arrives, and where it starts looking), and your first issue arrives on the schedule you pick. On a very busy day the form thanks you instead, and Geoff replies to you himself. You see a week of real issues before anyone else does. Today each issue comes to you first, and you send it through the email tool you already use, or forward it. Email straight to your readers from your own address is coming.</p>"),
+         "<p>Send the form and LongLens emails you a one-time start link at once. Click it and check three short steps (what LongLens should follow, where it starts looking, and where and when it arrives; what you wrote on the form is already filled in), and your first issue arrives on the schedule you pick. On a very busy day the form thanks you instead, and Geoff replies to you himself. You see a week of real issues before anyone else does. Today each issue comes to you first, and you send it through the email tool you already use, or forward it. Email straight to your readers from your own address is coming.</p>"),
         ("Can I sign up on my own?",
          "<p>Yes, from the form. <a href=\"/contact/\">Start your free week</a>. Send the form and LongLens emails you a one-time start link at once. On a very busy day the form thanks you instead, and Geoff replies to you himself. He reads every message.</p>"),
         ("How do I sign in?",
@@ -791,7 +796,7 @@ def inquiry_form() -> str:
     sources_label = "Sources to follow" + ("" if SOURCES_REQUIRED else " (optional)")
     required = " required" if SOURCES_REQUIRED else ""
     return f'''<form class="contact-card" method="post" action="{INQUIRY_ENDPOINT}" accept-charset="utf-8">
-  <p><label for="f-sources">{sources_label}: paste websites or feeds, one per line</label><br><textarea id="f-sources" name="sources" rows="4" maxlength="4000"{required} placeholder="https://www.accountingtoday.com&#10;https://www.journalofaccountancy.com"></textarea></p>
+  <p><label for="f-sources">{sources_label}: paste websites or feeds, one per line, up to 5</label><br><textarea id="f-sources" name="sources" rows="4" maxlength="4000"{required} placeholder="https://www.accountingtoday.com&#10;https://www.journalofaccountancy.com"></textarea></p>
   <p><label for="f-concepts">Topics to follow</label><br><textarea id="f-concepts" name="concepts" rows="4" required maxlength="4000" placeholder="New tax and payroll rules for small businesses, and what my clients should do before each deadline."></textarea></p>
   <p><label for="f-email">Your email</label><br><input id="f-email" type="email" name="email" required maxlength="320" autocomplete="email"></p>
   <input type="hidden" name="offer" value="brief"><input type="hidden" name="source" value="longlens">
@@ -839,7 +844,7 @@ THANKS = f'''<section class="hero">
   <div class="wrap prose">
     <span class="eyebrow">Message sent</span>
     <h1>Thanks. Check your inbox for your start link.</h1>
-    <p>LongLens has emailed you a one-time link. Click it: your topics and sources are already filled in. Check them, add who reads it, and pick where and when it arrives. Your first issue arrives on the schedule you pick, and your free week starts there. The link works once, for 24 hours.</p>
+    <p>LongLens has emailed you a one-time link. Click it: what you wrote on this form is already filled in. Check it, add who reads it if you like, and pick where and when it arrives. Your first issue arrives on the schedule you pick, and your free week starts there. The link works once, for 24 hours.</p>
     <p>Already have an account? The email holds your sign-in link instead. Geoff reads every message himself. Nothing else is sent to you, and you are not added to any list.</p>
     <p>Before you start, read <a href="{DAILY}">Geoff's own newsletter</a>, or go back to the <a href="/">LongLens home page</a>.</p>
   </div>
