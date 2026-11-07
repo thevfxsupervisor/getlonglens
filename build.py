@@ -949,14 +949,25 @@ FA_CTA = "Get your first client update free"
 
 FA_OFFER = "Free for a week, then from $19 a month, invoiced."
 FA_PASS = f"Comes to you first. You pass it on from the tool you already use. Your first client update is with you in about {FIRST_ISSUE_MINUTES} minutes."
-# Tax authorities named here are ONLY those proven to work as news pages (SOURCE-TEST-authorities.md).
-FA_AUTH = "HMRC, your professional body, the business press, any page you follow"
+# Examples only: the value is the sources the accountant trusts. Do not name authorities that are not proven
+# to work as sources (SOURCE-TEST-authorities.md).
+FA_AUTH = "HMRC, the IRS, or your own professional body"
+FA_SETUP = "Name the sources you trust and we set them up when you start."
+
+FA_FAQ = "".join(qa(q, a) for q, a in [
+    ("Can I use the sources I trust, in my country?",
+     "<p>Yes. Name the sources you trust, such as a tax authority, your professional body or the business press, and we set them up when you start. Sources with a news feed work when you paste them. Some government pages need us to set them up by hand, so tell us which ones matter most to you.</p>"),
+    ("Whose name is on what my clients read, and will it look like my brand?",
+     "<p>Yours, and only yours. Every update carries your firm's name and never ours, and we match the look to your brand when you start.</p>"),
+    ("Who is responsible for record keeping and professional rules?",
+     "<p>Your firm is. You decide what your clients are told, and you keep the records your own professional rules require. LongLens cannot take that over for you.</p>"),
+])
 
 FOR_ACCOUNTANTS = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow"><img src="/assets/mark-e1.svg" alt="" width="40" height="40">For accountants, tax advisers and bookkeepers</span>
     <h1>Be the accountant clients hear from first when the rules change</h1>
-    <p class="lede">Pick the news you trust: {FA_AUTH}. LongLens explains each change in plain words for your clients, with a link to every original, and you change any line before your clients read a word.</p>
+    <p class="lede">{FA_SETUP} Examples: {FA_AUTH}. LongLens explains each change in plain words for your clients, with a link to every original, and you change any line before your clients read a word.</p>
     <div class="cta-row">
       <a class="btn btn-a" href="/contact/">{FA_CTA}</a>
     </div>
@@ -971,7 +982,7 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">A sample client update</span>
       <h2>See how a real tax change reads for your clients</h2>
-      <p>A sample for an invented Copenhagen firm, using real news: a corporate tax deadline, a new EU fee on parcels, a work permit route. The stories and links are real, and each section says what it means for the firm's clients. Yours would use the news pages you choose.</p></div>
+      <p>One example, written for an invented firm in Copenhagen, using real news: a corporate tax deadline, a new EU fee on parcels, a work permit route. The stories and links are real, and each section says what it means for the firm's clients. Yours would use the sources you trust, from any country.</p></div>
     <div class="fmt-strip six" role="list" aria-label="A sample client update for an accounting firm">
       <div class="fmt-card" role="listitem"><div class="fmt-media tall"><a href="/samples/{FA_SAMPLE[0]}/"><img src="/assets/samples/{FA_SAMPLE[0]}-top.png" width="600" height="900" loading="lazy" alt="The top of Client Update, a sample client update for an accounting firm: {html.escape(FA_SAMPLE[3])}"></a></div>
         <div class="fmt-txt"><b>{FA_SAMPLE[1]}</b><p>"{html.escape(FA_SAMPLE[3])}"</p>
@@ -986,7 +997,7 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
     <div class="sec-head"><span class="eyebrow">What your clients get</span>
       <h2>Explain each change once, to every client</h2></div>
     <div class="cards">
-      <div class="card"><h3>The news you trust, explained for your clients</h3><p>Name the pages you trust: {FA_AUTH}. LongLens drafts one short update from them, with a line on what most stories mean for your clients and a link to every original.</p></div>
+      <div class="card"><h3>The sources you trust, explained for your clients</h3><p>{FA_SETUP} Examples: {FA_AUTH}. LongLens drafts one short update from them, with a line on what most stories mean for your clients and a link to every original. Sources with a news feed work when pasted; some government pages need us to set them up by hand.</p></div>
       <div class="card"><h3>Your judgement on every line, with the original one click away</h3><p>AI drafts the update. You read all of it before your clients do, you change any line you like, and every story links to the original so you can check it. LongLens cannot promise that a draft is right, which is why nothing goes out until you have seen it.</p></div>
       <div class="card"><h3>When a deadline moves, clients see it in the same story, not as a second surprise</h3><p>When a deadline moves or a rule is reversed, LongLens marks the story as an update or a reversal and links back to the earlier updates that covered it.</p></div>
       <div class="card"><h3>After the first few updates, show clients which changes keep coming up</h3><p>Once a few updates have gone out, each one can show what keeps coming up across your last few weeks of updates.</p></div>
@@ -1003,7 +1014,7 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
     <div class="sec-head"><span class="eyebrow">Getting started</span>
       <h2>Free for a week, then from $19 a month, invoiced</h2></div>
     <ul class="list">
-      <li><strong>Send one short form.</strong> The news pages you follow, the topics you cover, your email. Your first update arrives in about {FIRST_ISSUE_MINUTES} minutes.</li>
+      <li><strong>Send one short form.</strong> The sources you trust, the topics you cover, your email. Your first update arrives in about {FIRST_ISSUE_MINUTES} minutes.</li>
       <li><strong>Sign in with a link by email.</strong> No password to remember.</li>
       <li><strong>Read a week of updates</strong> before your clients see any, then keep going or stop.</li>
     </ul>
@@ -1011,8 +1022,17 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
   </div>
 </section>
 
+<hr class="rule">
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Questions accountants ask</span>
+      <h2>Straight answers before you start</h2></div>
+    <div class="faq">{FA_FAQ}</div>
+  </div>
+</section>
+
 {close_cta("See a week of client updates, free.",
-           f"Paste the news pages you follow, list your topics, add your email. Your first update arrives in about {FIRST_ISSUE_MINUTES} minutes, and you read a week of updates before your clients see any.",
+           f"Name the sources you trust, list your topics, add your email. Your first update arrives in about {FIRST_ISSUE_MINUTES} minutes, and you read a week of updates before your clients see any.",
            FA_CTA)}'''
 
 PAGES = [
