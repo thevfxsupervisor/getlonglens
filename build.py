@@ -168,12 +168,12 @@ OFFER_LINE = f"Free pilot: your first issue by email about {FIRST_ISSUE_MINUTES}
 CONTROL_LINE = "Nothing reaches your clients unless you send it. Every issue comes to you first: read it, change any line, then send it on yourself."
 
 
-def close_cta(h2: str, text: str) -> str:
+def close_cta(h2: str, text: str, cta: str = "") -> str:
     return f'''<section class="close">
   <div class="wrap"><div>
     <h2>{h2}</h2>
     <p class="k">{text}</p>
-    <div class="cta-row"><a class="btn btn-a" href="/contact/">{CTA_TEXT}</a></div>
+    <div class="cta-row"><a class="btn btn-a" href="/contact/">{cta or CTA_TEXT}</a></div>
   </div></div>
 </section>'''
 
@@ -939,28 +939,31 @@ NOT_FOUND = '''<section class="hero">
 
 FA_SAMPLE = next(x for x in SAMPLES if x[0] == "dk-accounting")
 
+FA_OFFER = f"Free pilot: your first email arrives about {FIRST_ISSUE_MINUTES} minutes after you ask, then a week of real emails for your business. After the pilot, from $19 a month."
+FA_NEWS = "HMRC's news feed or the news pages you follow"
+
 FOR_ACCOUNTANTS = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow"><img src="/assets/mark-e1.svg" alt="" width="40" height="40">For accountants, tax advisers and bookkeepers</span>
-    <h1>Your clients ask what the tax change means for them. Answer all of them at once, under your name.</h1>
-    <p class="lede">LongLens writes a short newsletter under your name on what changed and what it means for your clients. You name the tax authority's news page, your professional bodies and the business news to follow. You read every issue first, change any line, and send it on yourself.</p>
+    <h1>Your clients ask what the tax change means for them. Send them one clear email, under your name.</h1>
+    <p class="lede">LongLens uses AI to draft a short email for your clients on what changed in tax and what it means for them. Every story links to its original, and nothing reaches your clients until you have seen it. You read it, change any line, and send it on yourself.</p>
     <div class="cta-row">
-      <a class="btn btn-a" href="/contact/">{CTA_TEXT}</a>
+      <a class="btn btn-a" href="/contact/">Start my free week</a>
     </div>
-    <p class="price-line">{OFFER_LINE} <a href="/pricing/">See prices</a>.</p>
+    <p class="price-line">{FA_OFFER} <a href="/pricing/">See prices</a>.</p>
   </div>
 </section>
 
 <hr class="rule">
 <section>
   <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">A sample issue</span>
-      <h2>Read an issue your clients could get</h2>
-      <p>This one was written for an invented Copenhagen accounting firm: a corporate tax deadline, a new EU fee on parcels, a work permit route. The firm is invented. The stories and links are real, and each section says what it means for the firm's clients.</p></div>
-    <div class="fmt-strip six" role="list" aria-label="A sample issue for an accounting firm">
-      <div class="fmt-card" role="listitem"><div class="fmt-media tall"><a href="/samples/{FA_SAMPLE[0]}/"><img src="/assets/samples/{FA_SAMPLE[0]}-top.png" width="600" height="900" loading="lazy" alt="The top of Client Update, a sample issue for an accounting firm: {html.escape(FA_SAMPLE[3])}"></a></div>
+    <div class="sec-head"><span class="eyebrow">A sample email</span>
+      <h2>Read an email your clients could get</h2>
+      <p>A sample for an invented Copenhagen firm, using real news: a corporate tax deadline, a new EU fee on parcels, a work permit route. The stories and links are real, and each section says what it means for the firm's clients. Yours would use the news pages you choose, in your country and language.</p></div>
+    <div class="fmt-strip six" role="list" aria-label="A sample email for an accounting firm">
+      <div class="fmt-card" role="listitem"><div class="fmt-media tall"><a href="/samples/{FA_SAMPLE[0]}/"><img src="/assets/samples/{FA_SAMPLE[0]}-top.png" width="600" height="900" loading="lazy" alt="The top of Client Update, a sample email for an accounting firm: {html.escape(FA_SAMPLE[3])}"></a></div>
         <div class="fmt-txt"><b>{FA_SAMPLE[1]}</b><p>"{html.escape(FA_SAMPLE[3])}"</p>
-        <p class="fmt-date">Sample issue written by LongLens, {SAMPLE_DATE}. <a href="/samples/{FA_SAMPLE[0]}/">Read the whole issue</a></p></div></div>
+        <p class="fmt-date">Sample written by LongLens, {SAMPLE_DATE}. <a href="/samples/{FA_SAMPLE[0]}/">Read the whole email</a></p></div></div>
     </div>
   </div>
 </section>
@@ -971,12 +974,13 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
     <div class="sec-head"><span class="eyebrow">What you send</span>
       <h2>Explain each change once, to every client</h2></div>
     <div class="cards">
-      <div class="card"><h3>You choose the news, LongLens writes the issue</h3><p>Name the pages and channels you trust. LongLens writes one short issue from them, with a line on what most stories mean for your clients and a link to every original.</p></div>
-      <div class="card"><h3>A rule that changes stays one story</h3><p>When a deadline moves or a rule is reversed, LongLens marks the story as an update or a reversal and links back to the earlier issues that covered it.</p></div>
-      <div class="card"><h3>See what keeps coming up</h3><p>Switch on "What keeps coming up" and, after a few issues, each issue can show what keeps coming up across your last few weeks of issues.</p></div>
-      <div class="card"><h3>Read it, hear it or watch it</h3><p>Each issue is a letter, and many also come as audio, a picture or a short video, for the client who listens on the drive in. Not every issue has every format.</p></div>
-      <div class="card"><h3>Two minutes, weekdays at 07:00</h3><p>Each issue takes about two minutes to read. Issues go out weekdays at 07:00, or the days and time you choose.</p></div>
-      <div class="card"><h3>You see every issue first</h3><p>Every issue reaches you before anyone else. Read it, change any line, and send it on under your name.</p></div>
+      <div class="card"><h3>You choose the news, LongLens drafts the email</h3><p>Name {FA_NEWS}, your professional body and the business news you trust. LongLens drafts one short email from them, with a line on what most stories mean for your clients and a link to every original.</p></div>
+      <div class="card"><h3>Your name is on it, so you check it</h3><p>AI drafts it. You read all of it before your clients do, you change any line you like, and every story links to the original so you can check it. LongLens cannot promise that a draft is right, which is why nothing goes out until you have seen it.</p></div>
+      <div class="card"><h3>A rule that changes stays one story</h3><p>When a deadline moves or a rule is reversed, LongLens marks the story as an update or a reversal and links back to the earlier emails that covered it.</p></div>
+      <div class="card"><h3>See what keeps coming up</h3><p>After the first few emails, each one can show what keeps coming up across your last few weeks of emails.</p></div>
+      <div class="card"><h3>Read it, hear it or watch it</h3><p>Each email is a letter, and many also come as audio, a picture or a short video, for the client who listens on the drive in. Not every email has every format.</p></div>
+      <div class="card"><h3>Two minutes, weekdays at 07:00</h3><p>Each email takes about two minutes to read. Emails come to you weekdays at 07:00, or the days and time you choose.</p></div>
+      <div class="card"><h3>It reaches your clients from you</h3><p>The email comes to you first. You send it to your clients from the email tool you already use, or forward it. LongLens does not need your client list today, because sending from LongLens to a list needs each person's recorded consent. {coming("Sending to your client list from your own address.")}</p></div>
     </div>
   </div>
 </section>
@@ -987,16 +991,17 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
     <div class="sec-head"><span class="eyebrow">Getting started</span>
       <h2>Free pilot, then from $19 a month</h2></div>
     <ul class="list">
-      <li><strong>Send one short form.</strong> The news pages you follow, the topics you cover, your email. Your first issue arrives by email in about {FIRST_ISSUE_MINUTES} minutes.</li>
+      <li><strong>Send one short form.</strong> The news pages you follow, the topics you cover, your email. Your first email arrives in about {FIRST_ISSUE_MINUTES} minutes.</li>
       <li><strong>Sign in with a link by email.</strong> No password to remember.</li>
-      <li><strong>Read a week of issues</strong> before your clients see any, then keep going or stop.</li>
+      <li><strong>Read a week of emails</strong> before your clients see any, then keep going or stop.</li>
     </ul>
     <p class="price-line">Prices in US dollars, after the pilot. The first plans are paid by invoice.</p>
   </div>
 </section>
 
-{close_cta("See a week of issues for your clients, free.",
-           f"Paste the news pages you follow, list your topics, add your email. Your first issue arrives in about {FIRST_ISSUE_MINUTES} minutes, and you read a week of issues before your clients see any.")}'''
+{close_cta("See a week of client emails, free.",
+           f"Paste the news pages you follow, list your topics, add your email. Your first email arrives in about {FIRST_ISSUE_MINUTES} minutes, and you read a week of emails before your clients see any.",
+           "Start my free week")}'''
 
 PAGES = [
     # slug, title, description, body, nav-current
@@ -1016,7 +1021,7 @@ PAGES = [
      "Straight answers about LongLens: getting started, what reaches your clients and when, editing, formats, price and ownership.",
      FAQ, "/faq/"),
     ("for-accountants", "For accountants | LongLens",
-     "A short newsletter under your name on what changed in tax and what it means for your clients. You see every issue first. Free pilot, then from $19 a month.",
+     "AI drafts a short email for your clients on what changed in tax and what it means for them. You see it first and send it yourself. Free pilot, then from $19 a month.",
      FOR_ACCOUNTANTS, ""),
     ("contact", "Free week | LongLens",
      "Start a free week of LongLens: one short form, your first issue by email within minutes, then a week of your own newsletter before anyone else sees it.",
