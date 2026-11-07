@@ -320,6 +320,21 @@ HOME = f'''<section class="hero">
 <hr class="rule">
 <section>
   <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Not a pasted feed</span>
+      <h2>Your readers get the few stories that matter to them, checked, in plain words</h2>
+      <p>In our own daily issues, about 1 in 20 stories makes the cut. The rest never reach your readers.</p></div>
+    <div class="cards two">
+      <div class="card"><h3>Only what matters to your readers</h3><p>Each story is judged against what you told LongLens your readers care about. Reply "more on the new rules, less on prices" and the next issue follows.</p></div>
+      <div class="card"><h3>Written in plain words, once</h3><p>Every story is written in LongLens's own words, with a line on why it matters to your readers, not pasted from the original. The same story from two outlets appears once.</p></div>
+      <div class="card"><h3>Names and numbers that match the original</h3><p>LongLens checks names, titles and numbers against the original article, and checks every link. A story with only dead links is dropped.</p></div>
+      <div class="card"><h3>The original is one click away</h3><p>Every story links to where it came from, and you read the whole issue before your readers do. <a href="/how-it-works/">See what happens before you read it</a>.</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+<section>
+  <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Who it is for</span>
       <h2>Three kinds of business that win work by knowing their field</h2></div>
     <div class="cards">
@@ -691,6 +706,23 @@ HOW = f'''<section class="hero">
 <hr class="rule">
 <section>
   <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Behind every issue</span><h2>What happens before you read it</h2>
+      <p>Not a pasted feed. In our own daily issues, about 1 in 20 stories makes the cut.</p></div>
+    <ol class="steps two">
+      <li><h3>Each story is judged against what your readers care about</h3><p>Your replies, such as "more on X, less on Y", change what is chosen next time.</p></li>
+      <li><h3>The same story from two outlets appears once</h3><p>A follow-up is marked as an update and linked to the earlier coverage.</p></li>
+      <li><h3>Each story is written in LongLens's own words</h3><p>With a line on why it matters to your readers, not pasted from the original.</p></li>
+      <li><h3>Names, titles and numbers are checked against the original article</h3><p>Every story keeps a link to the original.</p></li>
+      <li><h3>Every link is checked, and dead links are dropped</h3><p>A story with no working link does not reach you.</p></li>
+      <li><h3>A website that breaks or fills with junk is paused automatically</h3><p>It stops feeding your issues until it recovers.</p></li>
+      <li><h3>You read it before your readers do</h3><p>Change any line, then pass it on yourself.</p></li>
+    </ol>
+  </div>
+</section>
+
+<hr class="rule">
+<section>
+  <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Day to day</span><h2>Five quick moves keep every issue yours</h2></div>
     <ul class="list">
       <li><strong>Change a line</strong>: open the issue, press Edit in place, click any line and type (daily newsletters; a weekly newsletter has its own editor).</li>
@@ -724,6 +756,8 @@ FAQ_ITEMS = [
          "<p>With a link by email. There is no password. Type your email on the <a href=\"/sign-in/\">sign-in page</a> and a fresh link arrives, usually within a minute. Each link works once and keeps you signed in for 30 days on that device.</p>"),
     ]),
     ("Trust and control", [
+        ("Is this just my news feeds pasted into an email?",
+         "<p>No. LongLens judges each story against what you said your readers care about, and in our own daily issues about 1 in 20 stories makes the cut. What stays is written in LongLens's own words with a line on why it matters to your readers. The same story from two outlets appears once, names, titles and numbers are checked against the original article, and every link is checked, with dead ones dropped. Every story links to its original, one click away, and you read the issue before your readers do.</p>"),
         ("Does anything reach my clients before I see it?",
          "<p>No. Nothing goes to your clients until you approve it. Every issue comes to you by email first: you read it, change any line, and decide what to send and to whom. If your issues also go up on a public page on your own website, each one waits for your OK there too, unless you choose a setting that puts it up for you: Automatic, or Publish at noon without my take (if you have not added your own comment by 12:00, it goes up without it). Both are off until you choose them, you are emailed when an issue goes up, and what goes up also reaches your Slack or Discord channel and your feed.</p>"),
         ("What if LongLens gets something wrong?",
@@ -998,6 +1032,7 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
       <h2>Explain each change once, and every client hears it from you</h2></div>
     <div class="cards">
       <div class="card"><h3>Your clients get what a change means for them, not the press release</h3><p>Each update says in plain words what most stories mean for your clients, with a link to every original. {FA_SETUP} Examples: {FA_AUTH}. Sources with a news feed work when pasted; some government pages need us to set them up by hand.</p></div>
+      <div class="card"><h3>Names and numbers checked against the original before a client sees them</h3><p>LongLens checks names, titles and figures against the original article, and checks every link, before an update reaches you. You read it first, so a client only sees what you passed on.</p></div>
       <div class="card"><h3>Every line sounds like your firm, and any claim is one click from its original</h3><p>LongLens writes the first version with AI. Make it yours: change any line you like, and check any story against its original. LongLens cannot promise that a draft is right, so your judgement is what your clients are reading.</p></div>
       <div class="card"><h3>When a deadline moves, clients see it in the same story, not as a second surprise</h3><p>When a deadline moves or a rule is reversed, LongLens marks the story as an update or a reversal and links back to the earlier updates that covered it.</p></div>
       <div class="card"><h3>Show clients what keeps coming up, so they know to ask you first</h3><p>Once a few updates have gone out, each one can show what keeps coming up across your last few weeks of updates.</p></div>
