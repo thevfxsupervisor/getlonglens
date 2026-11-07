@@ -191,6 +191,7 @@ section{padding:clamp(48px,7vw,84px) 0}
 .contact-card ol{color:var(--dim);padding-left:20px;margin:14px 0 0}
 .contact-card ol li{margin:6px 0}
 .contact-card .btn{margin-top:22px}
+.fine{margin-top:14px;font-size:14px;line-height:1.45;color:var(--dim)}
 .email-line{margin-top:14px;font-family:var(--mono);font-size:13.5px;word-break:break-word}
 
 /* closing call to action */

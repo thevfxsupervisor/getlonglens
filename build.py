@@ -31,6 +31,9 @@ EMAIL = "geoff@wanglemedia.com"
 # https://getlonglens.com (NL_INQUIRY_ORIGINS). Set FORM_LIVE to False to fall back to email only.
 FORM_LIVE = True
 INQUIRY_ENDPOINT = APP + "/hooks/inquiry"
+# The wording of the small print under the start form's button. The app keeps a table of what each
+# version said (accounts/first_issue.py CONSENT_TEXTS): change the words, change this too.
+CONSENT_VERSION = "consent-2026-11-07"
 INQUIRY_CONSENT = "I agree to be contacted about this message at the email address I gave."
 # Cloudflare Turnstile on the form (the app checks the token when NL_TURNSTILE_SECRET is set).
 # The site key is PUBLIC; paste it from Cloudflare > Turnstile > the getlonglens.com widget.
@@ -90,7 +93,7 @@ def coming(text: str = "") -> str:
 CUR = ' aria-current="page"'
 
 
-def header(current: str) -> str:
+def header(current: str, signin: bool = True) -> str:
     links = "".join(
         f'<a href="{href}"{CUR if href == current else ""}>{label}</a>'
         for label, href in NAV
@@ -100,7 +103,7 @@ def header(current: str) -> str:
   <div class="wrap">
     <a class="brand" href="/" aria-label="LongLens home"><img src="/assets/mark-e1.svg" alt="" width="32" height="32"><span>LongLens</span></a>
     <a class="btn btn-a hdr-cta" href="/contact/">{CTA_LABEL}</a>
-    <nav aria-label="Main">{links}<a href="/sign-in/">Sign in</a><a class="btn btn-a" href="/contact/">{CTA_LABEL}</a></nav>
+    <nav aria-label="Main">{links}{'<a href="/sign-in/">Sign in</a>' if signin else ""}<a class="btn btn-a" href="/contact/">{CTA_LABEL}</a></nav>
   </div>
 </header>'''
 
@@ -119,7 +122,7 @@ def footer() -> str:
 
 
 def page(slug: str, title: str, description: str, body: str, current: str = "",
-         robots: str = "") -> str:
+         robots: str = "", signin: bool = True) -> str:
     path = "/" if slug == "" else f"/{slug}/"
     canonical = SITE + path
     robots_tag = f'\n<meta name="robots" content="{robots}">' if robots else ""
@@ -150,7 +153,7 @@ def page(slug: str, title: str, description: str, body: str, current: str = "",
 <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
-{header(current)}
+{header(current, signin)}
 <main id="main">
 {body}
 </main>
@@ -612,7 +615,7 @@ PRICING = f'''<section class="hero">
       <h2>No card form. One short form starts your free week.</h2></div>
     <ul class="list">
       <li><strong>Start from the form.</strong> Your first issue arrives by email in about {FIRST_ISSUE_MINUTES} minutes.</li>
-      <li><strong>One click to keep it.</strong> Press Keep it coming at the top of that first issue. Then it comes on weekdays at 07:00 your time, and you can change what it covers and when on one page.</li>
+      <li><strong>Nothing to press.</strong> The next issues follow on weekdays at 07:00 your time, and you can change what it covers and when on one page. Every issue ends with a Stop button.</li>
       <li><strong>A monthly cap on writing.</strong> If a newsletter reaches it, LongLens says so on your pages, and new issues start again the next month.</li>
       <li><strong>Up to two of the bigger formats a week</strong>: the two-voice audio, the explainer video or the one picture. The letter, the spoken version and the one-minute video carry on as usual.</li>
       <li><strong>Stop any time.</strong> Tell Geoff, and nothing is owed.</li>
@@ -645,8 +648,8 @@ HOW = f'''<section class="hero">
         <p><a href="/contact/">{CTA_TEXT}</a></p></li>
       <li><h3>Your first issue arrives in about {FIRST_ISSUE_MINUTES} minutes</h3>
         <p>By email, written from the sources and topics you gave. Already have an account? The email holds your sign-in link instead.</p></li>
-      <li><h3>Press Keep it coming</h3>
-        <p>The button is at the top of that first email. One click, and your next issues come on weekdays at 07:00 your time. Nothing more is sent until you press it.</p></li>
+      <li><h3>The next issues follow</h3>
+        <p>On weekdays at 07:00 your time, with nothing to press. Every issue ends with a Stop button.</p></li>
       <li><h3>Change it on one page, if you like</h3>
         <p>What it follows, its sources, its name, who reads it, and the days and time it arrives. Sooner? Open Issues and press Make an issue now: LongLens starts on it within ten minutes and emails it to you.</p></li>
     </ol>
@@ -698,7 +701,7 @@ def qa(q, a):
 FAQ_ITEMS = [
     ("Getting started", [
         ("How do we start, and how does LongLens reach my readers?",
-         f"<p>Send the form and your first issue arrives by email in about {FIRST_ISSUE_MINUTES} minutes, written from the sources and topics you gave. Press Keep it coming at the top of it to get the next ones, on weekdays at 07:00 your time. You can change what it covers and when on one page. Nothing more is sent until you press it. On a very busy day you get a start link instead: click it and answer three short questions. You see a week of real issues before anyone else does. Today each issue comes to you first, and you send it through the email tool you already use, or forward it. Email straight to your readers from your own address is coming.</p>"),
+         f"<p>Send the form and your first issue arrives by email in about {FIRST_ISSUE_MINUTES} minutes, written from the sources and topics you gave. The next ones follow on weekdays at 07:00 your time, with nothing to press, and every issue ends with a Stop button. You can change what it covers and when on one page. If you never tap, reply to or open anything for five issues, LongLens asks once whether you still want them and waits for your yes. On a very busy day you get a start link instead: click it and answer three short questions. You see a week of real issues before anyone else does. Today each issue comes to you first, and you send it through the email tool you already use, or forward it. Email straight to your readers from your own address is coming.</p>"),
         ("Can I sign up on my own?",
          f"<p>Yes, from the form. <a href=\"/contact/\">Start your free week</a>. Your first issue arrives by email in about {FIRST_ISSUE_MINUTES} minutes.</p>"),
         ("How do I sign in?",
@@ -806,7 +809,9 @@ def inquiry_form() -> str:
   <input type="hidden" name="tz" id="f-tz" value="">
   <script>try{{document.getElementById("f-tz").value=Intl.DateTimeFormat().resolvedOptions().timeZone||""}}catch(e){{}}</script>
   <p style="position:absolute;left:-9999px" aria-hidden="true"><label for="f-website">Leave this empty</label><input id="f-website" name="website" tabindex="-1" autocomplete="off"></p>{turnstile_widget()}
+  <input type="hidden" name="consent_version" value="{CONSENT_VERSION}">
   <button class="btn btn-a" type="submit">Start my free week</button>
+  <p class="fine">By starting, you agree to get these emails. Stop them any time with one click.</p>
   <p class="email-line">We never add you to a list.</p>
 </form>'''
 
@@ -838,7 +843,7 @@ CONTACT = f'''<section class="hero">
     <div class="sec-head"><span class="eyebrow">What happens next</span><h2>From this form to your first week of issues</h2></div>
     <ol class="steps three">
       <li><h3>Your first issue arrives</h3><p>By email, in about {FIRST_ISSUE_MINUTES} minutes, written from what you put in this form.</p></li>
-      <li><h3>Press Keep it coming</h3><p>The button is at the top of that email. One click, and your next issues come on weekdays at 07:00 your time.</p></li>
+      <li><h3>The next issues follow</h3><p>On weekdays at 07:00 your time, with nothing to press. Every issue ends with a Stop button.</p></li>
       <li><h3>Your first week</h3><p>Change what it covers and when on one page, if you like. You read a week of real issues before anyone else does.</p></li>
     </ol>
     <p class="k">Before you start, read a real one: <a href="{DAILY}">The VFX Supervisor Daily</a>, Geoff's own newsletter about his own field. Yours covers your field, for your readers.</p>
@@ -858,9 +863,9 @@ THANKS = f'''<section class="hero">
 THANKS_FIRST = f'''<section class="hero">
   <div class="wrap prose">
     <span class="eyebrow">Form sent</span>
-    <h1>Thanks. Your first issue is on its way.</h1>
-    <p>Your first issue arrives in about {FIRST_ISSUE_MINUTES} minutes. Click Keep it coming at the top of that email to get the next ones.</p>
-    <p>Nothing more is sent until you click it. We never add you to a list.</p>
+    <h1>Check your email in about {FIRST_ISSUE_MINUTES} minutes.</h1>
+    <p>Your first issue is on its way. The next ones follow on weekdays at 07:00 your time, with nothing to press, and every issue ends with a Stop button.</p>
+    <p>We never add you to a list.</p>
     <p>While you wait, read <a href="{DAILY}">Geoff's own newsletter</a>, or go back to the <a href="/">LongLens home page</a>.</p>
   </div>
 </section>'''
@@ -891,11 +896,12 @@ SIGNIN_PAGE = f'''<section class="hero">
 PRIVACY = f'''<section class="hero">
   <div class="wrap prose">
     <span class="eyebrow">Privacy</span>
-    <h1>No tracking. No cookies. Your email reaches one person.</h1>
+    <h1>No tracking on this site. No cookies. Your email reaches one person.</h1>
     <p>This website, getlonglens.com, runs no analytics or tracking scripts and sets no cookies. It is a set of plain pages hosted on GitHub Pages.</p>
     <h2>When you write to Geoff</h2>
     <p>Your email goes to Geoffrey Hancock at {EMAIL}. LongLens uses it to make your account and email you your newsletter, and Geoff uses it only to reply to you. Writing does not add you to any list.</p>
     <h2>Once you use LongLens</h2>
+    <p>We notice if you tap a link in your issues, only so we stop emailing anyone who never reads them. Nothing else is read from your issues, and it is not used for anything else.</p>
     <p>What the LongLens app keeps about you, where it lives and who else sees anything is set out on the app's own privacy page: <a href="{APP_PRIVACY}">LongLens app privacy</a>.</p>
   </div>
 </section>'''
@@ -953,7 +959,7 @@ def write_site() -> list[tuple[str, str]]:
     (ROOT / "contact" / "thanks-first-issue").mkdir(parents=True, exist_ok=True)
     (ROOT / "contact" / "thanks-first-issue" / "index.html").write_text(
         page("contact/thanks-first-issue", "Thanks | LongLens", "Your first issue is on its way.",
-             THANKS_FIRST, robots="noindex"),
+             THANKS_FIRST, robots="noindex", signin=False),
         encoding="utf-8")
     (ROOT / "contact" / "thanks-personal").mkdir(parents=True, exist_ok=True)
     (ROOT / "contact" / "thanks-personal" / "index.html").write_text(
