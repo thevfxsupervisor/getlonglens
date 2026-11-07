@@ -409,8 +409,8 @@ HOME = f'''<section class="hero">
       <h2>Free for a week. Then $19 or $95 a month, invoiced.</h2></div>
     <div class="cards">
       <div class="card"><h3>Pilot: free</h3><p>See a week of what your clients would read from you, before any of them do. You get everything LongLens does today.</p></div>
-      <div class="card"><h3>Solo, $19 a month: stay in front of your clients, week after week</h3><p>Your clients hear from you as often as you choose: the letter, the audio, the picture and both videos, sent to your existing clients for you.</p></div>
-      <div class="card"><h3>Business, $95 a month: reach people beyond your own list</h3><p>Everything in Solo, and people not on your list yet can find and follow you: a public page of your issues, your Slack or Discord channel and a feed for news readers.</p></div>
+      <div class="card"><h3>Solo, $19 a month: stay in front of your clients, week after week</h3><p>Your clients hear from you as often as you choose: the letter, the audio, the picture and both videos, with your name, logo and colours, sent to your existing clients for you.</p></div>
+      <div class="card"><h3>Business, $95 a month: reach people beyond your own list</h3><p>Looks like your firm, not a template: everything in Solo, plus a custom design of your letters, pages and videos, built with you when you start. And people not on your list yet can find and follow you: a public page of your issues, your Slack or Discord channel and a feed for news readers.</p></div>
     </div>
     <p class="k"><a href="/pricing/">See exactly what each plan includes</a></p>
   </div>
@@ -629,12 +629,14 @@ PRICING = f'''<section class="hero">
           <li>A newsletter every day or every week, with no blank page to face</li>
           <li>Read it, hear it, watch it: the letter, the audio, the one picture and both videos</li>
           <li>Every line yours: change it on the page, or reply in plain words</li>
+          <li>Your name, logo and colours on every issue, and never ours</li>
           <li>Every issue in your inbox first, and on a web page of its own</li>
           <li>Sent to your existing clients for you, with a one-click opt-out in every email</li>
         </ul></div>
       <div class="card"><h2 style="font-size:20px">Business, $95 a month: reach people beyond your own list</h2>
         <ul class="list" style="margin-top:8px">
           <li>Everything in Solo</li>
+          <li>Looks like your firm, not a template: a custom design of your letters, pages and videos, built with you when you start</li>
           <li>A public page of all your issues, with every format, for anyone to open</li>
           <li>Each issue posted to your Slack or Discord channel, and an RSS feed, where your team and followers already are</li>
           <li>{coming("Podcast apps, Instagram and LinkedIn posts, Telegram, and a block on your website")}</li>
@@ -756,7 +758,7 @@ FAQ_ITEMS = [
         ("What if LongLens gets something wrong?",
          "<p>You read every issue before your readers do, and you can change or cut any line. LongLens checks names and figures against the original story and links every story to it, so each fact can be checked in one click. Your name is on it, so the last word is yours.</p>"),
         ("Whose name is on what my clients read, and will it look like my brand?",
-         "<p>Yours, and only yours. Every issue carries your name, never ours. When you start, we match the look and feel to your brand.</p>"),
+         "<p>Yours, and only yours, so it looks like your firm, not a template. On every plan, every issue carries your name, logo and colours, never ours. Business adds a custom design of your letters, pages and videos, built with you when you start.</p>"),
         ("Who is responsible for record keeping and professional rules?",
          "<p>Your firm is. You decide what your clients are told, and you keep the records your own professional rules require. When LongLens sends for you, it keeps the proof of who was added as a client and who stopped.</p>"),
         ("Will AI-drafted issues sound like me?",
@@ -989,7 +991,7 @@ FA_FAQ = "".join(qa(q, a) for q, a in [
     ("Can I pick sources from my own country?",
      "<p>Yes. Name the sources you trust, such as a tax authority, your professional body or the business press, and we set them up when you start. Sources with a news feed work when you paste them. Some government pages need us to set them up by hand, so tell us which ones matter most to you.</p>"),
     ("Whose name is on what my clients read, and will it look like my brand?",
-     "<p>Yours, and only yours. Every update carries your firm's name and never ours, and we match the look to your brand when you start.</p>"),
+     "<p>Yours, and only yours, so it looks like your firm, not a template. On every plan, every update carries your firm's name, logo and colours, never ours. Business adds a custom design of your letters, pages and videos, built with you when you start.</p>"),
     ("Who is responsible for record keeping and professional rules?",
      "<p>Your firm is. You decide what your clients are told, and you keep the records your own professional rules require. When LongLens sends for you, it keeps the proof of who was added as a client and who stopped.</p>"),
 ])
