@@ -955,7 +955,7 @@ FA_AUTH = "HMRC, the IRS, or your own professional body"
 FA_SETUP = "Name the sources you trust and we set them up when you start."
 
 FA_FAQ = "".join(qa(q, a) for q, a in [
-    ("Can I use the sources I trust, in my country?",
+    ("Does LongLens cover my country's rules, from the places I trust?",
      "<p>Yes. Name the sources you trust, such as a tax authority, your professional body or the business press, and we set them up when you start. Sources with a news feed work when you paste them. Some government pages need us to set them up by hand, so tell us which ones matter most to you.</p>"),
     ("Whose name is on what my clients read, and will it look like my brand?",
      "<p>Yours, and only yours. Every update carries your firm's name and never ours, and we match the look to your brand when you start.</p>"),
@@ -967,7 +967,7 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow"><img src="/assets/mark-e1.svg" alt="" width="40" height="40">For accountants, tax advisers and bookkeepers</span>
     <h1>Be the accountant clients hear from first when the rules change</h1>
-    <p class="lede">{FA_SETUP} Examples: {FA_AUTH}. LongLens explains each change in plain words for your clients, with a link to every original, and you change any line before your clients read a word.</p>
+    <p class="lede">Tell your clients what a change means before they have to ask. LongLens explains each change in plain words, with a link to every original, and you change any line before your clients read a word. {FA_SETUP} Examples: {FA_AUTH}.</p>
     <div class="cta-row">
       <a class="btn btn-a" href="/contact/">{FA_CTA}</a>
     </div>
@@ -981,7 +981,7 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
 <section>
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">A sample client update</span>
-      <h2>See how a real tax change reads for your clients</h2>
+      <h2>See what your clients would hear from you the morning a tax rule changes</h2>
       <p>One example, written for an invented firm in Copenhagen, using real news: a corporate tax deadline, a new EU fee on parcels, a work permit route. The stories and links are real, and each section says what it means for the firm's clients. Yours would use the sources you trust, from any country.</p></div>
     <div class="fmt-strip six" role="list" aria-label="A sample client update for an accounting firm">
       <div class="fmt-card" role="listitem"><div class="fmt-media tall"><a href="/samples/{FA_SAMPLE[0]}/"><img src="/assets/samples/{FA_SAMPLE[0]}-top.png" width="600" height="900" loading="lazy" alt="The top of Client Update, a sample client update for an accounting firm: {html.escape(FA_SAMPLE[3])}"></a></div>
@@ -995,15 +995,15 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
 <section>
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">What your clients get</span>
-      <h2>Explain each change once, to every client</h2></div>
+      <h2>Explain each change once, and every client hears it from you</h2></div>
     <div class="cards">
-      <div class="card"><h3>The sources you trust, explained for your clients</h3><p>{FA_SETUP} Examples: {FA_AUTH}. LongLens drafts one short update from them, with a line on what most stories mean for your clients and a link to every original. Sources with a news feed work when pasted; some government pages need us to set them up by hand.</p></div>
-      <div class="card"><h3>Your judgement on every line, with the original one click away</h3><p>AI drafts the update. You read all of it before your clients do, you change any line you like, and every story links to the original so you can check it. LongLens cannot promise that a draft is right, which is why nothing goes out until you have seen it.</p></div>
+      <div class="card"><h3>Your clients get what a change means for them, not the press release</h3><p>Each update says in plain words what most stories mean for your clients, with a link to every original. {FA_SETUP} Examples: {FA_AUTH}. Sources with a news feed work when pasted; some government pages need us to set them up by hand.</p></div>
+      <div class="card"><h3>Every line sounds like your firm, and any claim is one click from its original</h3><p>LongLens writes the first version with AI. Make it yours: change any line you like, and check any story against its original. LongLens cannot promise that a draft is right, so your judgement is what your clients are reading.</p></div>
       <div class="card"><h3>When a deadline moves, clients see it in the same story, not as a second surprise</h3><p>When a deadline moves or a rule is reversed, LongLens marks the story as an update or a reversal and links back to the earlier updates that covered it.</p></div>
-      <div class="card"><h3>After the first few updates, show clients which changes keep coming up</h3><p>Once a few updates have gone out, each one can show what keeps coming up across your last few weeks of updates.</p></div>
+      <div class="card"><h3>Show clients what keeps coming up, so they know to ask you first</h3><p>Once a few updates have gone out, each one can show what keeps coming up across your last few weeks of updates.</p></div>
       <div class="card"><h3>Reach the client who will not read it</h3><p>Each update is a letter, and many also come as audio, a picture or a short video, for the client who listens on the drive in. Not every update has every format.</p></div>
-      <div class="card"><h3>Two minutes of your morning, weekdays at 07:00</h3><p>Each update takes about two minutes to read. Updates come to you weekdays at 07:00, or the days and time you choose.</p></div>
-      <div class="card"><h3>Goes out as yours, from the tool you already use, with your client list staying yours</h3><p>The update comes to you first. You send it to your clients from the email tool you already use, or forward it. LongLens does not need your client list today, because sending from LongLens to a list needs each person's recorded consent. {coming("Sending to your client list from your own address.")}</p></div>
+      <div class="card"><h3>Know what changed in two minutes, before your day starts</h3><p>Each update takes about two minutes to read. Updates come to you weekdays at 07:00, or the days and time you choose.</p></div>
+      <div class="card"><h3>Clients hear it from you, under your firm's name only, and your client list stays yours</h3><p>The update comes to you first. You send it to your clients from the email tool you already use, or forward it. LongLens does not need your client list today, because sending from LongLens to a list needs each person's recorded consent. {coming("Sending to your client list from your own address.")}</p></div>
     </div>
   </div>
 </section>
@@ -1012,7 +1012,7 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
 <section>
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Getting started</span>
-      <h2>Free for a week, then from $19 a month, invoiced</h2></div>
+      <h2>Read a week of client updates free, then decide</h2></div>
     <ul class="list">
       <li><strong>Send one short form.</strong> The sources you trust, the topics you cover, your email. Your first update arrives in about {FIRST_ISSUE_MINUTES} minutes.</li>
       <li><strong>Sign in with a link by email.</strong> No password to remember.</li>
@@ -1032,7 +1032,7 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
 </section>
 
 {close_cta("See a week of client updates, free.",
-           f"Name the sources you trust, list your topics, add your email. Your first update arrives in about {FIRST_ISSUE_MINUTES} minutes, and you read a week of updates before your clients see any.",
+           f"Be the first voice your clients hear when the rules change. Name the sources you trust, list your topics, add your email. Your first update arrives in about {FIRST_ISSUE_MINUTES} minutes, and you read a week of updates before your clients see any.",
            FA_CTA)}'''
 
 PAGES = [
@@ -1053,7 +1053,7 @@ PAGES = [
      "Straight answers: how soon your clients hear from you, what reaches them and when, whether it sounds like you, price and ownership.",
      FAQ, "/faq/"),
     ("for-accountants", "For accountants | LongLens",
-     "Be the accountant clients hear from first when the rules change. LongLens explains each change for your clients; you see it first and pass it on. Free for a week, then from $19 a month, invoiced.",
+     "Be the accountant clients hear from first when the rules change. Explain each change once, in plain words, under your firm's name only. Free for a week, then from $19 a month, invoiced.",
      FOR_ACCOUNTANTS, ""),
     ("contact", "Free week | LongLens",
      "Read what your clients would hear from you, free for a week: one short form, your first issue within minutes, a week of issues before anyone else sees them.",
