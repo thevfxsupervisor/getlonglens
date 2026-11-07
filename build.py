@@ -778,8 +778,12 @@ FAQ_ITEMS = [
          "<p>Yes. LongLens follows the websites, feeds and forums you name, wherever they are: a tax authority's news page, an industry association, a regulator.</p>"),
     ]),
     ("What you get", [
+        ('What does "issue" mean?',
+         f"<p>One edition of your newsletter: the stories LongLens picked for that day or week, each with what it means for your readers. Every issue comes as an {F_EMAIL}, and can also come as a {F_POD}, {F_REEL}, {F_EXPL} or {F_INFO}. {coming(f'A {F_CAR} with each issue.')}</p>"),
         ("Is LongLens only for one kind of business?",
          "<p>No. LongLens works for any business whose readers need to know what is changing: an accountancy, a vet practice, a law firm, a recruiter, a consultancy, a school or a members' association. Geoff built it first for his own field, visual effects, and that is the example on this site. Yours follows the websites, forums and newsletters of your field.</p>"),
+        (f"Is the {F_POD} voice AI?",
+         f"<p>Yes. Every {F_POD} is spoken by AI voices: two AI hosts talking the issue through, or one AI voice reading it. Before anyone hears it, each {F_POD} is checked against the stories it came from, and one that gets a fact wrong is held back.</p>"),
         (f"What if the {F_POD}, {F_REEL} or {F_EXPL} is missing?",
          f"<p>Not every issue gets every format. During the pilot, up to two of the bigger formats come each week: the two-voice {F_POD}, the {F_EXPL} or the {F_INFO}. The {F_EMAIL} always goes out, and the shorter {F_POD} and the {F_REEL} come with most issues. If the format that leads your email is missing, you get the full letter with one line saying so.</p>"),
         ("What happens when a rule changes after I have written about it?",
