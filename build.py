@@ -347,6 +347,19 @@ HOME = f'''<section class="hero">
 <hr class="rule">
 <section>
   <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Week after week</span>
+      <h2>Follow a story from issue to issue, and see what keeps coming up</h2></div>
+    <div class="cards two">
+      <div class="card"><h3>One story, followed</h3><p>A rule that changes twice stays one story. LongLens marks each story as new, an update or a reversal, and links back to the earlier issues that covered it.</p></div>
+      <div class="card"><h3>What keeps coming up</h3><p>Switch it on, and after a few issues each issue can show what keeps coming up across your last few weeks of issues, so your readers see where their field is heading.</p></div>
+    </div>
+    <p class="k">Two minutes to read, weekdays at 07:00 or the days and time you choose. Sign in with a link by email. No password.</p>
+  </div>
+</section>
+
+<hr class="rule">
+<section>
+  <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Your name, your words</span>
       <h2>Change any line right on the issue, exactly as your readers will see it</h2></div>
     <div class="feat">
@@ -395,7 +408,7 @@ FEATURES = f'''<section class="hero">
   <div class="wrap">
     <span class="eyebrow">Features</span>
     <h1>One issue on what changed in your field, as a letter, audio, a picture and video.</h1>
-    <p class="lede">LongLens writes each issue under your name, then turns the same issue into every format, so each reader takes the news in the way they like. You change any line on the page before anyone else sees it.</p>
+    <p class="lede">LongLens writes each issue under your name, then turns the same issue into more formats, so your readers can read it, hear it or watch it. You change any line on the page before anyone else sees it.</p>
     <p class="price-line">{AI_LINE}</p>
     {FORMAT_STRIP}
   </div>
@@ -405,8 +418,8 @@ FEATURES = f'''<section class="hero">
 <section>
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Every format</span>
-      <h2>The same news, in the way each reader likes it</h2>
-      <p>Every format is switched on for a new account. Each one comes from the same stories, so whichever a reader picks, they get the same news.</p></div>
+      <h2>The same news to read, to hear and to watch</h2>
+      <p>Every format is switched on for a new account. Each one comes from the same stories, so whichever format a reader opens, they get the same news.</p></div>
     <div class="cards">
       <div class="card"><h3>{F_READ}</h3><p>The letter: what changed and what it means for them, with a link to every original story. By email, and on the web once you publish the issue.</p></div>
       <div class="card"><h3>{F_SKIM}</h3><p>A short email with the one line that matters most and a button to read the whole issue on the web.</p></div>
@@ -728,6 +741,10 @@ FAQ_ITEMS = [
          "<p>No. LongLens works for any business whose readers need to know what is changing: an accountancy, a vet practice, a law firm, a recruiter, a consultancy, a school or a members' association. Geoff built it first for his own field, visual effects, and that is the example on this site. Yours follows the websites, forums and newsletters of your field.</p>"),
         ("What if the audio or videos are missing?",
          "<p>Not every issue gets every format. During the pilot, up to two of the bigger formats come each week: the two-voice audio, the explainer video or the one picture. The letter always goes out, and the spoken version and the one-minute video come with most issues. If the format that leads your email is missing, you get the full letter with one line saying so.</p>"),
+        ("Does LongLens follow a story over several issues?",
+         "<p>Yes. A story that moves stays one story: LongLens marks it as new, an update or a reversal, and links back to the earlier issues that covered it.</p>"),
+        ("What is \"What keeps coming up\"?",
+         "<p>A section that shows what keeps coming up across your last few weeks of issues. You switch it on in your settings, and it appears once a few issues have gone out.</p>"),
         ("Can LongLens write my own company news?",
          "<p>No. LongLens works from what the press, the forums and the videos in your field say. Your own announcements are still yours to write, and you can add them as a note in an issue.</p>"),
     ]),
@@ -916,6 +933,71 @@ NOT_FOUND = '''<section class="hero">
 
 # --------------------------------------------------------------------------------------------
 
+# --------------------------------------------------------------------------------------------
+# For accountants (outreach page: in the sitemap, not in the main navigation)
+# --------------------------------------------------------------------------------------------
+
+FA_SAMPLE = next(x for x in SAMPLES if x[0] == "dk-accounting")
+
+FOR_ACCOUNTANTS = f'''<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow"><img src="/assets/mark-e1.svg" alt="" width="40" height="40">For accountants, tax advisers and bookkeepers</span>
+    <h1>Your clients ask what the tax change means for them. Answer all of them at once, under your name.</h1>
+    <p class="lede">LongLens writes a short newsletter under your name on what changed and what it means for your clients. You name the tax authority's news page, your professional bodies and the business news to follow. You read every issue first, change any line, and send it on yourself.</p>
+    <div class="cta-row">
+      <a class="btn btn-a" href="/contact/">{CTA_TEXT}</a>
+    </div>
+    <p class="price-line">{OFFER_LINE} <a href="/pricing/">See prices</a>.</p>
+  </div>
+</section>
+
+<hr class="rule">
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">A sample issue</span>
+      <h2>Read an issue your clients could get</h2>
+      <p>This one was written for an invented Copenhagen accounting firm: a corporate tax deadline, a new EU fee on parcels, a work permit route. The firm is invented. The stories and links are real, and each section says what it means for the firm's clients.</p></div>
+    <div class="fmt-strip six" role="list" aria-label="A sample issue for an accounting firm">
+      <div class="fmt-card" role="listitem"><div class="fmt-media tall"><a href="/samples/{FA_SAMPLE[0]}/"><img src="/assets/samples/{FA_SAMPLE[0]}-top.png" width="600" height="900" loading="lazy" alt="The top of Client Update, a sample issue for an accounting firm: {html.escape(FA_SAMPLE[3])}"></a></div>
+        <div class="fmt-txt"><b>{FA_SAMPLE[1]}</b><p>"{html.escape(FA_SAMPLE[3])}"</p>
+        <p class="fmt-date">Sample issue written by LongLens, {SAMPLE_DATE}. <a href="/samples/{FA_SAMPLE[0]}/">Read the whole issue</a></p></div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">What you send</span>
+      <h2>Explain each change once, to every client</h2></div>
+    <div class="cards">
+      <div class="card"><h3>You choose the news, LongLens writes the issue</h3><p>Name the pages and channels you trust. LongLens writes one short issue from them, with a line on what most stories mean for your clients and a link to every original.</p></div>
+      <div class="card"><h3>A rule that changes stays one story</h3><p>When a deadline moves or a rule is reversed, LongLens marks the story as an update or a reversal and links back to the earlier issues that covered it.</p></div>
+      <div class="card"><h3>See what keeps coming up</h3><p>Switch on "What keeps coming up" and, after a few issues, each issue can show what keeps coming up across your last few weeks of issues.</p></div>
+      <div class="card"><h3>Read it, hear it or watch it</h3><p>Each issue is a letter, and many also come as audio, a picture or a short video, for the client who listens on the drive in. Not every issue has every format.</p></div>
+      <div class="card"><h3>Two minutes, weekdays at 07:00</h3><p>Each issue takes about two minutes to read. Issues go out weekdays at 07:00, or the days and time you choose.</p></div>
+      <div class="card"><h3>You see every issue first</h3><p>Every issue reaches you before anyone else. Read it, change any line, and send it on under your name.</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Getting started</span>
+      <h2>Free pilot, then from $19 a month</h2></div>
+    <ul class="list">
+      <li><strong>Send one short form.</strong> The news pages you follow, the topics you cover, your email. Your first issue arrives by email in about {FIRST_ISSUE_MINUTES} minutes.</li>
+      <li><strong>Sign in with a link by email.</strong> No password to remember.</li>
+      <li><strong>Read a week of issues</strong> before your clients see any, then keep going or stop.</li>
+    </ul>
+    <p class="price-line">Prices in US dollars, after the pilot. The first plans are paid by invoice.</p>
+  </div>
+</section>
+
+{close_cta("See a week of issues for your clients, free.",
+           f"Paste the news pages you follow, list your topics, add your email. Your first issue arrives in about {FIRST_ISSUE_MINUTES} minutes, and you read a week of issues before your clients see any.")}'''
+
 PAGES = [
     # slug, title, description, body, nav-current
     ("", "LongLens: a newsletter for your clients, written for you",
@@ -933,6 +1015,9 @@ PAGES = [
     ("faq", "FAQ | LongLens",
      "Straight answers about LongLens: getting started, what reaches your clients and when, editing, formats, price and ownership.",
      FAQ, "/faq/"),
+    ("for-accountants", "For accountants | LongLens",
+     "A short newsletter under your name on what changed in tax and what it means for your clients. You see every issue first. Free pilot, then from $19 a month.",
+     FOR_ACCOUNTANTS, ""),
     ("contact", "Free week | LongLens",
      "Start a free week of LongLens: one short form, your first issue by email within minutes, then a week of your own newsletter before anyone else sees it.",
      CONTACT, ""),
