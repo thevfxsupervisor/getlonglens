@@ -459,7 +459,7 @@ HOME = f'''<section class="hero skim-hero">
     <div class="cards">
       <div class="card price-card"><b class="kick">Free week</b><span class="amt">${PRICE_FREE}</span><p>A week of real issues, in every format, for you to judge.</p></div>
       <div class="card price-card lead"><b class="kick">Solo</b><span class="amt">${PRICE_SOLO} <small>a month</small></span><p>Your newsletter in your name, sent to your existing clients for you.</p></div>
-      <div class="card price-card"><b class="kick">Business</b><span class="amt">${PRICE_BUSINESS} <small>a month</small></span><p>A custom design, plus all your issues on one web page like a blog, so new people can follow you.</p></div>
+      <div class="card price-card"><b class="kick">Business</b><span class="amt">${PRICE_BUSINESS} <small>a month</small></span><p>A custom design, plus all your issues on one web page like a blog, your Slack or Discord, and RSS, so new people can follow you.</p></div>
     </div>
     <div class="after-cards"><a class="btn btn-b" href="/pricing/#plans">Compare the plans</a></div>
   </div>
@@ -682,12 +682,13 @@ FEATURES = f'''<section class="hero">
 SOLO_ROWS = ("A newsletter every day or every week",
              f"Every format: {F_EMAIL}, {F_POD}, {F_REEL}, {F_INFO}, {F_CAR}, {F_EXPL}",
              "Your name, logo and colours, never ours",
-             "Sent to your existing clients for you, with a one-click opt-out",
-             "Each issue posted to your Slack or Discord channel, and an RSS feed")
-# Slack, Discord and the RSS feed are on every plan: the app lets any owner set them up, with no
-# plan gate (webhooks: web/pages.py webhook_post; feed key: /agent-access). Checked 2026-11-08.
+             "Sent to your existing clients for you, with a one-click opt-out")
+# Slack, Discord and the RSS feed are listed under Business only (Geoff 2026-11-08). The app has no
+# plan gate on them, so any owner can still set them up; the site just does not sell them on Solo,
+# and no page may say they come with every plan.
 BUSINESS_ROWS = ("A custom design of your emails, pages and videos, built with you",
-                 "All your issues on one web page, like a blog")
+                 "All your issues on one web page, like a blog",
+                 "Each issue posted to your Slack or Discord channel, and an RSS feed")
 # Edit or reply: on every plan, so the table ticks it for both (BREAK S3); same words as the Free week card.
 EDIT_ROW = "Edit any line, or reply to your issue email with what to change"
 BUSINESS_COMING = f"Your {F_POD} in podcast apps; your {F_REEL} and {F_CAR} ready to post to Instagram, LinkedIn and TikTok"
@@ -940,7 +941,7 @@ FAQ = f'''<section class="hero">
     <div class="sec-head"><h2>Not built yet,|and we say so</h2></div>
     <ul class="coming">
       <li><strong>Each reader picks their format</strong> {coming()}<br>{F_EMAIL}, {F_POD}, {F_REEL}, {F_INFO}, {F_CAR} or {F_EXPL}, from a link at the bottom of every issue they get.</li>
-      <li><strong>Your {F_REEL} and {F_CAR} ready to post to your own Instagram, LinkedIn and TikTok; your {F_POD} in podcast apps; Telegram; your website</strong> {coming()}<br>Today each issue goes by email, on the web, to your Slack or Discord channel and to an RSS feed.</li>
+      <li><strong>Your {F_REEL} and {F_CAR} ready to post to your own Instagram, LinkedIn and TikTok; your {F_POD} in podcast apps; Telegram; your website</strong> {coming()}<br>Today each issue goes by email and on the web, and on Business to your Slack or Discord channel and an RSS feed.</li>
     </ul>
   </div>
 </section>

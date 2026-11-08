@@ -12,8 +12,8 @@ How owners change it: hit Reply on any issue and write what you want in plain wo
 
 Prices, in US dollars, paid by invoice. Free for a week, then from $19 a month.
 - Free week: $0. A week of real issues, no card. One newsletter, as many sources as you like, up to 25 readers.
-- Solo: $19 a month. A newsletter every day or every week. Every format: Email, Podcast, Reel, Infographic, Carousel, Explainer video. Your name, logo and colours, never ours. Sent to your existing clients for you, with a one-click opt-out. Each issue posted to your Slack or Discord channel, and an RSS feed.
-- Business: $95 a month. Everything in Solo. A custom design of your emails, pages and videos, built with you. All your issues on one web page, like a blog.
+- Solo: $19 a month. A newsletter every day or every week. Every format: Email, Podcast, Reel, Infographic, Carousel, Explainer video. Your name, logo and colours, never ours. Sent to your existing clients for you, with a one-click opt-out.
+- Business: $95 a month. Everything in Solo. A custom design of your emails, pages and videos, built with you. All your issues on one web page, like a blog. Each issue posted to your Slack or Discord channel, and an RSS feed.
 
 How to start: fill in the form at https://getlonglens.com/contact/ with the websites or feeds to follow (optional), the topics to follow, and an email address. The first issue arrives by email in about 5 minutes. After that, issues arrive on weekdays at 07:00 local time, or on the days and time the owner picks. Every issue ends with a Stop button.
 
