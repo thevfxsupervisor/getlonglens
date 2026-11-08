@@ -252,7 +252,7 @@ FORMAT_STRIP = f'''<div class="fmt-strip" role="list" aria-label="One issue in f
 EDITOR_SHOT = f'''<figure class="shot"><a href="{M}edit-in-place.png"><img src="{M}edit-in-place.png" width="1100" height="770" loading="lazy" alt="The LongLens editor open on a real issue: a bar with Save, Discard and the inbox preview line on top, and every line of the issue below outlined, ready to click and change."></a><figcaption>The real editor, open on a real issue.</figcaption></figure>'''
 
 PROOF = f'''<div class="proof">
-  <b>Who built it</b>
+  <h3>Who built LongLens</h3>
   <p>Geoffrey Hancock, VES Award winner for Changeling, built LongLens and runs his own newsletter on it most mornings. Yours covers your field.</p>
   <a class="txtlink" href="{DAILY}">Read The VFX Supervisor Daily</a>
 </div>'''
