@@ -355,7 +355,7 @@ HOME = f'''<section class="hero skim-hero">
     <p class="price-line">{HERO_OFFER}</p>
     </div>
     <div class="s5 hero-visual">
-      <a class="hero-mail" href="{M}read-letter.png"><img src="{M}read-letter.png" width="780" height="1276" alt="A real issue of The VFX Supervisor Daily as it arrives by email"></a>
+      <a class="hero-mail" href="https://thevfxsupervisor.com/daily/27/"><img src="{M}read-letter.png" width="780" height="1276" alt="A real issue of The VFX Supervisor Daily as it arrives by email"></a>
       <div class="hero-pod"><b class="kick">{F_POD}</b><img class="wave" src="{M}issue-audio-wave.png" width="780" height="352" alt="">
         <audio controls preload="none" src="{M}issue-audio.m4a" aria-label="The first 16 seconds of the issue's Podcast"></audio></div>
     </div>
