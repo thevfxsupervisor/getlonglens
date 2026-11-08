@@ -87,8 +87,8 @@ OWN_LINE = "Every issue carries your name and only yours, never ours, and we mat
 CLIENT_LINE = "Add your existing clients with a single tick, and LongLens sends them each issue you sign off, with only your name on it and a one-click opt-out in every email."
 CLIENT_LINE_FIRM = CLIENT_LINE.replace("only your name", "only your firm's name")
 SEND_SETUP = "We switch sending on with you when you start."
-LINK_LINE = "Every link is checked, and dead links are dropped."
-AI_LINE = "AI drafts each issue from the news you trust, and LongLens checks names and figures against the original story. You read and change every line first, so every line sounds like you."
+LINK_LINE = "Every story links to its original."
+AI_LINE = "AI drafts each issue from the news you trust, and every story links to its original. You read and change every line first, so every line sounds like you."
 
 
 def coming(text: str = "") -> str:
@@ -530,12 +530,12 @@ FEATURES = f'''<section class="hero">
         </ul>
       </div>
       <div class="txt">
-        <h2>Give clients facts they can check in one click: names and figures matched to the original, every link checked</h2>
+        <h2>Give clients facts they can follow in one click: every name and number links to the original</h2>
         <ul>
           <li><strong>What it means for them</strong>: most stories carry one line on why they matter to your readers, so the issue is never a list of links.</li>
           <li><strong>No repeats</strong>: a story they have already seen stays out until something changes, then comes back marked as an update.</li>
-          <li><strong>Names and figures</strong> are checked against the original story.</li>
-          <li><strong>{LINK_LINE}</strong> The last line of each issue says how many links were checked.</li>
+          <li><strong>Names and figures</strong> sit beside a link to the original story.</li>
+          <li><strong>{LINK_LINE}</strong> The original is one click away.</li>
         </ul>
       </div>
     </div>
@@ -684,8 +684,8 @@ HOW = f'''<section class="hero">
       <li><h3>Each story is judged against what your readers care about</h3><p>Your replies, such as "more on X, less on Y", change what is chosen next time.</p></li>
       <li><h3>The same story from two outlets appears once</h3><p>A story your readers already had stays out unless something changed. Then it comes back marked as an update, linked to the earlier coverage.</p></li>
       <li><h3>Each story is written in LongLens's own words</h3><p>With a line on why it matters to your readers, not pasted from the original.</p></li>
-      <li><h3>Names, titles and numbers are checked against the original article</h3><p>Every story keeps a link to the original.</p></li>
-      <li><h3>{LINK_LINE}</h3><p>A line at the foot of each issue says how many links were checked.</p></li>
+      <li><h3>Every name, title and number links to the original article</h3><p>The original is one click away.</p></li>
+      <li><h3>{LINK_LINE}</h3><p>The original is one click away.</p></li>
       <li><h3>A website that stops working or fills with junk is paused automatically</h3><p>You can see which one, and turn it back on with one tap.</p></li>
       <li><h3>You read it before your readers do</h3><p>Change any line first. {CLIENT_LINE}</p></li>
       <li><h3>The {F_POD}, {F_REEL} and the rest follow on most issues</h3><p>{FORMAT_LADDER} Each appears on the issue's page when it is ready.</p></li>
@@ -730,17 +730,17 @@ FAQ_ITEMS = [
     ]),
     ("Trust and control", [
         ("Is this just my news feeds pasted into an email?",
-         "<p>No. LongLens judges each story against what you said your readers care about, and in our own daily issues about 1 in 20 stories makes the cut. What stays is written in LongLens's own words with a line on why it matters to your readers. The same story from two outlets appears once, names, titles and numbers are checked against the original article, and every link is checked, and dead links are dropped. Every story links to its original, one click away, and you read the issue before your readers do.</p>"),
+         "<p>No. LongLens judges each story against what you said your readers care about, and in our own daily issues about 1 in 20 stories makes the cut. What stays is written in LongLens's own words with a line on why it matters to your readers. The same story from two outlets appears once, every name, title and number links to the original article. Every story links to its original, one click away, and you read the issue before your readers do.</p>"),
         ("Does anything reach my clients before I see it?",
          "<p>No. Nothing goes to your clients until you approve it. Every issue comes to you by email first: you read it, change any line, and decide what to send and to whom. If your issues also go up on a public page on your own website, each one waits for your OK there too, unless you choose a setting that puts it up for you: Automatic, or Publish at noon without my take (if you have not added your own comment by 12:00, it goes up without it). Both are off until you choose them, you are emailed when an issue goes up, and what goes up also reaches your Slack or Discord channel and your feed.</p>"),
         ("What if LongLens gets something wrong?",
-         "<p>You read every issue before your readers do, and you can change or cut any line. LongLens checks names and figures against the original story and links every story to it, so each fact can be checked in one click. Your name is on it, so the last word is yours.</p>"),
+         "<p>You read every issue before your readers do, and you can change or cut any line. LongLens links every story to its original, so you or your client can follow any fact in one click. Your name is on it, so the last word is yours.</p>"),
         ("Whose name is on what my clients read, and will it look like my brand?",
          "<p>Yours, and only yours, so it looks like your firm, not a template. On every plan, every issue carries your name, logo and colours, never ours. Business adds a custom design of your letters, pages and videos, built with you when you start.</p>"),
         ("Who is responsible for record keeping and professional rules?",
          "<p>Your firm is. You decide what your clients are told, and you keep the records your own professional rules require. When LongLens sends for you, it keeps the proof of who was added as a client and who stopped.</p>"),
         ("Will AI-drafted issues sound like me?",
-         "<p>AI drafts each issue, checks names and figures against the original story, and checks links before the issue goes out. You read and change every line first, on the page or by replying, so it sounds like you.</p>"),
+         "<p>AI drafts each issue and links every story to its original. You read and change every line first, on the page or by replying, so it sounds like you.</p>"),
         ("Can I make every line sound like me?",
          "<p>Yes. Open the issue, press Edit in place, click any line and type, then Save. Every version is kept. This works on daily newsletters; a weekly newsletter has its own editor, section by section.</p>"),
     ]),
@@ -1015,8 +1015,8 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
       <h2>Explain each change once, and every client hears it from you</h2></div>
     <div class="cards">
       <div class="card"><h3>Your clients get what a change means for them, not the press release</h3><p>Each update says in plain words what most stories mean for your clients, with a link to every original. {FA_SETUP} Examples: {FA_AUTH}. Sources with a news feed work when pasted; some government pages need us to set them up by hand.</p></div>
-      <div class="card"><h3>Names and numbers checked against the original before a client sees them</h3><p>LongLens checks names, titles and figures against the original article, and checks every link, before an update reaches you. You read it first, so a client only sees what you signed off.</p></div>
-      <div class="card"><h3>Every line sounds like your firm, and any claim is one click from its original</h3><p>LongLens writes the first version with AI. Make it yours: change any line you like, and check any story against its original. LongLens cannot promise that a draft is right, so your judgement is what your clients are reading.</p></div>
+      <div class="card"><h3>You see every issue first, with the original one click away</h3><p>Every name, title and number links to the original article. You read each issue before a client does, so a client only sees what you signed off.</p></div>
+      <div class="card"><h3>Every line sounds like your firm, and any claim is one click from its original</h3><p>LongLens writes the first version with AI. Make it yours: change any line you like, and follow any story to its original. LongLens cannot promise that a draft is right, so your judgement is what your clients are reading.</p></div>
       <div class="card"><h3>When a deadline moves, clients see it in the same story, not as a second surprise</h3><p>LongLens watches for updates and reversals and links back to earlier coverage, so a moved deadline reads as part of the story your clients already know.</p></div>
       <div class="card"><h3>Show clients what keeps coming up, so they know to ask you first</h3><p>After your first few updates, each one shows what keeps coming up across the last few weeks.</p></div>
       <div class="card"><h3>Reach the client who would rather listen than read</h3><p>Each update is an {F_EMAIL}, and most also come as a {F_POD} for the client who listens on the drive in and a {F_REEL} for the one who lives on their phone. Some add an {F_EXPL} or an {F_INFO}. Not every update has every format.</p></div>
