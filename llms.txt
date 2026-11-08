@@ -1,21 +1,21 @@
 # LongLens
 
-> LongLens (getlonglens.com) writes a newsletter for a business, under the business's own name. It finds what changed in the business's field, writes an issue that says what it means for the business's clients, and the owner reads and changes every line before anyone else sees it. The Email, Podcast, Reel, Infographic, Carousel and Explainer video are all part of the issue. Free for a week, then from $19 a month.
+> LongLens (getlonglens.com) writes a newsletter for a business, under the business's own name. It finds what changed in the business's field, writes an issue that says what it means for the business's clients. The owner can change the words of any issue on the page before sending it, and every issue comes to the owner first. The Email, Podcast, Reel, Infographic, Carousel and Explainer video are all part of the issue. Free for a week, then from $19 a month.
 
-LongLens is an AI newsletter service for businesses. LongLens finds what changed in your field and tells your clients what it means, under your name only. The Email, Podcast, Reel, Infographic, Carousel and Explainer video are all part of the issue, and you read every issue first.
+LongLens is an AI newsletter service for businesses. LongLens finds what changed in your field and tells your clients what it means, under your name only. The Email, Podcast, Reel, Infographic, Carousel and Explainer video are all part of the issue. Every issue comes to you first, and you make it yours on the page before you send it.
 
 LongLens is for any business whose clients ask "what does this mean for me?": accountants, law firms, vet practices, consultants, coaches, recruiters, schools, clubs and associations. It is not a visual effects product. The VFX Supervisor Daily, its founder's own newsletter about his own field, is one example of what it makes.
 
-How it differs from a feed in an email: LongLens judges each story against what the owner said their readers care about. In LongLens's own daily issues about 1 in 20 stories makes the cut. Each story is retold in plain words with a line on why it matters to the reader, the same story from two outlets appears once, a story readers already had comes back only when something changed, marked as an update, and every story links to its original.
+How it differs from a feed in an email: LongLens judges each story against what the owner said their readers care about. Each story is retold in plain words with a line on why it matters to the reader, the same story from two outlets appears only once, a story readers already had comes back only when something changed, marked as an update, and every story links to its original.
 
 How owners change it: hit Reply on any issue and write what you want in plain words, such as "shorter" or "more on the new rules". LongLens answers in the same email thread with what it understood, and the next issue follows it. Reply UNDO to take a change back. Owners can also click any line of an issue and type.
 
 Prices, in US dollars, paid by invoice. Free for a week, then from $19 a month.
 - Free week: $0. A week of real issues, no card. One newsletter, as many sources as you like, up to 25 readers.
-- Solo: $19 a month. A newsletter every day or every week. Every format: Email, Podcast, Reel, Infographic, Carousel, Explainer video. Your name, logo and colours, never ours. Sent to your existing clients for you, with a one-click opt-out.
-- Business: $95 a month. Everything in Solo. A custom design of your emails, pages and videos, built with you. All your issues on one web page, like a blog. Each issue posted to your Slack or Discord channel, and an RSS feed.
+- Solo: $19 a month. A newsletter every day or every week. Every format: Email, Podcast, Reel, Infographic, Carousel, Explainer video. Your name, logo and colours, never ours. Sent to your existing clients for you, with a one-click opt-out. Each issue posted to your Slack or Discord channel, and an RSS feed.
+- Business: $95 a month. Everything in Solo. A custom design of your emails, pages and videos, built with you. All your issues on one web page, like a blog.
 
-How to start: fill in the form at https://getlonglens.com/contact/ with the websites or feeds to follow (optional), the topics to follow, and an email address. The first issue arrives by email in about 5 minutes. After that, issues arrive on weekdays at 07:00 local time, or on the days and time the owner picks. Every issue ends with a Stop button. Nothing reaches the owner's clients until the owner approves it.
+How to start: fill in the form at https://getlonglens.com/contact/ with the websites or feeds to follow (optional), the topics to follow, and an email address. The first issue arrives by email in about 5 minutes. After that, issues arrive on weekdays at 07:00 local time, or on the days and time the owner picks. Every issue ends with a Stop button.
 
 LongLens does not write a business's own company news, and does not run ads or paid subscriptions.
 

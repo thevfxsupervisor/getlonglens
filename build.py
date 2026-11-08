@@ -71,8 +71,8 @@ OG_VERSION = "2026-11-08"
 # The plain definition, said the same way on the home page, the FAQ, the JSON-LD and llms.txt.
 DEFINITION = ("LongLens is an AI newsletter service for businesses. LongLens finds what changed in your "
               "field and tells your clients what it means, under your name only. The Email, Podcast, Reel, "
-              "Infographic, Carousel and Explainer video are all part of the issue, and you read every "
-              "issue first.")
+              "Infographic, Carousel and Explainer video are all part of the issue. Every issue comes to you "
+              "first, and you make it yours on the page before you send it.")
 YOUTUBE = "https://www.youtube.com/@getlonglens"
 # Cloudflare Web Analytics (Geoff approved 2026-11-08). The token is PUBLIC, not a secret. It goes on
 # every generated page, 404 included, and never in preview.html. Cloudflare: the beacon "does not use
@@ -190,6 +190,10 @@ def page(slug: str, title: str, description: str, body: str, current: str = "",
          robots: str = "", signin: bool = True, graph: list | None = None) -> str:
     path = "/" if slug == "" else f"/{slug}/"
     canonical = SITE + path
+    # The 404 page has no URL of its own (GitHub Pages serves it at any missing path): no canonical.
+    canonical_tag = "" if slug == "404" else f'\n<link rel="canonical" href="{canonical}">'
+    if slug == "404":
+        canonical = SITE + "/"
     robots_tag = f'\n<meta name="robots" content="{robots}">' if robots else ""
     ld_tag = "\n" + ld(graph) if graph else ""
     return f'''<!doctype html>
@@ -199,8 +203,7 @@ def page(slug: str, title: str, description: str, body: str, current: str = "",
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-site-verification" content="YgmFLbLdiFc4zNjw-3vSVNpJbJmgxIqkL6glHpnmsYw">
 <title>{html.escape(title)}</title>
-<meta name="description" content="{html.escape(description)}">
-<link rel="canonical" href="{canonical}">{robots_tag}
+<meta name="description" content="{html.escape(description)}">{canonical_tag}{robots_tag}
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#f4efe6">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#131619">
@@ -338,11 +341,13 @@ COMING_PLACES = ("Your Podcast in podcast apps",
                  "Your Reel and Carousel ready to post to your own Instagram, LinkedIn and TikTok",
                  "A block on your website", "Telegram")
 
-# The home headline's two rotating words: the audience and the verb. Only the first of each is in
-# the HTML, so crawlers, text extractors, screen readers and no-script visitors all get one plain
-# sentence, "Your clients hear the news from you." The script adds the other words from data-words
-# as aria-hidden spans: they are absolutely placed and invisible until shown (site.css .rot), so
-# adding them moves nothing. Reduced motion still swaps the words, as a plain fade with no movement.
+# The home headline's two rotating words: the audience and the verb. The H1's TEXT is always one
+# plain sentence, "Your clients hear the news from you.": the first word of each group is a real,
+# visually hidden text node (.rot-txt). The words you SEE are drawn by CSS from data-w
+# (site.css .rot>span[data-w]::before) on aria-hidden spans with no text, so neither innerText,
+# textContent, the accessibility tree nor a rendering crawler ever reads the rotation (BREAK S3,
+# 2026-11-08). No-script visitors still see the first words. The script adds the other words from
+# data-words the same way: absolutely placed and invisible until shown, so adding them moves nothing. Reduced motion still swaps the words, as a plain fade with no movement.
 # Each box is the width of the word showing, so a short word leaves no gap; site.css caps the font
 # so the longest pair still fits one line and the headline never changes its line count.
 # Every pair makes a complete, true sentence: "Your ___ ___ the news from you."
@@ -352,7 +357,8 @@ ROT_VERBS = ("hear", "read", "watch")
 
 def rot_group(words, cls: str = "rot") -> str:
     assert all("," not in w and "|" not in w for w in words)
-    return f'<span class="{cls}" data-words="{",".join(words[1:])}"><span class="on">{words[0]}</span></span>'
+    return (f'<span class="{cls}" data-words="{",".join(words[1:])}"><span class="rot-txt">{words[0]}</span>'
+            f'<span class="on" data-w="{words[0]}" aria-hidden="true"></span></span>')
 
 
 ROT_JS = """<script>
@@ -360,11 +366,11 @@ ROT_JS = """<script>
   var h = document.querySelector('.rot-h1'); if (!h) return;
   Array.prototype.forEach.call(h.querySelectorAll('.rot[data-words]'), function(r){
     r.getAttribute('data-words').split(',').forEach(function(w){
-      var s = document.createElement('span'); s.textContent = w; s.setAttribute('aria-hidden', 'true'); r.appendChild(s);
+      var s = document.createElement('span'); s.setAttribute('data-w', w); s.setAttribute('aria-hidden', 'true'); r.appendChild(s);
     });
   });
   var groups = h.querySelectorAll('.rot'), paused = false, t = 0;
-  var g = Array.prototype.map.call(groups, function(r){ return {w: r.querySelectorAll(':scope > span'), i: 0}; });
+  var g = Array.prototype.map.call(groups, function(r){ return {w: r.querySelectorAll(':scope > span[data-w]'), i: 0}; });
   function step(x){
     // The old word keeps its place while it fades (.out), so the next word never lands under it;
     // only then does the line take the new word's width and the new word fades in.
@@ -453,7 +459,7 @@ HOME = f'''<section class="hero skim-hero">
     <div class="cards">
       <div class="card price-card"><b class="kick">Free week</b><span class="amt">${PRICE_FREE}</span><p>A week of real issues, in every format, for you to judge.</p></div>
       <div class="card price-card lead"><b class="kick">Solo</b><span class="amt">${PRICE_SOLO} <small>a month</small></span><p>Your newsletter in your name, sent to your existing clients for you.</p></div>
-      <div class="card price-card"><b class="kick">Business</b><span class="amt">${PRICE_BUSINESS} <small>a month</small></span><p>A custom design, plus all your issues on one web page like a blog, your Slack or Discord, and RSS, so new people can follow you.</p></div>
+      <div class="card price-card"><b class="kick">Business</b><span class="amt">${PRICE_BUSINESS} <small>a month</small></span><p>A custom design, plus all your issues on one web page like a blog, so new people can follow you.</p></div>
     </div>
     <div class="after-cards"><a class="btn btn-b" href="/pricing/#plans">Compare the plans</a></div>
   </div>
@@ -676,10 +682,12 @@ FEATURES = f'''<section class="hero">
 SOLO_ROWS = ("A newsletter every day or every week",
              f"Every format: {F_EMAIL}, {F_POD}, {F_REEL}, {F_INFO}, {F_CAR}, {F_EXPL}",
              "Your name, logo and colours, never ours",
-             "Sent to your existing clients for you, with a one-click opt-out")
+             "Sent to your existing clients for you, with a one-click opt-out",
+             "Each issue posted to your Slack or Discord channel, and an RSS feed")
+# Slack, Discord and the RSS feed are on every plan: the app lets any owner set them up, with no
+# plan gate (webhooks: web/pages.py webhook_post; feed key: /agent-access). Checked 2026-11-08.
 BUSINESS_ROWS = ("A custom design of your emails, pages and videos, built with you",
-                 "All your issues on one web page, like a blog",
-                 "Each issue posted to your Slack or Discord channel, and an RSS feed")
+                 "All your issues on one web page, like a blog")
 # Edit or reply: on every plan, so the table ticks it for both (BREAK S3); same words as the Free week card.
 EDIT_ROW = "Edit any line, or reply to your issue email with what to change"
 BUSINESS_COMING = f"Your {F_POD} in podcast apps; your {F_REEL} and {F_CAR} ready to post to Instagram, LinkedIn and TikTok"
@@ -790,7 +798,7 @@ HOW = f'''<section class="hero">
 <section>
   <div class="wrap">
     <div class="sec-head"><h2>Why your clients can trust|what they read from you</h2>
-      <p>Not a pasted feed. In our own daily issues, about 1 in 20 stories makes the cut.</p></div>
+      <p>Not a pasted feed: only the stories your clients care about, in plain words.</p></div>
     <ol class="steps two">
       <li><h3>Stop checking|ten websites a day</h3><p>LongLens reads the websites, feeds and channels you pick, and brings you what matters.</p></li>
       <li><h3>Each story is judged against|what your readers care about</h3><p>Write back "more on the new rules, less on events" and the next issue picks its stories that way.</p></li>
@@ -813,7 +821,7 @@ HOW = f'''<section class="hero">
       <li><strong>Change the next issue</strong>: reply to the issue email and say what you want, for example "shorter please". LongLens emails back what it changed, and the next issue follows it.</li>
       <li><strong>Undo a change</strong>: reply with the one word UNDO.</li>
       <li><strong>Pause it</strong>: press Pause this newsletter at the bottom of any issue. The same page starts it again.</li>
-      <li><strong>Sign in</strong>: type your email on the <a href="/sign-in/">sign-in page</a> and a fresh link arrives by email, usually within a minute. Each link works once, and keeps you signed in for 30 days on that device.</li>
+      <li><strong>Sign in</strong>: type your email on the <a href="/sign-in/">sign-in page</a> and a fresh link arrives by email. Each link works once, and keeps you signed in for 30 days on that device.</li>
     </ul>
     <p class="k">Prefer to send it yourself? Forward any issue from your own email.</p>
   </div>
@@ -853,11 +861,11 @@ FAQ_ITEMS = [
         ("Can I sign up on my own?",
          f"<p>Yes, from the form. <a href=\"/contact/\">Start your free week</a>. Your first issue arrives by email in about {FIRST_ISSUE_MINUTES} minutes. On a very busy day you get a start link instead: click it and answer three short questions.</p>"),
         ("How do I sign in?",
-         "<p>With a link by email. There is no password. Type your email on the <a href=\"/sign-in/\">sign-in page</a> and a fresh link arrives, usually within a minute. Each link works once and keeps you signed in for 30 days on that device.</p>"),
+         "<p>With a link by email. There is no password. Type your email on the <a href=\"/sign-in/\">sign-in page</a> and a fresh link arrives. Each link works once and keeps you signed in for 30 days on that device.</p>"),
     ]),
     ("Trust and control", [
         ("Is this just my news feeds pasted into an email?",
-         "<p>No. LongLens judges each story against what you said your readers care about, and in our own daily issues about 1 in 20 stories makes the cut. What stays is retold in plain words, under your name, with a line on why it matters to your readers, not pasted from the original. The same story from two outlets appears only once. Every name, title and number links to the original article. Every story links to its original, one click away, and you read the issue before your readers do.</p>"),
+         "<p>No. LongLens judges each story against what you said your readers care about, and leaves out what does not fit. What stays is retold in plain words, under your name, with a line on why it matters to your readers, not pasted from the original. The same story from two outlets appears only once. Every name, title and number links to the original article. Every story links to its original, one click away, and you read the issue before your readers do.</p>"),
         ("Does anything reach my clients before I see it?",
          "<p>No. Nothing goes to your clients until you approve it. Every issue comes to you by email first: you read it, change any line, and decide what to send and to whom. If your issues also go up on a web page, like a blog, each one waits for your OK there too, unless you choose a setting that puts it up for you: Automatic, or Publish at noon without my take (if you have not added your own comment by 12:00, it goes up without it). Both are off until you choose them, you are emailed when an issue goes up, and what goes up also reaches your Slack or Discord channel and your feed.</p>"),
         ("What if LongLens gets something wrong?",
@@ -904,7 +912,7 @@ FAQ_ITEMS = [
     ]),
     ("Money and ownership", [
         ("What does LongLens cost?",
-         f"<p>{OFFER_LINE}, with no card. Solo is ${PRICE_SOLO} a month and Business is ${PRICE_BUSINESS} a month, in US dollars, paid by invoice. <a href=\"/pricing/\">See what each plan includes</a>.</p>"),
+         f"<p>Free for a week with no card, then from ${PRICE_SOLO} a month. Solo is ${PRICE_SOLO} a month and Business is ${PRICE_BUSINESS} a month, in US dollars, paid by invoice. <a href=\"/pricing/\">See what each plan includes</a>.</p>"),
         ("Is there a limit during the free week?",
          "<p>Yes: one newsletter, with as many sources as you like and up to 25 readers on your list.</p>"),
         ("Who owns what LongLens writes?",
@@ -1043,7 +1051,7 @@ THANKS_PERSONAL = f'''<section class="hero">
 SIGNIN_PAGE = f'''<section class="hero">
   <div class="wrap">
     <h1>Sign in with one link.|No password.</h1>
-    <p class="lede">The button below opens the LongLens app's sign-in page. Type your email and a link arrives by email, usually within a minute. The link keeps you signed in for 30 days on that device.</p>
+    <p class="lede">The button below opens the LongLens app's sign-in page. Type your email and a link arrives by email. The link keeps you signed in for 30 days on that device.</p>
     <div class="cta-row"><a class="btn btn-a" href="{SIGNIN}">Get my sign-in link</a></div>
     <p class="k">Not set up yet? <a href="/contact/">Start your free week</a> and your first issue arrives by email in minutes.</p>
   </div>
@@ -1191,7 +1199,7 @@ PAGES = [
     ("faq", "FAQ", "Client newsletter questions answered | LongLens",
      "Straight answers: how soon your clients hear from you, what reaches them and when, whether it sounds like you, price and ownership.",
      FAQ, "/faq/", "answers on control, client details, formats, price and ownership"),
-    ("for-accountants", "For accountants", "Client newsletter for accountants, first when rules change",
+    ("for-accountants", "For accountants", "Accountant client newsletter: first on new rules | LongLens",
      f"Be the accountant clients hear from first: a client newsletter on each tax and rule change, under your firm's name. {OFFER_LINE}.",
      FOR_ACCOUNTANTS, "", "LongLens as a client newsletter for accounting firms"),
     ("contact", "Start a free week", "Start your free week of client newsletters | LongLens",
@@ -1232,7 +1240,7 @@ PERSON = {"@type": "Person", "@id": PERSON_ID, "name": "Geoffrey Hancock", "url"
           "sameAs": [GEOFF_SITE],
           "award": "VES Award, Outstanding Supporting Visual Effects in a Feature Motion Picture, for Changeling"}
 ORG = {"@type": "Organization", "@id": ORG_ID, "name": "LongLens", "url": SITE + "/",
-       "logo": SITE + "/assets/mark-e1-96.png", "description": DEFINITION,
+       "logo": SITE + "/assets/mark-e1-512.png", "description": DEFINITION,
        "disambiguatingDescription": "LongLens at getlonglens.com, the newsletter service.",
        "founder": PERSON, "sameAs": [YOUTUBE]}
 WEBSITE = {"@type": "WebSite", "@id": SITE + "/#site", "name": "LongLens", "url": SITE + "/",
@@ -1280,32 +1288,33 @@ def graph_for(slug: str, label: str) -> list:
     return g
 
 
-def write_site() -> list[tuple[str, str]]:
+def render_site() -> list[tuple[str, str, Path]]:
+    """Every generated page as (slug, html, target), in memory: nothing is written until
+    check_output() has passed, so a refused build leaves no failing page on disk."""
     out = []
     for slug, label, title, desc, body, cur, _about in PAGES:
-        doc = page(slug, title, desc, body, cur, graph=graph_for(slug, label))
         target = ROOT / "index.html" if slug == "" else ROOT / slug / "index.html"
+        out.append((slug, page(slug, title, desc, body, cur, graph=graph_for(slug, label)), target))
+    out.append(("thanks", page("thanks", "Thanks | LongLens", "Your start link is on its way.", THANKS,
+                               robots="noindex"), ROOT / "thanks" / "index.html"))
+    out.append(("contact/thanks-first-issue",
+                page("contact/thanks-first-issue", "Thanks | LongLens", "Your first issue is on its way.",
+                     THANKS_FIRST, robots="noindex", signin=False),
+                ROOT / "contact" / "thanks-first-issue" / "index.html"))
+    out.append(("contact/thanks-personal",
+                page("contact/thanks-personal", "Thanks | LongLens", "Geoff will reply to you personally.",
+                     THANKS_PERSONAL, robots="noindex"),
+                ROOT / "contact" / "thanks-personal" / "index.html"))
+    out.append(("404", page("404", "Not found | LongLens", "That page is not here.", NOT_FOUND,
+                            robots="noindex"), ROOT / "404.html"))
+    return out
+
+
+def write_site(rendered: list[tuple[str, str, Path]]) -> list[tuple[str, str]]:
+    for _slug, doc, target in rendered:
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(doc, encoding="utf-8")
-        out.append((slug, doc))
-    (ROOT / "thanks").mkdir(exist_ok=True)
-    (ROOT / "thanks" / "index.html").write_text(
-        page("thanks", "Thanks | LongLens", "Your start link is on its way.", THANKS, robots="noindex"),
-        encoding="utf-8")
-    (ROOT / "contact" / "thanks-first-issue").mkdir(parents=True, exist_ok=True)
-    (ROOT / "contact" / "thanks-first-issue" / "index.html").write_text(
-        page("contact/thanks-first-issue", "Thanks | LongLens", "Your first issue is on its way.",
-             THANKS_FIRST, robots="noindex", signin=False),
-        encoding="utf-8")
-    (ROOT / "contact" / "thanks-personal").mkdir(parents=True, exist_ok=True)
-    (ROOT / "contact" / "thanks-personal" / "index.html").write_text(
-        page("contact/thanks-personal", "Thanks | LongLens", "Geoff will reply to you personally.",
-             THANKS_PERSONAL, robots="noindex"),
-        encoding="utf-8")
-    (ROOT / "404.html").write_text(
-        page("404", "Not found | LongLens", "That page is not here.", NOT_FOUND, robots="noindex"),
-        encoding="utf-8")
-    return out
+    return [(slug, doc) for slug, doc, _t in rendered if slug in {p[0] for p in PAGES}]
 
 
 def data_uri(rel: str) -> str:
@@ -1377,20 +1386,20 @@ def llms_txt() -> str:
         f"- {name}: ${price}" + ("" if not price else " a month") + f". {desc}" for name, price, desc in PLANS)
     return f"""# LongLens
 
-> LongLens (getlonglens.com) writes a newsletter for a business, under the business's own name. It finds what changed in the business's field, writes an issue that says what it means for the business's clients, and the owner reads and changes every line before anyone else sees it. {FORMAT_LADDER} {OFFER_LINE}.
+> LongLens (getlonglens.com) writes a newsletter for a business, under the business's own name. It finds what changed in the business's field, writes an issue that says what it means for the business's clients. The owner can change the words of any issue on the page before sending it, and every issue comes to the owner first. {FORMAT_LADDER} {OFFER_LINE}.
 
 {DEFINITION}
 
 LongLens is for any business whose clients ask "what does this mean for me?": accountants, law firms, vet practices, consultants, coaches, recruiters, schools, clubs and associations. It is not a visual effects product. The VFX Supervisor Daily, its founder's own newsletter about his own field, is one example of what it makes.
 
-How it differs from a feed in an email: LongLens judges each story against what the owner said their readers care about. In LongLens's own daily issues about 1 in 20 stories makes the cut. Each story is retold in plain words with a line on why it matters to the reader, the same story from two outlets appears once, a story readers already had comes back only when something changed, marked as an update, and every story links to its original.
+How it differs from a feed in an email: LongLens judges each story against what the owner said their readers care about. Each story is retold in plain words with a line on why it matters to the reader, the same story from two outlets appears only once, a story readers already had comes back only when something changed, marked as an update, and every story links to its original.
 
 How owners change it: hit Reply on any issue and write what you want in plain words, such as "shorter" or "more on the new rules". LongLens answers in the same email thread with what it understood, and the next issue follows it. Reply UNDO to take a change back. Owners can also click any line of an issue and type.
 
 Prices, in US dollars, paid by invoice. {OFFER_LINE}.
 {plans}
 
-How to start: fill in the form at {SITE}/contact/ with the websites or feeds to follow (optional), the topics to follow, and an email address. The first issue arrives by email in about {FIRST_ISSUE_MINUTES} minutes. After that, issues arrive on weekdays at 07:00 local time, or on the days and time the owner picks. Every issue ends with a Stop button. Nothing reaches the owner's clients until the owner approves it.
+How to start: fill in the form at {SITE}/contact/ with the websites or feeds to follow (optional), the topics to follow, and an email address. The first issue arrives by email in about {FIRST_ISSUE_MINUTES} minutes. After that, issues arrive on weekdays at 07:00 local time, or on the days and time the owner picks. Every issue ends with a Stop button.
 
 LongLens does not write a business's own company news, and does not run ads or paid subscriptions.
 
@@ -1414,6 +1423,19 @@ LongLens was built by Geoffrey Hancock, a visual effects supervisor and VES Awar
 """
 
 
+def beacon_samples() -> None:
+    """The sample issues under samples/ are static pages made elsewhere (the pipeline's own
+    render), so the analytics beacon is added here, once, before </body>. Idempotent."""
+    if not CF_BEACON:
+        return
+    for f in sorted(ROOT.glob("samples/*/index.html")):
+        doc = f.read_text(encoding="utf-8")
+        if "static.cloudflareinsights.com/beacon.min.js" in doc:
+            continue
+        assert doc.count("</body>") == 1, ("sample page without one </body>", f)
+        f.write_text(doc.replace("</body>", CF_BEACON + "\n</body>"), encoding="utf-8")
+
+
 def write_seo() -> None:
     urls = "".join(f"  <url><loc>{SITE}{'/' if s == '' else '/' + s + '/'}</loc></url>\n" for s, *_ in PAGES)
     (ROOT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -1422,9 +1444,22 @@ def write_seo() -> None:
     (ROOT / "llms.txt").write_text(llms_txt(), encoding="utf-8")
 
 
-# Words that never reach a buyer (house rules), checked on every page's visible text and llms.txt.
-BANNED = re.compile(r"\b(pilot|edition|trade|brief|digest|dispatch|verified|fact-checked|audit|secure|"
-                    r"confidential|GDPR|NotebookLM|Gemini|Roadbuilder|Ida|Midday|Road Intelligence)\b|\u2014", re.I)
+# Words that never reach a buyer (house rules), checked on every page's visible text, alt text,
+# JSON-LD and llms.txt: the house words with their plurals and inflections, and the hedges.
+BANNED = re.compile(r"\b(pilot(?:s|ed|ing)?|editions?|trad(?:e|es|ed|ing|er|ers)|brief(?:s|ed|ing)?|"
+                    r"digest(?:s|ed)?|dispatch(?:es|ed)?|verified|fact-checked|audit(?:s|ed|ing|or|ors)?|"
+                    r"train(?:s|ed|ing|er|ers)?|secure[sd]?|confidential|GDPR|NotebookLM|Gemini|Roadbuilder|Ida|"
+                    r"Midday|Road Intelligence|usually|some issues|often|typically|most)\b|\u2014", re.I)
+# "most" is a hedge ("most issues"), but a superlative ("what matters most", "the most") is not.
+MOST_OK = re.compile(r"(?:\bthe |\bmatters? |\bneed )most\b|\bmost\b(?= need\b)", re.I)
+
+
+class BuildRefused(SystemExit):
+    pass
+
+
+def refuse(*why) -> None:
+    raise BuildRefused("build refused, nothing written: " + repr(why))
 
 
 def check_output(pages: list[tuple[str, str]]) -> None:
@@ -1435,24 +1470,37 @@ def check_output(pages: list[tuple[str, str]]) -> None:
     for slug, doc in pages:
         title = re.search(r"<title>(.*?)</title>", doc).group(1)
         desc = re.search(r'<meta name="description" content="([^"]*)"', doc).group(1)
-        assert len(html.unescape(title)) <= 60, ("title over 60", slug, title)
-        assert len(html.unescape(desc)) <= 155, ("description over 155", slug, desc)
+        if len(html.unescape(title)) > 60:
+            refuse("title over 60", slug, title)
+        if len(html.unescape(desc)) > 155:
+            refuse("description over 155", slug, desc)
+        ld_text = []
         for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', doc, re.S):
-            json.loads(block)
+            try:
+                ld_text.append(json.dumps(json.loads(block), ensure_ascii=False))
+            except ValueError as exc:
+                refuse("JSON-LD does not parse", slug, str(exc))
+        alts = " ".join(html.unescape(a) for a in re.findall(r'\balt="([^"]*)"', doc))
         # Tags become spaces here, so words in adjacent elements never glue together and hide a hit.
         visible = plain(re.sub(r"<[^>]+>", " ", re.sub(r"<(script|style)\b.*?</\1>", "", doc, flags=re.S)))
-        texts.append((slug, visible + " " + title + " " + desc))
+        texts.append((slug, " ".join([visible, title, desc, alts] + ld_text)))
     texts.append(("llms.txt", llms_txt()))
     for slug, text in texts:
         bad = sorted({p for p in re.findall(r"\$(\d+)", text)} - prices)
-        assert not bad, ("price not from the one price source", slug, bad)
-        hit = BANNED.search(text)
-        assert not hit, ("house rule", slug, hit.group(0), text[max(0, hit.start() - 60):hit.end() + 60])
+        if bad:
+            refuse("price not from the one price source", slug, bad)
+        for hit in BANNED.finditer(text):
+            if hit.group(0).lower() == "most" and any(
+                    m.start() <= hit.start() < m.end() for m in MOST_OK.finditer(text)):
+                continue
+            refuse("house rule", slug, hit.group(0), text[max(0, hit.start() - 60):hit.end() + 60])
 
 
 if __name__ == "__main__":
+    rendered = render_site()
+    check_output([(slug, doc) for slug, doc, _t in rendered])
     write_seo()
-    built = write_site()
-    check_output(built)
+    built = write_site(rendered)
+    beacon_samples()
     write_preview(built)
     print("built", len(PAGES) + 1, "pages and preview.html")

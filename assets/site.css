@@ -441,10 +441,18 @@ footer a:hover{color:var(--txt)}
 
 /* the rotating headline words */
 .rot{display:inline-block;position:relative;vertical-align:bottom;color:var(--accent-soft);white-space:nowrap}
-.rot>span{position:absolute;left:0;top:0;opacity:0;transform:translateY(.25em);transition:opacity .25s ease,transform .25s ease;white-space:nowrap}
-.rot>span.on{position:static;opacity:1;transform:none}
-.rot>span.out{position:static;opacity:0;transform:none;transition:opacity .15s ease}
-@media(prefers-reduced-motion:reduce){.rot>span{transform:none;transition:opacity .35s ease}}
+/* Only the word showing (.on) or fading out (.out) is displayed, inline-block: a hidden word that
+   is absolutely placed is a block box, and block boxes put line breaks into the H1's innerText. The
+   words are drawn from data-w, so the H1's text stays one sentence (build.py ROT). */
+.rot>span[data-w]{display:none;white-space:nowrap}
+.rot>span[data-w]::before{content:attr(data-w)}
+.rot>span[data-w].on{display:inline-block;opacity:1;transform:none;transition:opacity .25s ease,transform .25s ease}
+@starting-style{.rot>span[data-w].on{opacity:0;transform:translateY(.25em)}}
+.rot>span[data-w].out{display:inline-block;opacity:0;transform:none;transition:opacity .15s ease}
+@starting-style{.rot>span[data-w].out{opacity:1}}
+/* the H1's real words: in the text and the accessibility tree, never seen (the drawn words are) */
+.rot>.rot-txt{display:inline-block;width:0;height:0;overflow:hidden;vertical-align:top;white-space:nowrap}
+@media(prefers-reduced-motion:reduce){.rot>span[data-w].on{transition:opacity .35s ease}@starting-style{.rot>span[data-w].on{transform:none}}}
 .hero h1.rot-h1{max-width:none}
 .hero .lede{max-width:46ch}
 /* The rotating phrase must fit one line with its longest words ("Your customers watch", about 10x the
