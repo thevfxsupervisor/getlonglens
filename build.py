@@ -197,6 +197,7 @@ def page(slug: str, title: str, description: str, body: str, current: str = "",
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google-site-verification" content="YgmFLbLdiFc4zNjw-3vSVNpJbJmgxIqkL6glHpnmsYw">
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(description)}">
 <link rel="canonical" href="{canonical}">{robots_tag}
