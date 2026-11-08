@@ -747,13 +747,13 @@ HOW = f'''<section class="hero">
     <ol class="steps two">
       <li><h3>Stop checking|ten websites a day</h3><p>LongLens reads the websites, feeds and channels you pick, and brings you what matters.</p></li>
       <li><h3>Each story is judged against|what your readers care about</h3><p>Write back "more on the new rules, less on events" and the next issue picks its stories that way.</p></li>
-      <li><h3>The same story from two outlets|appears once</h3><p>A story your readers already had stays out unless something changed. Then it comes back marked as an update, linked to the earlier coverage.</p></li>
-      <li><h3>Each story is written|in LongLens's own words</h3><p>With a line on why it matters to your readers, not pasted from the original.</p></li>
+      <li><h3>The same story from two outlets|appears only once</h3><p>A story your readers already had stays out unless something changed. Then it comes back marked as an update, linked to the earlier coverage.</p></li>
+      <li><h3>Every story is retold|in plain words, under your name</h3><p>With a line on why it matters to your readers, not pasted from the original.</p></li>
       <li><h3>Every name, title and number|links to the original article</h3><p>The original is one click away.</p></li>
       <li><h3>{LINK_LINE}</h3><p>The original is one click away.</p></li>
       <li><h3>A website that stops working|or fills with junk|is paused automatically</h3><p>You can see which one, and turn it back on with one tap.</p></li>
       <li><h3>You read it|before your readers do</h3><p>Change any line first. {CLIENT_LINE}</p></li>
-      <li><h3>The {F_POD}, {F_REEL} and the rest follow</h3><p>{FORMAT_LADDER} Each appears on the issue's page.</p></li>
+      <li><h3>The {F_POD}, {F_REEL} and the rest follow</h3><p>{FORMAT_LADDER} The email has a link to each one, and they open on the issue's page.</p></li>
     </ol>
   </div>
 </section>
@@ -810,7 +810,7 @@ FAQ_ITEMS = [
     ]),
     ("Trust and control", [
         ("Is this just my news feeds pasted into an email?",
-         "<p>No. LongLens judges each story against what you said your readers care about, and in our own daily issues about 1 in 20 stories makes the cut. What stays is written in LongLens's own words with a line on why it matters to your readers. The same story from two outlets appears once, every name, title and number links to the original article. Every story links to its original, one click away, and you read the issue before your readers do.</p>"),
+         "<p>No. LongLens judges each story against what you said your readers care about, and in our own daily issues about 1 in 20 stories makes the cut. What stays is retold in plain words, under your name, with a line on why it matters to your readers, not pasted from the original. The same story from two outlets appears only once. Every name, title and number links to the original article. Every story links to its original, one click away, and you read the issue before your readers do.</p>"),
         ("Does anything reach my clients before I see it?",
          "<p>No. Nothing goes to your clients until you approve it. Every issue comes to you by email first: you read it, change any line, and decide what to send and to whom. If your issues also go up on a web page, like a blog, each one waits for your OK there too, unless you choose a setting that puts it up for you: Automatic, or Publish at noon without my take (if you have not added your own comment by 12:00, it goes up without it). Both are off until you choose them, you are emailed when an issue goes up, and what goes up also reaches your Slack or Discord channel and your feed.</p>"),
         ("What if LongLens gets something wrong?",
@@ -859,7 +859,7 @@ FAQ_ITEMS = [
         ("What does LongLens cost?",
          "<p>Nothing during the pilot. After it, Solo is $19 a month and Business is $95 a month. <a href=\"/pricing/\">See what each plan includes</a>.</p>"),
         ("Is there a limit during the free week?",
-         "<p>Yes: one newsletter, with as many sources as you like and up to 25 readers on your list. There is also a monthly cap on writing. If a newsletter reaches it, LongLens says so on your pages, and new issues start again the next month.</p>"),
+         "<p>Yes: one newsletter, with as many sources as you like and up to 25 readers on your list.</p>"),
         ("Who owns what LongLens writes?",
          "<p>You do. Every issue, every website you chose, every lesson you taught LongLens.</p>"),
         ("Who is behind LongLens?",
@@ -916,7 +916,7 @@ def inquiry_form() -> str:
     sources_label = "Sources to follow" + ("" if SOURCES_REQUIRED else " (optional)")
     required = " required" if SOURCES_REQUIRED else ""
     return f'''<form class="contact-card" method="post" action="{INQUIRY_ENDPOINT}" accept-charset="utf-8">
-  <p><label for="f-sources">{sources_label}: paste websites or feeds, one per line, up to 5</label><br><textarea id="f-sources" name="sources" rows="4" maxlength="4000"{required} placeholder="https://www.accountingtoday.com&#10;https://www.journalofaccountancy.com"></textarea></p>
+  <p><label for="f-sources">{sources_label}: paste websites or feeds, one per line</label><br><textarea id="f-sources" name="sources" rows="4" maxlength="4000"{required} placeholder="https://www.accountingtoday.com&#10;https://www.journalofaccountancy.com"></textarea></p>
   <p><label for="f-concepts">Topics to follow</label><br><textarea id="f-concepts" name="concepts" rows="4" required maxlength="4000" placeholder="New tax and payroll rules for small businesses, and what my clients should do before each deadline."></textarea></p>
   <p><label for="f-email">Your email</label><br><input id="f-email" type="email" name="email" required maxlength="320" autocomplete="email"></p>
   <input type="hidden" name="offer" value="brief"><input type="hidden" name="source" value="longlens">
