@@ -236,7 +236,7 @@ FORMAT_LADDER = (f"The {F_EMAIL}, {F_POD}, {F_REEL}, {F_INFO}, {F_CAR} and {F_EX
 
 FORMAT_STRIP = f'''<p class="eyebrow strip-label">Real examples</p>
 <div class="fmt-strip" role="list" aria-label="One issue in five formats, real examples">
-  <div class="fmt-card" role="listitem"><div class="fmt-media"><a href="{M}read-letter.png"><img src="{M}read-letter.png" width="780" height="1276" loading="lazy" alt="An issue as an email on a phone: the date, the headline and a short paragraph on what it means for the reader."></a></div>
+  <div class="fmt-card" role="listitem"><div class="fmt-media"><a href="https://thevfxsupervisor.com/daily/27/"><img src="{M}read-letter.png" width="780" height="1276" loading="lazy" alt="A real issue of The VFX Supervisor Daily as it arrives by email"></a></div>
     <div class="fmt-txt"><b>{F_EMAIL}</b><p>What changed and what it means, in two minutes.</p></div></div>
   <div class="fmt-card" role="listitem"><div class="fmt-media audio"><img class="wave" src="{M}issue-audio-wave.png" width="780" height="352" loading="lazy" alt="The sound wave of the audio clip below.">
     <audio controls preload="none" src="{M}issue-audio.m4a" aria-label="The first 16 seconds of the issue's Podcast"></audio></div>
@@ -358,7 +358,7 @@ HOME = f'''<section class="hero skim-hero">
     <p class="price-line">{HERO_OFFER}</p>
     </div>
     <div class="s5 hero-visual">
-      <a class="hero-mail" href="{M}read-letter.png"><img src="{M}read-letter.png" width="780" height="1276" alt="An issue as an email on a phone: the date, the headline and a short paragraph on what it means for the reader."></a>
+      <a class="hero-mail" href="{M}read-letter.png"><img src="{M}read-letter.png" width="780" height="1276" alt="A real issue of The VFX Supervisor Daily as it arrives by email"></a>
       <div class="hero-pod"><b class="kick">{F_POD}</b><img class="wave" src="{M}issue-audio-wave.png" width="780" height="352" alt="">
         <audio controls preload="none" src="{M}issue-audio.m4a" aria-label="The first 16 seconds of the issue's Podcast"></audio></div>
     </div>
