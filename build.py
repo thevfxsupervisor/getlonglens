@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import base64
 import html
+import json
 import mimetypes
 import re
 from pathlib import Path
@@ -57,6 +58,31 @@ SOURCES_REQUIRED = False
 # sign-ups and the job starting. Change it here only after a new measurement. DEPLOY ORDER: the app first (it sends the visitor to the new thanks page
 # below), then this site; this site with an older app would promise an issue that never comes.
 FIRST_ISSUE_MINUTES = 5
+
+# THE ONE PRICE SOURCE (SEO pass 2026-11-08). Every visible price, the JSON-LD Offers and llms.txt
+# come from here, and check_output() refuses any "$n" on a page that is not one of these. The one
+# copy outside this file: assets/og-card.png shows the Solo price in pixels, so remake it when
+# PRICE_SOLO changes (and bump OG_VERSION so social sites fetch the new card).
+PRICE_FREE, PRICE_SOLO, PRICE_BUSINESS = 0, 19, 95
+CURRENCY = "USD"
+FREE_DAYS = 7
+OFFER_LINE = f"Free for a week, then from ${PRICE_SOLO} a month"
+OG_VERSION = "2026-11-08"
+# The plain definition, said the same way on the home page, the FAQ, the JSON-LD and llms.txt.
+DEFINITION = ("LongLens is an AI newsletter service for businesses. LongLens finds what changed in your "
+              "field and tells your clients what it means, under your name only. The Email, Podcast, Reel, "
+              "Infographic, Carousel and Explainer video are all part of the issue, and you read every "
+              "issue first.")
+YOUTUBE = "https://www.youtube.com/@getlonglens"
+# Cloudflare Web Analytics (Geoff approved 2026-11-08). The token is PUBLIC, not a secret. It goes on
+# every generated page, 404 included, and never in preview.html. Cloudflare: the beacon "does not use
+# any client-side state, such as cookies or localStorage" (cloudflare.com/web-analytics, read
+# 2026-11-08), which is why the site may still say it sets no cookies. Empty = no beacon.
+CF_BEACON_TOKEN = "1f336ebfe8c4455d866eefbd78962e59"
+CF_BEACON = (f"""<script defer src="https://static.cloudflareinsights.com/beacon.min.js" """
+             f"""data-cf-beacon='{{"token": "{CF_BEACON_TOKEN}"}}'></script>""" if CF_BEACON_TOKEN else "")
+ORG_ID = SITE + "/#org"
+PERSON_ID = GEOFF_SITE + "#person"
 
 NAV = [("Features", "/features/"), ("Pricing", "/pricing/"), ("How it works", "/how-it-works/"),
        ("FAQ", "/faq/")]
@@ -127,10 +153,10 @@ def footer() -> str:
     return f'''<footer>
   <div class="wrap">
     <div>
-      <p class="by">LongLens. Built by <a href="{GEOFF_SITE}">Geoffrey Hancock</a>.</p>
-      <p class="tiny">No tracking, no cookies on this site.</p>
+      <p class="by">LongLens (getlonglens.com). Built by <a href="{GEOFF_SITE}">Geoffrey Hancock</a>.</p>
+      <p class="tiny">No cookies on this site. Visits are counted with Cloudflare Web Analytics.</p>
     </div>
-    <nav aria-label="Footer">{links}<a href="/contact/">Free week</a><a href="/sign-in/">Sign in</a><a href="/privacy/">Privacy</a></nav>
+    <nav aria-label="Footer">{links}<a href="/for-accountants/">For accountants</a><a href="/contact/">Free week</a><a href="/sign-in/">Sign in</a><a href="/privacy/">Privacy</a></nav>
   </div>
 </footer>'''
 
@@ -161,10 +187,11 @@ def phrase_chunks(body: str) -> str:
 
 
 def page(slug: str, title: str, description: str, body: str, current: str = "",
-         robots: str = "", signin: bool = True) -> str:
+         robots: str = "", signin: bool = True, graph: list | None = None) -> str:
     path = "/" if slug == "" else f"/{slug}/"
     canonical = SITE + path
     robots_tag = f'\n<meta name="robots" content="{robots}">' if robots else ""
+    ld_tag = "\n" + ld(graph) if graph else ""
     return f'''<!doctype html>
 <html lang="en">
 <head>
@@ -181,17 +208,18 @@ def page(slug: str, title: str, description: str, body: str, current: str = "",
 <meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(description)}">
 <meta property="og:url" content="{canonical}">
-<meta property="og:image" content="{SITE}/assets/og-card.png">
+<meta property="og:image" content="{SITE}/assets/og-card.png?v={OG_VERSION}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{html.escape(title)}">
 <meta name="twitter:description" content="{html.escape(description)}">
-<meta name="twitter:image" content="{SITE}/assets/og-card.png">
+<meta name="twitter:image" content="{SITE}/assets/og-card.png?v={OG_VERSION}">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
 <link rel="apple-touch-icon" href="/assets/mark-e1-96.png">
 <link rel="stylesheet" href="/assets/site.css">
+<link rel="alternate" type="text/markdown" href="/llms.txt" title="LongLens in plain text">{ld_tag}
 </head>
 <body>
 {header(current, signin)}
@@ -199,13 +227,14 @@ def page(slug: str, title: str, description: str, body: str, current: str = "",
 {phrase_chunks(body)}
 </main>
 {footer()}
+{CF_BEACON}
 </body>
 </html>
 '''
 
 
 CTA_TEXT = "See what your clients would hear from you, free"
-HERO_OFFER = "AI writes the first version, you make it yours, and only your name is on it. Free for a week, then from $19 a month."
+HERO_OFFER = f"AI writes the first version, you make it yours, and only your name is on it. {OFFER_LINE}."
 
 
 def close_cta(h2: str, text: str, cta: str = "") -> str:
@@ -219,6 +248,14 @@ def close_cta(h2: str, text: str, cta: str = "") -> str:
 
 
 M = "/assets/media/"
+
+
+def pic(src: str, w: int, h: int, alt: str, attrs: str = "") -> str:
+    """A PNG with its WebP sibling (same name, .webp) offered first. Width and height stay on the
+    <img>, so the box is reserved before either file loads."""
+    webp = src.rsplit(".", 1)[0] + ".webp"
+    return (f'<picture><source type="image/webp" srcset="{webp}">'
+            f'<img src="{src}" width="{w}" height="{h}"{attrs} alt="{alt}"></picture>')
 
 EXAMPLE_LABEL = "Geoff's own newsletter about his own field, visual effects for film and TV"
 
@@ -235,7 +272,7 @@ F_EMAIL, F_POD, F_REEL, F_EXPL, F_INFO, F_CAR = (
 FORMAT_LADDER = (f"The {F_EMAIL}, {F_POD}, {F_REEL}, {F_INFO}, {F_CAR} and {F_EXPL} are all part of the issue.")
 
 FORMAT_STRIP = f'''<div class="fmt-strip" role="list" aria-label="One issue in five formats, real examples">
-  <div class="fmt-card" role="listitem"><div class="fmt-media"><a href="https://thevfxsupervisor.com/daily/20/"><img src="{M}read-letter.png" width="780" height="1276" loading="lazy" alt="A real issue of The VFX Supervisor Daily as it arrives by email"></a></div>
+  <div class="fmt-card" role="listitem"><div class="fmt-media"><a href="https://thevfxsupervisor.com/daily/20/">{pic(M + "read-letter.png", 780, 1276, "A real issue of The VFX Supervisor Daily as it arrives by email", ' loading="lazy"')}</a></div>
     <div class="fmt-txt"><b>{F_EMAIL}</b><p>What changed and what it means, in two minutes.</p></div></div>
   <div class="fmt-card" role="listitem"><div class="fmt-media audio"><img class="wave" src="{M}issue-audio-wave.png" width="780" height="352" loading="lazy" alt="The sound wave of the audio clip below.">
     <audio controls preload="none" src="{M}issue-audio.m4a" aria-label="The first 16 seconds of the issue's Podcast"></audio></div>
@@ -253,7 +290,7 @@ EDITOR_SHOT = f'''<figure class="shot"><a href="{M}edit-in-place.png"><img src="
 
 PROOF = f'''<div class="proof">
   <h3>Who built LongLens</h3>
-  <p>Geoffrey Hancock, VES Award winner for Changeling, built LongLens and runs his own newsletter on it most mornings. Yours covers your field.</p>
+  <p>Geoffrey Hancock, VES Award winner for Changeling, built LongLens and runs his own newsletter on it. Yours covers your field.</p>
   <a class="txtlink" href="{DAILY}">Read The VFX Supervisor Daily</a>
 </div>'''
 
@@ -300,23 +337,31 @@ COMING_PLACES = ("Your Podcast in podcast apps",
                  "Your Reel and Carousel ready to post to your own Instagram, LinkedIn and TikTok",
                  "A block on your website", "Telegram")
 
-# The home headline's two rotating words: the audience and the verb. The first of each is the
-# static headline (no script, screen readers). Reduced motion still swaps the words, as a plain
-# fade with no movement. Each box is the width of the word showing, so a short word leaves no gap.
+# The home headline's two rotating words: the audience and the verb. Only the first of each is in
+# the HTML, so crawlers, text extractors, screen readers and no-script visitors all get one plain
+# sentence, "Your clients hear the news from you." The script adds the other words from data-words
+# as aria-hidden spans: they are absolutely placed and invisible until shown (site.css .rot), so
+# adding them moves nothing. Reduced motion still swaps the words, as a plain fade with no movement.
+# Each box is the width of the word showing, so a short word leaves no gap; site.css caps the font
+# so the longest pair still fits one line and the headline never changes its line count.
 # Every pair makes a complete, true sentence: "Your ___ ___ the news from you."
 ROT = ("clients", "prospects", "members", "customers", "readers")
 ROT_VERBS = ("hear", "read", "watch")
 
 
-def rot_words(words) -> str:
-    return "".join(('<span class="on">' if i == 0 else "<span>") + w + "</span>" for i, w in enumerate(words))
+def rot_group(words, cls: str = "rot") -> str:
+    assert all("," not in w and "|" not in w for w in words)
+    return f'<span class="{cls}" data-words="{",".join(words[1:])}"><span class="on">{words[0]}</span></span>'
 
 
-ROT_WORDS = rot_words(ROT)
-ROT_VERB_WORDS = rot_words(ROT_VERBS)
 ROT_JS = """<script>
 (function(){
   var h = document.querySelector('.rot-h1'); if (!h) return;
+  Array.prototype.forEach.call(h.querySelectorAll('.rot[data-words]'), function(r){
+    r.getAttribute('data-words').split(',').forEach(function(w){
+      var s = document.createElement('span'); s.textContent = w; s.setAttribute('aria-hidden', 'true'); r.appendChild(s);
+    });
+  });
   var groups = h.querySelectorAll('.rot'), paused = false, t = 0;
   var g = Array.prototype.map.call(groups, function(r){ return {w: r.querySelectorAll(':scope > span'), i: 0}; });
   function step(x){
@@ -346,8 +391,8 @@ ROT_JS = """<script>
 HOME = f'''<section class="hero skim-hero">
   <div class="wrap split">
     <div class="s7">
-    <h1 class="rot-h1"><span class="sr-only">Your clients hear the news from you.</span><span aria-hidden="true"><span class="ph">Your <span class="rot">{ROT_WORDS}</span> <span class="rot rot-v">{ROT_VERB_WORDS}</span></span> <span class="ph">the news from you.</span></span></h1>
-    <p class="lede">LongLens tells your clients what changed and what it means for them. You see every issue first, with every original one click away.</p>
+    <h1 class="rot-h1"><span class="ph">Your {rot_group(ROT)} {rot_group(ROT_VERBS, "rot rot-v")}</span> <span class="ph">the news from you.</span></h1>
+    <p class="lede">LongLens tells your clients what changed in your field and what it means for them, in a newsletter under your name. You see every issue first, with every original one click away.</p>
     <div class="cta-row">
       <a class="btn btn-a" href="/contact/">{CTA_TEXT}</a>
       <a class="txtlink" href="/pricing/">See prices</a>
@@ -355,7 +400,7 @@ HOME = f'''<section class="hero skim-hero">
     <p class="price-line">{HERO_OFFER}</p>
     </div>
     <div class="s5 hero-visual">
-      <a class="hero-mail" href="https://thevfxsupervisor.com/daily/20/"><img src="{M}read-letter.png" width="780" height="1276" alt="A real issue of The VFX Supervisor Daily as it arrives by email"></a>
+      <a class="hero-mail" href="https://thevfxsupervisor.com/daily/20/">{pic(M + "read-letter.png", 780, 1276, "A real issue of The VFX Supervisor Daily as it arrives by email", ' fetchpriority="high"')}</a>
       <div class="hero-pod"><b class="kick">{F_POD}</b><img class="wave" src="{M}issue-audio-wave.png" width="780" height="352" alt="">
         <audio controls preload="none" src="{M}issue-audio.m4a" aria-label="The first 16 seconds of the issue's Podcast"></audio></div>
     </div>
@@ -389,7 +434,8 @@ HOME = f'''<section class="hero skim-hero">
 <section>
   <div class="wrap">
     <div class="sec-head">      <h2>For any business|whose clients ask|"what does this mean for me?"</h2>
-      <p>Accountants, law firms, vet practices, consultants, coaches, clubs and associations.</p></div>
+      <p>Accountants, law firms, vet practices, consultants, coaches, clubs and associations.</p>
+      <p>{DEFINITION}</p></div>
     <div class="cards">
       <div class="card"><h3>Firms</h3><p>A new rule lands, and your clients hear what it means from you first.</p><a class="txtlink" href="/for-accountants/">See one for accountants</a></div>
       <div class="card"><h3>Consultants and coaches</h3><p>Week after week, people see you know your field.</p></div>
@@ -401,12 +447,12 @@ HOME = f'''<section class="hero skim-hero">
 <hr class="rule">
 <section>
   <div class="wrap">
-    <div class="sec-head">      <h2>Free for a week.|Then from $19 a month.</h2>
+    <div class="sec-head">      <h2>Free for a week.|Then from ${PRICE_SOLO} a month.</h2>
       <p>No card and no call. Your first issue is with you in about {FIRST_ISSUE_MINUTES} minutes.</p></div>
     <div class="cards">
-      <div class="card price-card"><b class="kick">Free week</b><span class="amt">$0</span><p>A week of real issues, in every format, for you to judge.</p></div>
-      <div class="card price-card lead"><b class="kick">Solo</b><span class="amt">$19 <small>a month</small></span><p>Your newsletter in your name, sent to your existing clients for you.</p></div>
-      <div class="card price-card"><b class="kick">Business</b><span class="amt">$95 <small>a month</small></span><p>A custom design, plus all your issues on one web page like a blog, your Slack or Discord, and RSS, so new people can follow you.</p></div>
+      <div class="card price-card"><b class="kick">Free week</b><span class="amt">${PRICE_FREE}</span><p>A week of real issues, in every format, for you to judge.</p></div>
+      <div class="card price-card lead"><b class="kick">Solo</b><span class="amt">${PRICE_SOLO} <small>a month</small></span><p>Your newsletter in your name, sent to your existing clients for you.</p></div>
+      <div class="card price-card"><b class="kick">Business</b><span class="amt">${PRICE_BUSINESS} <small>a month</small></span><p>A custom design, plus all your issues on one web page like a blog, your Slack or Discord, and RSS, so new people can follow you.</p></div>
     </div>
     <div class="after-cards"><a class="btn btn-b" href="/pricing/#plans">Compare the plans</a></div>
   </div>
@@ -573,7 +619,7 @@ FEATURES = f'''<section class="hero">
       <div class="txt">
         <h2>Give clients facts|they can follow in one click:|every name and number|links to the original</h2>
         <ul class="checks grid2">
-          <li><strong>What it means for them</strong>: most stories carry one line on why they matter to your readers, so the issue is never a list of links.</li>
+          <li><strong>What it means for them</strong>: stories carry a line on why they matter to your readers, so the issue is never a list of links.</li>
           <li><strong>No repeats</strong>: a story they have already seen stays out until something changes, then comes back marked as an update.</li>
           <li><strong>Names and figures</strong> sit beside a link to the original story.</li>
           <li><strong>{LINK_LINE}</strong> The original is one click away.</li>
@@ -648,17 +694,17 @@ def plan_table() -> str:
     body = "".join(f'<tr><th scope="row">{r}</th><td class="v" data-label="Solo">{a}</td>'
                    f'<td class="v" data-label="Business">{b}</td></tr>' for r, a, b in rows)
     return (f'<table class="ptable"><thead><tr><th scope="col"><span class="sr-only">What you get</span></th>'
-            f'<th scope="col" class="v lead">Solo $19</th><th scope="col" class="v">Business $95</th></tr></thead>'
+            f'<th scope="col" class="v lead">Solo ${PRICE_SOLO}</th><th scope="col" class="v">Business ${PRICE_BUSINESS}</th></tr></thead>'
             f'<tbody>{body}</tbody></table>')
 
 
 PRICING = f'''<section class="hero">
   <div class="wrap">
-    <div class="sec-head center" style="margin-bottom:0">    <h1>Free for a week.|Then from $19 a month.</h1>
+    <div class="sec-head center" style="margin-bottom:0">    <h1>Free for a week.|Then from ${PRICE_SOLO} a month.</h1>
     <p class="lede">No card, no call. Your first issue is with you in about {FIRST_ISSUE_MINUTES} minutes.</p></div>
     <div class="plans">
       <div class="plan"><h2>Free week</h2>
-        <p class="plan-price">$0</p>
+        <p class="plan-price">${PRICE_FREE}</p>
         <p class="plan-outcome">Judge a week of real issues before anyone else sees them.</p>
         <ul class="checks">
           <li>Every format: {F_EMAIL}, {F_POD}, {F_REEL}, {F_INFO}, {F_CAR}, {F_EXPL}</li>
@@ -667,12 +713,12 @@ PRICING = f'''<section class="hero">
         </ul>
         <a class="btn btn-b" href="/contact/">Start my free week</a></div>
       <div class="plan lead"><h2>Solo</h2>
-        <p class="plan-price">$19 <small>a month</small></p>
+        <p class="plan-price">${PRICE_SOLO} <small>a month</small></p>
         <p class="plan-outcome">Keep your clients hearing from you, every week.</p>
         <ul class="checks">{"".join(f"<li>{r}</li>" for r in SOLO_ROWS)}</ul>
         <a class="btn btn-a" href="/contact/">Start with a free week</a></div>
       <div class="plan"><h2>Business</h2>
-        <p class="plan-price">$95 <small>a month</small></p>
+        <p class="plan-price">${PRICE_BUSINESS} <small>a month</small></p>
         <p class="plan-outcome">Reach people beyond your own list.</p>
         <ul class="checks">
           <li><strong>Everything in Solo</strong></li>
@@ -750,7 +796,6 @@ HOW = f'''<section class="hero">
       <li><h3>The same story from two outlets|appears only once</h3><p>A story your readers already had stays out unless something changed. Then it comes back marked as an update, linked to the earlier coverage.</p></li>
       <li><h3>Every story is retold|in plain words, under your name</h3><p>With a line on why it matters to your readers, not pasted from the original.</p></li>
       <li><h3>Every name, title and number|links to the original article</h3><p>The original is one click away.</p></li>
-      <li><h3>{LINK_LINE}</h3><p>The original is one click away.</p></li>
       <li><h3>A website that stops working|or fills with junk|is paused automatically</h3><p>You can see which one, and turn it back on with one tap.</p></li>
       <li><h3>You read it|before your readers do</h3><p>Change any line first. {CLIENT_LINE}</p></li>
       <li><h3>The {F_POD}, {F_REEL} and the rest follow</h3><p>{FORMAT_LADDER} The email has a link to each one, and they open on the issue's page.</p></li>
@@ -801,6 +846,7 @@ FA_CLIENT_DETAILS_QA = (CLIENT_DETAILS_QA[0],
 
 FAQ_ITEMS = [
     ("Getting started", [
+        ("What is LongLens?", f"<p>{DEFINITION}</p>"),
         ("How soon can my clients start hearing from me?",
          f"<p>Your first issue is with you in about {FIRST_ISSUE_MINUTES} minutes, written from the websites and topics you gave. You read a week of real issues before anyone else does. Then {CLIENT_LINE[0].lower() + CLIENT_LINE[1:]} {SEND_SETUP}</p>"),
         ("Can I sign up on my own?",
@@ -833,7 +879,7 @@ FAQ_ITEMS = [
     ]),
     ("What you get", [
         ('What does "issue" mean?',
-         f"<p>One edition of your newsletter: the stories LongLens picked for that day or week, each with what it means for your readers. Every issue comes as an {F_EMAIL}, and can also come as a {F_POD}, {F_REEL}, {F_INFO}, {F_CAR} or {F_EXPL}.</p>"),
+         f"<p>One day's or one week's newsletter: the stories LongLens picked, each with what it means for your readers. {FORMAT_LADDER}</p>"),
         ("Is LongLens only for one kind of business?",
          "<p>No. LongLens works for any business whose readers need to know what is changing: an accountancy, a vet practice, a law firm, a recruiter, a consultancy, a school or a members' association. Geoff built it first for his own field, visual effects, and that is the example on this site. Yours follows the websites, forums and newsletters of your field.</p>"),
         (f"Is the {F_POD} voice AI?",
@@ -841,7 +887,7 @@ FAQ_ITEMS = [
         ("What happens when a rule changes after I have written about it?",
          "<p>Your readers see it as one story, not a second surprise. A story that moves stays one story: LongLens watches for updates and reversals and links back to earlier coverage.</p>"),
         ("Can LongLens show my readers where their field is heading?",
-         "<p>In part. After your first few issues, a section shows what keeps coming up across your last few weeks of issues.</p>"),
+         "<p>After your first few issues, a section shows what keeps coming up across your last few weeks of issues.</p>"),
         ("Can LongLens write my own company news?",
          "<p>No. LongLens works from what the press, the forums and the videos in your field say. Your own announcements are still yours to write, and you can add them as a note in an issue.</p>"),
     ]),
@@ -857,13 +903,13 @@ FAQ_ITEMS = [
     ]),
     ("Money and ownership", [
         ("What does LongLens cost?",
-         "<p>Nothing during the pilot. After it, Solo is $19 a month and Business is $95 a month. <a href=\"/pricing/\">See what each plan includes</a>.</p>"),
+         f"<p>{OFFER_LINE}, with no card. Solo is ${PRICE_SOLO} a month and Business is ${PRICE_BUSINESS} a month, in US dollars, paid by invoice. <a href=\"/pricing/\">See what each plan includes</a>.</p>"),
         ("Is there a limit during the free week?",
          "<p>Yes: one newsletter, with as many sources as you like and up to 25 readers on your list.</p>"),
         ("Who owns what LongLens writes?",
          "<p>You do. Every issue, every website you chose, every lesson you taught LongLens.</p>"),
         ("Who is behind LongLens?",
-         f"<p>Geoffrey Hancock. He built LongLens first for his own field, visual effects for film and TV, and his own newsletter runs on it most mornings: <a href=\"{DAILY}\">The VFX Supervisor Daily</a>. He won a VES Award for Changeling and was nominated for another for Invictus.</p>"),
+         f"<p>Geoffrey Hancock. He built LongLens first for his own field, visual effects for film and TV, and his own newsletter runs on it: <a href=\"{DAILY}\">The VFX Supervisor Daily</a>. He won a VES Award for Changeling and was nominated for another for Invictus.</p>"),
     ]),
 ]
 
@@ -945,7 +991,7 @@ CONTACT_BODY = inquiry_form() if FORM_LIVE else f'''<div class="contact-card">
 CONTACT = f'''<section class="hero">
   <div class="wrap">
     <h1 class="long">Read a week|of what your clients|would hear|from you, free.</h1>
-    <p class="lede">Name a few websites you trust, list your topics, add your email. In about {FIRST_ISSUE_MINUTES} minutes you read your first issue. The pilot is free.</p>
+    <p class="lede">Name a few websites you trust, list your topics, add your email. In about {FIRST_ISSUE_MINUTES} minutes you read your first issue. {OFFER_LINE}.</p>
     {CONTACT_BODY}
   </div>
 </section>
@@ -1004,8 +1050,8 @@ SIGNIN_PAGE = f'''<section class="hero">
 
 PRIVACY = f'''<section class="hero">
   <div class="wrap prose">
-    <h1>No tracking on this site.|No cookies.|Your email reaches one person.</h1>
-    <p>This website, getlonglens.com, runs no analytics or tracking scripts and sets no cookies. It is a set of plain pages hosted on GitHub Pages.</p>
+    <h1>No cookies on this site.|Your email reaches one person.</h1>
+    <p>This website, getlonglens.com, uses Cloudflare Web Analytics to count visits. It sets no cookies and does not follow you to other sites. The pages are hosted on GitHub Pages.</p>
     <h2>When you write|to Geoff</h2>
     <p>Your email goes to Geoffrey Hancock at {EMAIL}. LongLens uses it to make your account and email you your newsletter, and Geoff uses it only to reply to you. Writing does not add you to any list.</p>
     <h2>Once you use LongLens</h2>
@@ -1035,7 +1081,7 @@ FA_SAMPLE = ("uk-accounting", "Client Update", "For the clients of a Manchester 
 FA_SAMPLE_DATE = "Sat 7 Nov 2026"
 FA_CTA = "Get your first client update free"
 
-FA_OFFER = "Free for a week, then from $19 a month, invoiced."
+FA_OFFER = f"{OFFER_LINE}, invoiced."
 FA_PASS = f"Every update comes to you first. Your first one is with you in about {FIRST_ISSUE_MINUTES} minutes."
 # Examples only: the value is the sources the accountant trusts. Do not name authorities that are not proven
 # to work as sources (SOURCE-TEST-authorities.md).
@@ -1056,7 +1102,7 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
   <div class="wrap split">
     <div class="s7">
     <h1 class="long">Be the accountant|clients hear from first|when the rules change</h1>
-    <p class="lede">Tell your clients what a change means before they have to ask. LongLens explains each change in plain words, with a link to every original, and you change any line before your clients read a word. {FA_SETUP} Examples: {FA_AUTH}.</p>
+    <p class="lede">Tell your clients what a change means before they have to ask. LongLens explains each change in your client newsletter, in plain words, with a link to every original, and you change any line before your clients read a word. {FA_SETUP} Examples: {FA_AUTH}.</p>
     <div class="cta-row">
       <a class="btn btn-a" href="/contact/">{FA_CTA}</a>
     </div>
@@ -1089,7 +1135,7 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
   <div class="wrap">
     <div class="sec-head">      <h2>Explain each change once,|and every client hears it from you</h2></div>
     <div class="cards">
-      <div class="card"><h3>Your clients get|what a change means for them,|not the press release</h3><p>Each update says in plain words what most stories mean for your clients, with a link to every original. {FA_SETUP} Examples: {FA_AUTH}. Sources with a news feed work when pasted; some government pages need us to set them up by hand.</p></div>
+      <div class="card"><h3>Your clients get|what a change means for them,|not the press release</h3><p>Each update says in plain words what a change means for your clients, with a link to every original. {FA_SETUP} Examples: {FA_AUTH}. Sources with a news feed work when pasted; some government pages need us to set them up by hand.</p></div>
       <div class="card"><h3>You see every issue first,|with the original one click away</h3><p>Every name, title and number links to the original article. You read each issue before a client does, so a client only sees what you signed off.</p></div>
       <div class="card"><h3>Every line sounds like your firm,|and any claim is one click|from its original</h3><p>LongLens writes the first version with AI. Make it yours: change any line you like, and follow any story to its original. LongLens cannot promise that a draft is right, so your judgement is what your clients are reading.</p><p>Tell LongLens what you want the way you would tell a new junior: say it once in a reply to any update, and every update after follows it.</p></div>
       <div class="card"><h3>When a deadline moves,|clients see it in the same story,|not as a second surprise</h3><p>LongLens watches for updates and reversals and links back to earlier coverage, so a moved deadline reads as part of the story your clients already know.</p></div>
@@ -1110,7 +1156,7 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
       <li><strong>Sign in with a link by email.</strong> No password to remember.</li>
       <li><strong>Read a week of updates</strong> before your clients see any, then keep going or stop.</li>
     </ul>
-    <p class="price-line">Prices in US dollars, after the pilot. The first plans are paid by invoice.</p>
+    <p class="price-line">Prices in US dollars, after the free week. The first plans are paid by invoice.</p>
   </div>
 </section>
 
@@ -1126,41 +1172,117 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
            f"Be the first voice your clients hear when the rules change. Name the sources you trust, list your topics, add your email. Your first update arrives in about {FIRST_ISSUE_MINUTES} minutes, and you read a week of updates before your clients see any.",
            FA_CTA)}'''
 
+# slug, short label (breadcrumbs, llms.txt), title, description, body, nav-current, what the page
+# is for (llms.txt). Titles stay under 60 characters and descriptions under 155 (check_output).
 PAGES = [
-    # slug, title, description, body, nav-current
-    ("", "LongLens: be the one your clients hear from first",
-     "Be the one your clients, prospects or members turn to first when something changes in your field. Free for a week, then from $19 a month, invoiced.",
-     HOME, ""),
-    ("features", "Features | LongLens",
-     "Reach every reader in the form they take in, and make every line sound like you. Email, Podcast, Reel, Infographic, Carousel and Explainer video, with editing on the page.",
-     FEATURES, "/features/"),
-    ("pricing", "Pricing | LongLens",
-     "Free for a week. Then Solo at $19 a month or Business at $95 a month, invoiced, and what each includes today.",
-     PRICING, "/pricing/"),
-    ("how-it-works", "How it works | LongLens",
-     "Stay in front of your clients every week. One short form, your first issue within minutes, and you change any line on the page or by replying to the email.",
-     HOW, "/how-it-works/"),
-    ("faq", "FAQ | LongLens",
+    ("", "Home", "Client newsletter: clients hear the news from you | LongLens",
+     f"Your clients hear what changed in your field from you first, in a client newsletter under your name. {OFFER_LINE}.",
+     HOME, "", "what LongLens does, the formats, who it is for, prices"),
+    ("features", "Features", "Reach people who never read a newsletter | LongLens",
+     f"Reach every client the way they take in news: one client newsletter as {F_EMAIL}, {F_POD}, {F_REEL}, {F_INFO}, {F_CAR} and {F_EXPL}.",
+     FEATURES, "/features/", "every format, where issues go, editing on the page, changing it by reply, what LongLens does not do"),
+    ("pricing", "Pricing", f"Client newsletter pricing: from ${PRICE_SOLO} a month | LongLens",
+     f"Free for a week. Then Solo at ${PRICE_SOLO} a month or Business at ${PRICE_BUSINESS} a month, invoiced, and what each includes today.",
+     PRICING, "/pricing/", "Free week, Solo and Business, with a table of what each includes"),
+    ("how-it-works", "How it works", "Your first client newsletter in minutes | LongLens",
+     f"Your first client newsletter is with you in about {FIRST_ISSUE_MINUTES} minutes: name the websites you trust and your topics, then change any line before your clients read it.",
+     HOW, "/how-it-works/", "from the start form to the first issue, and how stories are picked"),
+    ("faq", "FAQ", "Client newsletter questions answered | LongLens",
      "Straight answers: how soon your clients hear from you, what reaches them and when, whether it sounds like you, price and ownership.",
-     FAQ, "/faq/"),
-    ("for-accountants", "For accountants | LongLens",
-     "Be the accountant clients hear from first when the rules change. Explain each change once, in plain words, with only your firm's name on it. Free for a week, then from $19 a month, invoiced.",
-     FOR_ACCOUNTANTS, ""),
-    ("contact", "Free week | LongLens",
-     "Read what your clients would hear from you, free for a week: one short form, your first issue within minutes, a week of issues before anyone else sees them.",
-     CONTACT, ""),
-    ("sign-in", "Sign in | LongLens",
-     "Sign in to LongLens with a link by email. No password.", SIGNIN_PAGE, ""),
-    ("privacy", "Privacy | LongLens",
-     "This site runs no tracking and sets no cookies. What happens when you write, and where the app's privacy page is.",
-     PRIVACY, ""),
+     FAQ, "/faq/", "answers on control, client details, formats, price and ownership"),
+    ("for-accountants", "For accountants", "Client newsletter for accountants, first when rules change",
+     f"Be the accountant clients hear from first: a client newsletter on each tax and rule change, under your firm's name. {OFFER_LINE}.",
+     FOR_ACCOUNTANTS, "", "LongLens as a client newsletter for accounting firms"),
+    ("contact", "Start a free week", "Start your free week of client newsletters | LongLens",
+     "Read what your clients would hear from you, free for a week: one short form, and your first issue is with you within minutes.",
+     CONTACT, "", "the three-field start form"),
+    ("sign-in", "Sign in", "Sign in | LongLens",
+     "Sign in to LongLens with a link by email. No password.", SIGNIN_PAGE, "", "sign in with a link by email, no password"),
+    ("privacy", "Privacy", "Privacy | LongLens",
+     "This site counts visits with Cloudflare Web Analytics and sets no cookies. What happens when you write, and where the app's privacy page is.",
+     PRIVACY, "", "this site counts visits with Cloudflare Web Analytics and sets no cookies"),
 ]
+
+# --------------------------------------------------------------------------------------------
+# Structured data (JSON-LD). Built from the same constants as the pages: PLANS from the one price
+# source, FAQPage from FAQ_ITEMS, so the markup always says what the page says. No operating
+# company is named: the publisher is the LongLens brand until Geoff decides who runs it. The
+# founder has ONE VES Award win (Changeling); the Invictus nomination is not an award.
+# --------------------------------------------------------------------------------------------
+
+PLANS = (
+    ("Free week", PRICE_FREE, "A week of real issues, no card. One newsletter, as many sources as you like, up to 25 readers."),
+    ("Solo", PRICE_SOLO, ". ".join(SOLO_ROWS) + "."),
+    ("Business", PRICE_BUSINESS, "Everything in Solo. " + ". ".join(BUSINESS_ROWS) + "."),
+)
+
+
+def ld(graph: list) -> str:
+    doc = {"@context": "https://schema.org", "@graph": graph}
+    return ('<script type="application/ld+json">'
+            + json.dumps(doc, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/") + "</script>")
+
+
+def plain(fragment: str) -> str:
+    return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", fragment))).strip()
+
+
+PERSON = {"@type": "Person", "@id": PERSON_ID, "name": "Geoffrey Hancock", "url": GEOFF_SITE,
+          "sameAs": [GEOFF_SITE],
+          "award": "VES Award, Outstanding Supporting Visual Effects in a Feature Motion Picture, for Changeling"}
+ORG = {"@type": "Organization", "@id": ORG_ID, "name": "LongLens", "url": SITE + "/",
+       "logo": SITE + "/assets/mark-e1-96.png", "description": DEFINITION,
+       "disambiguatingDescription": "LongLens at getlonglens.com, the newsletter service.",
+       "founder": PERSON, "sameAs": [YOUTUBE]}
+WEBSITE = {"@type": "WebSite", "@id": SITE + "/#site", "name": "LongLens", "url": SITE + "/",
+           "publisher": {"@id": ORG_ID}}
+
+
+def offer(name: str, price: int, desc: str) -> dict:
+    o = {"@type": "Offer", "name": name, "price": str(price), "priceCurrency": CURRENCY,
+         "description": desc, "url": SITE + "/pricing/"}
+    if price:
+        o["priceSpecification"] = {"@type": "UnitPriceSpecification", "price": str(price),
+                                   "priceCurrency": CURRENCY, "unitCode": "MON", "billingDuration": "P1M"}
+    else:
+        o["eligibleDuration"] = {"@type": "QuantitativeValue", "value": FREE_DAYS, "unitCode": "DAY"}
+    return o
+
+
+PRODUCT = {"@type": "SoftwareApplication", "@id": SITE + "/#product", "name": "LongLens",
+           "url": SITE + "/", "applicationCategory": "BusinessApplication", "operatingSystem": "Web",
+           "description": DEFINITION, "publisher": {"@id": ORG_ID},
+           "offers": [offer(*p) for p in PLANS]}
+
+
+def faq_page() -> dict:
+    return {"@type": "FAQPage", "@id": SITE + "/faq/#faq",
+            "mainEntity": [{"@type": "Question", "name": plain(q),
+                            "acceptedAnswer": {"@type": "Answer", "text": plain(a)}}
+                           for _, items in FAQ_ITEMS for q, a in items]}
+
+
+def breadcrumbs(slug: str, label: str) -> dict:
+    return {"@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/"},
+        {"@type": "ListItem", "position": 2, "name": label, "item": f"{SITE}/{slug}/"}]}
+
+
+def graph_for(slug: str, label: str) -> list:
+    g = [ORG, WEBSITE]
+    if slug in ("", "pricing"):
+        g.append(PRODUCT)
+    if slug == "faq":
+        g.append(faq_page())
+    if slug:
+        g.append(breadcrumbs(slug, label))
+    return g
 
 
 def write_site() -> list[tuple[str, str]]:
     out = []
-    for slug, title, desc, body, cur in PAGES:
-        doc = page(slug, title, desc, body, cur)
+    for slug, label, title, desc, body, cur, _about in PAGES:
+        doc = page(slug, title, desc, body, cur, graph=graph_for(slug, label))
         target = ROOT / "index.html" if slug == "" else ROOT / slug / "index.html"
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(doc, encoding="utf-8")
@@ -1200,7 +1322,7 @@ def write_preview(pages: list[tuple[str, str]]) -> None:
     anchors = {("/" if s == "" else f"/{s}/"): ("page-home" if s == "" else f"page-{s}") for s, *_ in PAGES}
     sections = []
     for slug, doc in pages:
-        body = re.search(r"<body>\n(.*)\n</body>", doc, re.S).group(1)
+        body = re.search(r"<body>\n(.*)\n</body>", doc, re.S).group(1).replace(CF_BEACON, "")
         label = "/" if slug == "" else f"/{slug}/"
         sections.append(f'<div id="{anchors[label]}" class="preview-page">'
                         f'<p class="preview-tag">getlonglens.com{label}</p>{body}</div>')
@@ -1216,7 +1338,7 @@ def write_preview(pages: list[tuple[str, str]]) -> None:
             cache[rel] = data_uri(rel)
         return f'{attr}="{cache[rel]}"'
 
-    joined = re.sub(r'(src|href|poster)="(/assets/[^"]+)"', inline, joined)
+    joined = re.sub(r'(src|href|poster|srcset)="(/assets/[^"]+)"', inline, joined)
     fav = data_uri("/assets/favicon.svg")
     preview = f'''<!doctype html>
 <html lang="en">
@@ -1241,14 +1363,95 @@ header.top{{position:static}}
     (ROOT / "preview.html").write_text(preview, encoding="utf-8")
 
 
+def llms_txt() -> str:
+    """/llms.txt (llmstxt.org): a plain-text fact sheet for AI assistants and agents, generated
+    from the same constants as the pages so a price or page change cannot leave it stale. Not in
+    the sitemap: it is not a page for search results."""
+    url = lambda slug: SITE + ("/" if slug == "" else f"/{slug}/")
+    pages = "\n".join(f"- [{label}]({url(slug)}): {about}" for slug, label, _t, _d, _b, _c, about in PAGES
+                      if slug not in ("sign-in", "privacy"))
+    optional = "\n".join(f"- [{label}]({url(slug)}): {about}" for slug, label, _t, _d, _b, _c, about in PAGES
+                         if slug in ("sign-in", "privacy"))
+    plans = "\n".join(
+        f"- {name}: ${price}" + ("" if not price else " a month") + f". {desc}" for name, price, desc in PLANS)
+    return f"""# LongLens
+
+> LongLens (getlonglens.com) writes a newsletter for a business, under the business's own name. It finds what changed in the business's field, writes an issue that says what it means for the business's clients, and the owner reads and changes every line before anyone else sees it. {FORMAT_LADDER} {OFFER_LINE}.
+
+{DEFINITION}
+
+LongLens is for any business whose clients ask "what does this mean for me?": accountants, law firms, vet practices, consultants, coaches, recruiters, schools, clubs and associations. It is not a visual effects product. The VFX Supervisor Daily, its founder's own newsletter about his own field, is one example of what it makes.
+
+How it differs from a feed in an email: LongLens judges each story against what the owner said their readers care about. In LongLens's own daily issues about 1 in 20 stories makes the cut. Each story is retold in plain words with a line on why it matters to the reader, the same story from two outlets appears once, a story readers already had comes back only when something changed, marked as an update, and every story links to its original.
+
+How owners change it: hit Reply on any issue and write what you want in plain words, such as "shorter" or "more on the new rules". LongLens answers in the same email thread with what it understood, and the next issue follows it. Reply UNDO to take a change back. Owners can also click any line of an issue and type.
+
+Prices, in US dollars, paid by invoice. {OFFER_LINE}.
+{plans}
+
+How to start: fill in the form at {SITE}/contact/ with the websites or feeds to follow (optional), the topics to follow, and an email address. The first issue arrives by email in about {FIRST_ISSUE_MINUTES} minutes. After that, issues arrive on weekdays at 07:00 local time, or on the days and time the owner picks. Every issue ends with a Stop button. Nothing reaches the owner's clients until the owner approves it.
+
+LongLens does not write a business's own company news, and does not run ads or paid subscriptions.
+
+LongLens was built by Geoffrey Hancock, a visual effects supervisor and VES Award winner for Changeling, who runs his own newsletter on it.
+
+## Pages
+
+{pages}
+
+## Examples
+
+- [The VFX Supervisor Daily]({DAILY}): Geoffrey Hancock's own newsletter, made with LongLens
+- [A sample issue for an accounting firm's clients]({SITE}/samples/uk-accounting/): written by LongLens from real UK news for an invented Manchester firm
+- [A sample issue for a bakery owners' community]({SITE}/samples/bakery/): written by LongLens from real news for an invented community
+
+## Optional
+
+{optional}
+- [LongLens on YouTube]({YOUTUBE})
+- [About the founder]({GEOFF_SITE}longlens/)
+"""
+
+
 def write_seo() -> None:
     urls = "".join(f"  <url><loc>{SITE}{'/' if s == '' else '/' + s + '/'}</loc></url>\n" for s, *_ in PAGES)
     (ROOT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + '</urlset>\n', encoding="utf-8")
     (ROOT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n", encoding="utf-8")
+    (ROOT / "llms.txt").write_text(llms_txt(), encoding="utf-8")
+
+
+# Words that never reach a buyer (house rules), checked on every page's visible text and llms.txt.
+BANNED = re.compile(r"\b(pilot|edition|trade|brief|digest|dispatch|verified|fact-checked|audit|secure|"
+                    r"confidential|GDPR|NotebookLM|Gemini|Roadbuilder|Ida|Midday|Road Intelligence)\b|\u2014", re.I)
+
+
+def check_output(pages: list[tuple[str, str]]) -> None:
+    """Refuse to finish a build that breaks the one price source, the house words, the title and
+    description lengths, or the JSON-LD (every block must parse)."""
+    prices = {str(p) for _, p, _ in PLANS}
+    texts = []
+    for slug, doc in pages:
+        title = re.search(r"<title>(.*?)</title>", doc).group(1)
+        desc = re.search(r'<meta name="description" content="([^"]*)"', doc).group(1)
+        assert len(html.unescape(title)) <= 60, ("title over 60", slug, title)
+        assert len(html.unescape(desc)) <= 155, ("description over 155", slug, desc)
+        for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', doc, re.S):
+            json.loads(block)
+        # Tags become spaces here, so words in adjacent elements never glue together and hide a hit.
+        visible = plain(re.sub(r"<[^>]+>", " ", re.sub(r"<(script|style)\b.*?</\1>", "", doc, flags=re.S)))
+        texts.append((slug, visible + " " + title + " " + desc))
+    texts.append(("llms.txt", llms_txt()))
+    for slug, text in texts:
+        bad = sorted({p for p in re.findall(r"\$(\d+)", text)} - prices)
+        assert not bad, ("price not from the one price source", slug, bad)
+        hit = BANNED.search(text)
+        assert not hit, ("house rule", slug, hit.group(0), text[max(0, hit.start() - 60):hit.end() + 60])
 
 
 if __name__ == "__main__":
     write_seo()
-    write_preview(write_site())
+    built = write_site()
+    check_output(built)
+    write_preview(built)
     print("built", len(PAGES) + 1, "pages and preview.html")

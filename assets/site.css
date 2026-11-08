@@ -187,6 +187,7 @@ section{padding:clamp(64px,4.5vw + 46px,96px) 0}
 /* landing hero: text 7 columns, the real Email with the Podcast player overlapping in 5 */
 .hero-visual{position:relative;margin:0 auto;max-width:440px;width:100%;padding-bottom:56px}
 .hero-mail{display:block;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;height:520px}
+.hero-mail picture,.fmt-media picture{display:block;width:100%;height:100%}
 .hero-mail img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
 .hero-pod{position:absolute;right:-12px;bottom:0;width:260px;border:1px solid var(--line2);border-radius:14px;background:var(--panel);padding:14px 16px 16px;box-shadow:var(--shadow)}
 .hero-pod img{display:block;width:100%;height:56px;object-fit:cover;border-radius:8px;margin:8px 0 10px}
@@ -447,9 +448,11 @@ footer a:hover{color:var(--txt)}
 .hero h1.rot-h1{max-width:none}
 .hero .lede{max-width:46ch}
 /* The rotating phrase must fit one line with its longest words ("Your customers watch", about 10x the
-   font size wide), or the headline jumps between three and four lines as the words change. */
+   font size wide), or the headline jumps between three and four lines as the words change. Over
+   1200px the column stops at 637px, so the font stops at 3.9rem (62.4px, longest pair 627px):
+   measured 2026-11-08, the old 4.75rem cap broke the line at every width over about 1450px. */
 .hero h1.rot-h1{font-size:min(clamp(2.625rem,1.5rem + 4.6vw,4.75rem),8.8vw)}
-@media(min-width:960px){.hero h1.rot-h1{font-size:min(4.75rem,4.3vw)}}
+@media(min-width:960px){.hero h1.rot-h1{font-size:min(3.9rem,4.3vw)}}
 @media(max-width:380px){h1:not(.rot-h1){font-size:32px}.close h2{font-size:28px}}
 /* landing "Every line": head and rows left, the editor right; on phones the picture comes before the rows */
 .every-line .sec-head{margin-bottom:0}
