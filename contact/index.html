@@ -6,7 +6,9 @@
 <title>Free week | LongLens</title>
 <meta name="description" content="Read what your clients would hear from you, free for a week: one short form, your first issue within minutes, a week of issues before anyone else sees them.">
 <link rel="canonical" href="https://getlonglens.com/contact/">
-<meta name="theme-color" content="#131619">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f4efe6">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#131619">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="LongLens">
 <meta property="og:title" content="Free week | LongLens">
@@ -29,15 +31,17 @@
 <header class="top">
   <div class="wrap">
     <a class="brand" href="/" aria-label="LongLens home"><img src="/assets/mark-e1.svg" alt="" width="32" height="32"><span>LongLens</span></a>
+    <nav class="main" aria-label="Main"><a href="/features/">Features</a><a href="/pricing/">Pricing</a><a href="/how-it-works/">How it works</a><a href="/faq/">FAQ</a><a href="/sign-in/">Sign in</a><a class="btn btn-a" href="/contact/">Free week</a></nav>
     <a class="btn btn-a hdr-cta" href="/contact/">Free week</a>
-    <nav aria-label="Main"><a href="/features/">Features</a><a href="/pricing/">Pricing</a><a href="/how-it-works/">How it works</a><a href="/faq/">FAQ</a><a href="/sign-in/">Sign in</a><a class="btn btn-a" href="/contact/">Free week</a></nav>
+    <details class="menu"><summary aria-label="Menu"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></summary>
+      <nav aria-label="Menu"><a href="/features/">Features</a><a href="/pricing/">Pricing</a><a href="/how-it-works/">How it works</a><a href="/faq/">FAQ</a><a href="/sign-in/">Sign in</a></nav></details>
   </div>
 </header>
 <main id="main">
 <section class="hero">
   <div class="wrap">
     <span class="eyebrow">Free pilot</span>
-    <h1><span class="ph">Read a week</span> <span class="ph">of what your clients</span> <span class="ph">would hear</span> <span class="ph">from you, free.</span></h1>
+    <h1 class="long"><span class="ph">Read a week</span> <span class="ph">of what your clients</span> <span class="ph">would hear</span> <span class="ph">from you, free.</span></h1>
     <p class="lede">Name a few websites you trust, list your topics, add your email. In about 5 minutes you read your first issue. The pilot is free.</p>
     <form class="contact-card" method="post" action="https://newsletter-edge.thevfxsupervisor.workers.dev/hooks/inquiry" accept-charset="utf-8">
   <p><label for="f-sources">Sources to follow (optional): paste websites or feeds, one per line, up to 5</label><br><textarea id="f-sources" name="sources" rows="4" maxlength="4000" placeholder="https://www.accountingtoday.com&#10;https://www.journalofaccountancy.com"></textarea></p>

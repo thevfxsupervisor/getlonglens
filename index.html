@@ -6,7 +6,9 @@
 <title>LongLens: be the one your clients hear from first</title>
 <meta name="description" content="Be the one your clients, prospects or members turn to first when something changes in your field. Free for a week, then from $19 a month, invoiced.">
 <link rel="canonical" href="https://getlonglens.com/">
-<meta name="theme-color" content="#131619">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f4efe6">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#131619">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="LongLens">
 <meta property="og:title" content="LongLens: be the one your clients hear from first">
@@ -29,41 +31,51 @@
 <header class="top">
   <div class="wrap">
     <a class="brand" href="/" aria-label="LongLens home"><img src="/assets/mark-e1.svg" alt="" width="32" height="32"><span>LongLens</span></a>
+    <nav class="main" aria-label="Main"><a href="/features/">Features</a><a href="/pricing/">Pricing</a><a href="/how-it-works/">How it works</a><a href="/faq/">FAQ</a><a href="/sign-in/">Sign in</a><a class="btn btn-a" href="/contact/">Free week</a></nav>
     <a class="btn btn-a hdr-cta" href="/contact/">Free week</a>
-    <nav aria-label="Main"><a href="/features/">Features</a><a href="/pricing/">Pricing</a><a href="/how-it-works/">How it works</a><a href="/faq/">FAQ</a><a href="/sign-in/">Sign in</a><a class="btn btn-a" href="/contact/">Free week</a></nav>
+    <details class="menu"><summary aria-label="Menu"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></summary>
+      <nav aria-label="Menu"><a href="/features/">Features</a><a href="/pricing/">Pricing</a><a href="/how-it-works/">How it works</a><a href="/faq/">FAQ</a><a href="/sign-in/">Sign in</a></nav></details>
   </div>
 </header>
 <main id="main">
 <section class="hero skim-hero">
-  <div class="wrap">
-    <span class="eyebrow"><img src="/assets/mark-e1.svg" alt="" width="40" height="40">LongLens</span>
+  <div class="wrap split">
+    <div class="s7">
+    <span class="eyebrow">LongLens</span>
     <h1 class="rot-h1"><span class="sr-only">Your clients hear the news from you.</span><span aria-hidden="true"><span class="ph">Your <span class="rot"><span class="on">clients</span><span>prospects</span><span>members</span><span>customers</span><span>readers</span></span> <span class="rot rot-v"><span class="on">hear</span><span>read</span><span>watch</span></span></span> <span class="ph">the news from you.</span></span></h1>
     <p class="lede">LongLens tells your clients what changed and what it means for them. You see every issue first, with every original one click away.</p>
     <div class="cta-row">
       <a class="btn btn-a" href="/contact/">See what your clients would hear from you, free</a>
+      <a class="txtlink" href="/pricing/">See prices</a>
     </div>
-    <p class="price-line">AI writes the first version, you make it yours, and only your name is on it. Free for a week, then from $19 a month. <a href="/pricing/">See prices</a>.</p>
+    <p class="price-line">AI writes the first version, you make it yours, and only your name is on it. Free for a week, then from $19 a month.</p>
+    </div>
+    <div class="s5 hero-visual">
+      <a class="hero-mail" href="/assets/media/read-letter.png"><img src="/assets/media/read-letter.png" width="780" height="1276" alt="An issue as an email on a phone: the date, the headline and a short paragraph on what it means for the reader."></a>
+      <div class="hero-pod"><b class="kick">Podcast</b><img class="wave" src="/assets/media/issue-audio-wave.png" width="780" height="352" alt="">
+        <audio controls preload="none" src="/assets/media/issue-audio.m4a" aria-label="The first 16 seconds of the issue's Podcast"></audio></div>
+    </div>
   </div>
 </section>
 
 <hr class="rule">
-<section class="skim">
+<section>
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Email, Podcast, Reel and more</span>
       <h2><span class="ph">Reach the people</span> <span class="ph">who never read a newsletter</span></h2>
       <p>The commuter plays the Podcast. The scroller watches the Reel. Everyone else reads the Email.</p></div>
     <p class="eyebrow strip-label">Real examples</p>
 <div class="fmt-strip" role="list" aria-label="One issue in five formats, real examples">
-  <div class="fmt-card" role="listitem"><div class="fmt-media tall"><a href="/assets/media/read-letter.png"><img src="/assets/media/read-letter.png" width="780" height="1276" loading="lazy" alt="An issue as an email on a phone: the date, the headline and a short paragraph on what it means for the reader."></a></div>
+  <div class="fmt-card" role="listitem"><div class="fmt-media"><a href="/assets/media/read-letter.png"><img src="/assets/media/read-letter.png" width="780" height="1276" loading="lazy" alt="An issue as an email on a phone: the date, the headline and a short paragraph on what it means for the reader."></a></div>
     <div class="fmt-txt"><b>Email</b><p>What changed and what it means, in two minutes.</p></div></div>
-  <div class="fmt-card" role="listitem"><div class="fmt-media"><img src="/assets/media/issue-audio-wave.png" width="780" height="352" loading="lazy" alt="The sound wave of the audio clip below."></div>
-    <div class="fmt-txt"><b>Podcast</b><p>Two AI voices talk the issue through, or one AI voice reads it.</p>
-    <audio controls preload="none" src="/assets/media/issue-audio.m4a" aria-label="The first 16 seconds of the issue's Podcast"></audio><p class="fmt-date">The first 16 seconds</p></div></div>
-  <div class="fmt-card" role="listitem"><div class="fmt-media tall"><a href="/assets/media/issue-infographic.jpg"><img src="/assets/media/issue-infographic.jpg" width="1080" height="1350" loading="lazy" alt="An Infographic of a whole issue: the headline, then one line on what each story means, with its source."></a></div>
+  <div class="fmt-card" role="listitem"><div class="fmt-media audio"><img class="wave" src="/assets/media/issue-audio-wave.png" width="780" height="352" loading="lazy" alt="The sound wave of the audio clip below.">
+    <audio controls preload="none" src="/assets/media/issue-audio.m4a" aria-label="The first 16 seconds of the issue's Podcast"></audio></div>
+    <div class="fmt-txt"><b>Podcast</b><p>Two AI voices talk the issue through, or one AI voice reads it.</p><p class="fmt-date">The first 16 seconds</p></div></div>
+  <div class="fmt-card" role="listitem"><div class="fmt-media"><a href="/assets/media/issue-infographic.jpg"><img src="/assets/media/issue-infographic.jpg" width="1080" height="1350" loading="lazy" alt="An Infographic of a whole issue: the headline, then one line on what each story means, with its source."></a></div>
     <div class="fmt-txt"><b>Infographic</b><p>The whole issue on one image.</p></div></div>
   <div class="fmt-card" role="listitem"><div class="fmt-media"><video controls preload="none" playsinline poster="/assets/media/issue-explainer-poster.jpg" src="/assets/media/issue-explainer.mp4" width="640" height="360" aria-label="The first 15 seconds of an Explainer video"></video></div>
     <div class="fmt-txt"><b>Explainer video</b><p>A few narrated minutes, a drawing for each point.</p><p class="fmt-date">The first 15 seconds of 7 minutes</p></div></div>
-  <div class="fmt-card" role="listitem"><div class="fmt-media tall"><video controls preload="none" playsinline poster="/assets/media/issue-short-poster.jpg" src="/assets/media/issue-short.mp4" width="540" height="960" aria-label="The first 15 seconds of a Reel, a short vertical video"></video></div>
+  <div class="fmt-card" role="listitem"><div class="fmt-media"><video controls preload="none" playsinline poster="/assets/media/issue-short-poster.jpg" src="/assets/media/issue-short.mp4" width="540" height="960" aria-label="The first 15 seconds of a Reel, a short vertical video"></video></div>
     <div class="fmt-txt"><b>Reel</b><p>Captioned vertical video, sized for Instagram Reels, TikTok and YouTube Shorts.</p><p class="fmt-date">The first 15 seconds</p></div></div>
 </div>
 <p class="fmt-hint">The Email, Podcast, Reel, Infographic, Carousel and Explainer video are all part of the issue. Yours is about your field.</p>
@@ -71,65 +83,62 @@
 </section>
 
 <hr class="rule">
-<section class="skim">
-  <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Your name, your words</span>
+<section>
+  <div class="wrap split every-line">
+    <div class="sec-head el-head"><span class="eyebrow">Your name, your words</span>
       <h2><span class="ph">Every line</span> <span class="ph">sounds like you</span></h2>
-      <p>Click any line and type. Or reply "more on the new rules", and LongLens follows it from the next issue.</p></div>
-    <div class="feat">
-      <ul class="skim-pts">
-        <li><strong>Your name only</strong>Your name, logo and colours on every issue, never ours.</li>
-        <li><strong>Your words on top</strong>The headline, the opening and the line people see in their inbox.</li>
-        <li><strong>Facts that point home</strong>Every story links to where it came from.</li>
-      </ul>
-      <figure class="shot"><a href="/assets/media/edit-in-place.png"><img src="/assets/media/edit-in-place.png" width="1100" height="770" loading="lazy" alt="The LongLens editor open on a real issue: a bar with Save, Discard and the inbox preview line on top, and every line of the issue below outlined, ready to click and change."></a><figcaption>The real editor, open on a real issue.</figcaption></figure>
-    </div>
-  </div>
-</section>
-
-<hr class="rule">
-<section class="skim">
-  <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Who it is for</span>
-      <h2><span class="ph">For any business</span> <span class="ph">whose clients ask</span> <span class="ph">"what does this mean for me?"</span></h2>
-      <p>Accountants, law firms, vet practices, consultants, coaches, clubs and associations.</p></div>
-    <ul class="skim-pts three">
-      <li><strong>Firms</strong>A new rule lands, and your clients hear what it means from you first. <a href="/for-accountants/">See one for accountants</a>.</li>
-      <li><strong>Consultants and coaches</strong>Week after week, people see you know your field.</li>
-      <li><strong>Clubs and associations</strong>Something worth opening between events.</li>
-    </ul>
-  </div>
-</section>
-
-<hr class="rule">
-<section class="skim">
-  <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Price</span>
-      <h2><span class="ph">Free for a week.</span> <span class="ph">Then from $19 a month.</span></h2>
-      <p>No card and no call. Your first issue is with you in about 5 minutes.</p></div>
-    <ul class="skim-pts three">
-      <li><strong>Free week</strong>A week of real issues, in every format, for you to judge.</li>
-      <li><strong>Solo, $19 a month</strong>Your newsletter in your name, sent to your existing clients for you.</li>
-      <li><strong>Business, $95 a month</strong>A custom design, plus a public page, Slack or Discord and RSS, so new people can follow you.</li>
-    </ul>
-    <p class="k"><a href="/pricing/">Compare the plans</a></p>
+      <p>Click any line and type. Or hit Reply on the issue in your inbox, write "more on the new rules", and LongLens covers more of them from the next issue.</p></div>
+    <div class="el-fig"><figure class="shot"><a href="/assets/media/edit-in-place.png"><img src="/assets/media/edit-in-place.png" width="1100" height="770" loading="lazy" alt="The LongLens editor open on a real issue: a bar with Save, Discard and the inbox preview line on top, and every line of the issue below outlined, ready to click and change."></a><figcaption>The real editor, open on a real issue.</figcaption></figure></div>
+    <ol class="nrows el-rows">
+      <li><strong>Your name only</strong>Your name, logo and colours on every issue, never ours.</li>
+      <li><strong>Your words on top</strong>The headline, the opening and the line people see in their inbox.</li>
+      <li><strong>Facts that point home</strong>Every story links to where it came from.</li>
+    </ol>
   </div>
 </section>
 
 <hr class="rule">
 <section>
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Who it is for</span>
+      <h2><span class="ph">For any business</span> <span class="ph">whose clients ask</span> <span class="ph">"what does this mean for me?"</span></h2>
+      <p>Accountants, law firms, vet practices, consultants, coaches, clubs and associations.</p></div>
+    <div class="cards">
+      <div class="card"><h3>Firms</h3><p>A new rule lands, and your clients hear what it means from you first.</p><a class="txtlink" href="/for-accountants/">See one for accountants</a></div>
+      <div class="card"><h3>Consultants and coaches</h3><p>Week after week, people see you know your field.</p></div>
+      <div class="card"><h3>Clubs and associations</h3><p>Something worth opening between events.</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Price</span>
+      <h2><span class="ph">Free for a week.</span> <span class="ph">Then from $19 a month.</span></h2>
+      <p>No card and no call. Your first issue is with you in about 5 minutes.</p></div>
+    <div class="cards">
+      <div class="card price-card"><b class="kick">Free week</b><span class="amt">$0</span><p>A week of real issues, in every format, for you to judge.</p></div>
+      <div class="card price-card lead"><b class="kick">Solo</b><span class="amt">$19 <small>a month</small></span><p>Your newsletter in your name, sent to your existing clients for you.</p></div>
+      <div class="card price-card"><b class="kick">Business</b><span class="amt">$95 <small>a month</small></span><p>A custom design, plus all your issues on one web page like a blog, your Slack or Discord, and RSS, so new people can follow you.</p></div>
+    </div>
+    <div class="after-cards"><a class="btn btn-b" href="/pricing/#plans">Compare the plans</a></div>
+  </div>
+</section>
+
+<section class="proof-sec">
   <div class="wrap"><div class="proof">
   <b>Who built it</b>
   <p>Geoffrey Hancock, VES Award winner for Changeling, built LongLens and runs his own newsletter on it most mornings. Yours covers your field.</p>
-  <p class="links"><a href="https://thevfxsupervisor.com/daily/">Read The VFX Supervisor Daily</a></p>
+  <a class="txtlink" href="https://thevfxsupervisor.com/daily/">Read The VFX Supervisor Daily</a>
 </div></div>
 </section>
 
 <section class="close">
   <div class="wrap"><div>
-    <h2><span class="ph">Be the first</span> <span class="ph">your clients hear from,</span> <span class="ph">starting this week.</span></h2>
-    <p class="k">Name a few websites you trust, list your topics, add your email. Your first issue arrives in about 5 minutes.</p>
-    <div class="cta-row"><a class="btn btn-a" href="/contact/">See what your clients would hear from you, free</a></div>
+    <div><h2><span class="ph">Be the first</span> <span class="ph">your clients hear from,</span> <span class="ph">starting this week.</span></h2>
+    <p class="k">Name a few websites you trust, list your topics, add your email. Your first issue arrives in about 5 minutes.</p></div>
+    <div class="cta-row"><a class="btn btn-a btn-lg" href="/contact/">See what your clients would hear from you, free</a></div>
   </div></div>
 </section>
 <script>
