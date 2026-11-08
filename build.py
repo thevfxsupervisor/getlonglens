@@ -967,7 +967,10 @@ def turnstile_widget() -> str:
 def inquiry_form() -> str:
     """The start form, three fields (Geoff 2026-11-06: "just paste sources and list concepts and
     give your email. that starts it"). The app fills setup with the answers and asks the rest
-    (who reads it, the name competition) on the next page."""
+    (who reads it, the name competition) on the next page.
+    The hidden honeypot is ``hp_note`` (2026-11-08), not ``website``: autofill and AI agents fill
+    a field called "website", and the app then treated real people as bots. The app accepts
+    both names; it had to be deployed before this page."""
     sources_label = "Sources to follow" + ("" if SOURCES_REQUIRED else " (optional)")
     required = " required" if SOURCES_REQUIRED else ""
     return f'''<form class="contact-card" method="post" action="{INQUIRY_ENDPOINT}" accept-charset="utf-8">
@@ -977,7 +980,7 @@ def inquiry_form() -> str:
   <input type="hidden" name="offer" value="brief"><input type="hidden" name="source" value="longlens">
   <input type="hidden" name="tz" id="f-tz" value="">
   <script>try{{document.getElementById("f-tz").value=Intl.DateTimeFormat().resolvedOptions().timeZone||""}}catch(e){{}}</script>
-  <p style="position:absolute;left:-9999px" aria-hidden="true"><label for="f-website">Leave this empty</label><input id="f-website" name="website" tabindex="-1" autocomplete="off"></p>{turnstile_widget()}
+  <p style="position:absolute;left:-9999px" aria-hidden="true"><label for="f-hp-note">Leave this empty</label><input id="f-hp-note" name="hp_note" tabindex="-1" autocomplete="off" aria-hidden="true"></p>{turnstile_widget()}
   <input type="hidden" name="consent_version" value="{CONSENT_VERSION}">
   <button class="btn btn-a" type="submit">See my first issue, free</button>
   <p class="fine">By starting, you agree to get these emails. Stop them any time with one click.</p>
