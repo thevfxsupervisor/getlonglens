@@ -203,28 +203,28 @@ F_EMAIL, F_POD, F_REEL, F_EXPL, F_INFO, F_CAR = (
 # fallback when the shared allowance runs out. Never "every issue" for anything but the Email.
 FORMAT_LADDER = (f"The {F_EMAIL}, {F_POD}, {F_REEL}, {F_INFO}, {F_CAR} and {F_EXPL} are all part of the issue.")
 
-FORMAT_STRIP = f'''<p class="eyebrow strip-label">Real examples from Geoff's own newsletter, with their dates</p>
+FORMAT_STRIP = f'''<p class="eyebrow strip-label">Real examples</p>
 <div class="fmt-strip" role="list" aria-label="One issue in five formats, real examples">
-  <div class="fmt-card" role="listitem"><div class="fmt-media tall"><a href="{M}read-letter.png"><img src="{M}read-letter.png" width="780" height="1276" loading="lazy" alt="Geoff's own issue of 13 Oct 2026 as an email on a phone: the date, the headline and a short paragraph on what it means for the reader."></a></div>
-    <div class="fmt-txt"><b>{F_EMAIL}</b><p>What changed and what it means, in two minutes.</p><p class="fmt-date">13 Oct 2026</p></div></div>
+  <div class="fmt-card" role="listitem"><div class="fmt-media tall"><a href="{M}read-letter.png"><img src="{M}read-letter.png" width="780" height="1276" loading="lazy" alt="An issue as an email on a phone: the date, the headline and a short paragraph on what it means for the reader."></a></div>
+    <div class="fmt-txt"><b>{F_EMAIL}</b><p>What changed and what it means, in two minutes.</p></div></div>
   <div class="fmt-card" role="listitem"><div class="fmt-media"><img src="{M}issue-audio-wave.png" width="780" height="352" loading="lazy" alt="The sound wave of the audio clip below."></div>
     <div class="fmt-txt"><b>{F_POD}</b><p>Two AI voices talk the issue through, or one AI voice reads it.</p>
-    <audio controls preload="none" src="{M}issue-audio.m4a" aria-label="The first 16 seconds of the issue's Podcast"></audio><p class="fmt-date">13 Oct 2026, the first 16 seconds</p></div></div>
+    <audio controls preload="none" src="{M}issue-audio.m4a" aria-label="The first 16 seconds of the issue's Podcast"></audio><p class="fmt-date">The first 16 seconds</p></div></div>
   <div class="fmt-card" role="listitem"><div class="fmt-media tall"><a href="{M}issue-infographic.jpg"><img src="{M}issue-infographic.jpg" width="1080" height="1350" loading="lazy" alt="An Infographic of a whole issue: the headline, then one line on what each story means, with its source."></a></div>
-    <div class="fmt-txt"><b>{F_INFO}</b><p>The whole issue on one image.</p><p class="fmt-date">7 Nov 2026</p></div></div>
+    <div class="fmt-txt"><b>{F_INFO}</b><p>The whole issue on one image.</p></div></div>
   <div class="fmt-card" role="listitem"><div class="fmt-media"><video controls preload="none" playsinline poster="{M}issue-explainer-poster.jpg" src="{M}issue-explainer.mp4" width="640" height="360" aria-label="The first 15 seconds of an Explainer video"></video></div>
-    <div class="fmt-txt"><b>{F_EXPL}</b><p>A few narrated minutes, a drawing for each point.</p><p class="fmt-date">1 Nov 2026, the first 15 seconds of 7 minutes</p></div></div>
+    <div class="fmt-txt"><b>{F_EXPL}</b><p>A few narrated minutes, a drawing for each point.</p><p class="fmt-date">The first 15 seconds of 7 minutes</p></div></div>
   <div class="fmt-card" role="listitem"><div class="fmt-media tall"><video controls preload="none" playsinline poster="{M}issue-short-poster.jpg" src="{M}issue-short.mp4" width="540" height="960" aria-label="The first 15 seconds of a Reel, a short vertical video"></video></div>
-    <div class="fmt-txt"><b>{F_REEL}</b><p>Captioned vertical video, sized for Instagram Reels, TikTok and YouTube Shorts.</p><p class="fmt-date">4 Nov 2026, the first 15 seconds</p></div></div>
+    <div class="fmt-txt"><b>{F_REEL}</b><p>Captioned vertical video, sized for Instagram Reels, TikTok and YouTube Shorts.</p><p class="fmt-date">The first 15 seconds</p></div></div>
 </div>
-<p class="fmt-hint">{FORMAT_LADDER} Geoff's newsletter is about his field; yours is about yours.</p>'''
+<p class="fmt-hint">{FORMAT_LADDER} Yours is about your field.</p>'''
 
-EDITOR_SHOT = f'''<figure class="shot"><a href="{M}edit-in-place.png"><img src="{M}edit-in-place.png" width="1100" height="770" loading="lazy" alt="The LongLens editor open on a real issue: a bar with Save, Discard and the inbox preview line on top, and every line of the issue below outlined, ready to click and change."></a><figcaption>The real editor, on {EXAMPLE_LABEL}, 13 Oct 2026.</figcaption></figure>'''
+EDITOR_SHOT = f'''<figure class="shot"><a href="{M}edit-in-place.png"><img src="{M}edit-in-place.png" width="1100" height="770" loading="lazy" alt="The LongLens editor open on a real issue: a bar with Save, Discard and the inbox preview line on top, and every line of the issue below outlined, ready to click and change."></a><figcaption>The real editor, open on a real issue.</figcaption></figure>'''
 
 PROOF = f'''<div class="proof">
   <b>Who built it</b>
   <p>Geoffrey Hancock, VES Award winner for Changeling, built LongLens and runs his own newsletter on it most mornings. Yours covers your field.</p>
-  <p class="links"><a href="{DAILY}">Read Geoff's own newsletter</a></p>
+  <p class="links"><a href="{DAILY}">Read The VFX Supervisor Daily</a></p>
 </div>'''
 
 # Sample issues for other kinds of business. Each: (image, alt, what it is, date, link or "").
@@ -240,7 +240,6 @@ SAMPLES = [
      "Cocoa has fallen, but your costs may not follow soon",
      "Members scan the headlines, and see what falling cocoa prices mean for their costs."),
 ]
-SAMPLE_DATE = "Wed 4 Nov 2026"
 
 
 def samples_section() -> str:
@@ -253,11 +252,11 @@ def samples_section() -> str:
         f'<div class="fmt-txt"><b>{html.escape(name)}</b><p>{html.escape(who)}. <a href="/samples/{slug}/">Read the issue</a></p></div></div>'
         for slug, name, who, headline, how in SAMPLES)
     return f'''<hr class="rule">
-<section class="skim">
+<section class="skim" id="samples">
   <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Sample issues</span>
       <h2>Your clients get what the news means for them, not a pile of links</h2>
-      <p>Three invented businesses, three issues LongLens wrote from real news on {SAMPLE_DATE}.</p></div>
+      <p>Three example businesses, three issues LongLens wrote from real news.</p></div>
     <div class="fmt-strip six" role="list" aria-label="Sample issues for other businesses">{cards}</div>
   </div>
 </section>'''
@@ -326,8 +325,6 @@ HOME = f'''<section class="hero skim-hero">
     <p class="price-line">{HERO_OFFER} <a href="/pricing/">See prices</a>.</p>
   </div>
 </section>
-
-{samples_section()}
 
 <hr class="rule">
 <section class="skim">
@@ -404,9 +401,10 @@ FEATURES = f'''<section class="hero">
     <h1>Your readers learn what changed in your field from you, in the form they will take in.</h1>
     <p class="lede">Reach the people who never read a newsletter: a {F_POD} for the drive in, a {F_REEL} for their phone, and the {F_EMAIL} for everyone else.</p>
     <p class="price-line">{AI_LINE}</p>
-    {FORMAT_STRIP}
   </div>
 </section>
+
+{samples_section()}
 
 <hr class="rule">
 <section>
