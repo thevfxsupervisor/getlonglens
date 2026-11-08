@@ -420,7 +420,12 @@ FEATURES = f'''<section class="hero">
       <div class="card"><h3>{F_INFO}</h3><p>The whole issue on one image, for the reader who will not read: the headline, then one line on what each story means.</p></div>
       <div class="card"><h3>{F_CAR}</h3><p>Swipeable slides of the issue that show your followers you know your field.</p></div>
     </div>
+  </div>
+</section>
 
+<hr class="rule">
+<section>
+  <div class="wrap">
     <div class="sec-head"><span class="eyebrow">Where it goes</span>
       <h2>Be where your readers already are</h2>
       <p>Your newsletter's name and issue number are on every one, wherever it lands.</p></div>
@@ -440,7 +445,12 @@ FEATURES = f'''<section class="hero">
         <li>{coming("<strong>On Telegram</strong>: each issue in a Telegram channel.")}</li>
       </ul></div>
     </div>
+  </div>
+</section>
 
+<hr class="rule">
+<section>
+  <div class="wrap">
     <div class="feat">
       <div class="txt">
         <h2>Your words, your view of the news: every line is yours before it goes out</h2>
