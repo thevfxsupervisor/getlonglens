@@ -564,7 +564,7 @@ FEATURES = f'''<section class="hero">
           <li><strong>Tone and layout</strong>: how it sounds, how each story is laid out.</li>
           <li><strong>Formats</strong>: add or drop a format, such as the {F_POD}.</li>
         </ul>
-        <p>Reply in plain words, and every issue after follows it. Changed your mind? Reply with the one word UNDO. Only emails from your own address count, so forwarding an issue to a colleague changes nothing.</p>
+        <p>Write what you want changed in your reply, and every issue after follows it. Changed your mind? Reply with the one word UNDO. Only emails from your own address count, so forwarding an issue to a colleague changes nothing.</p>
       </div>
     </div>
 
@@ -1106,7 +1106,7 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
     <div class="cards">
       <div class="card"><h3>Your clients get|what a change means for them,|not the press release</h3><p>Each update says in plain words what most stories mean for your clients, with a link to every original. {FA_SETUP} Examples: {FA_AUTH}. Sources with a news feed work when pasted; some government pages need us to set them up by hand.</p></div>
       <div class="card"><h3>You see every issue first,|with the original one click away</h3><p>Every name, title and number links to the original article. You read each issue before a client does, so a client only sees what you signed off.</p></div>
-      <div class="card"><h3>Every line sounds like your firm,|and any claim is one click|from its original</h3><p>LongLens writes the first version with AI. Make it yours: change any line you like, and follow any story to its original. LongLens cannot promise that a draft is right, so your judgement is what your clients are reading.</p><p>Teach LongLens the way you would teach a new junior: say it once, and every update after follows it.</p></div>
+      <div class="card"><h3>Every line sounds like your firm,|and any claim is one click|from its original</h3><p>LongLens writes the first version with AI. Make it yours: change any line you like, and follow any story to its original. LongLens cannot promise that a draft is right, so your judgement is what your clients are reading.</p><p>Tell LongLens what you want the way you would tell a new junior: say it once, and every update after follows it.</p></div>
       <div class="card"><h3>When a deadline moves,|clients see it in the same story,|not as a second surprise</h3><p>LongLens watches for updates and reversals and links back to earlier coverage, so a moved deadline reads as part of the story your clients already know.</p></div>
       <div class="card"><h3>Show clients^what keeps coming up,|so they know to ask you first</h3><p>After your first few updates, each one shows what keeps coming up across the last few weeks.</p></div>
       <div class="card"><h3>Reach the client|who would rather listen than read</h3><p>Each update is an {F_EMAIL}, a {F_POD} for the client who listens on the drive in, a {F_REEL} for the one who lives on their phone, and an {F_EXPL} or an {F_INFO} for the one who wants it at a glance.</p></div>
