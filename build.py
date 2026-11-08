@@ -243,7 +243,7 @@ FORMAT_STRIP = f'''<p class="eyebrow strip-label">Real examples</p>
     <div class="fmt-txt"><b>{F_POD}</b><p>Two AI voices talk the issue through, or one AI voice reads it.</p><p class="fmt-date">The first 16 seconds</p></div></div>
   <div class="fmt-card" role="listitem"><div class="fmt-media"><a href="{M}issue-infographic.jpg"><img src="{M}issue-infographic.jpg" width="1080" height="1350" loading="lazy" alt="An Infographic of a whole issue: the headline, then one line on what each story means, with its source."></a></div>
     <div class="fmt-txt"><b>{F_INFO}</b><p>The whole issue on one image.</p></div></div>
-  <div class="fmt-card" role="listitem"><div class="fmt-media"><video controls preload="none" playsinline poster="{M}issue-explainer-poster.jpg" src="{M}issue-explainer.mp4" width="640" height="360" aria-label="The first 15 seconds of an Explainer video"></video></div>
+  <div class="fmt-card" role="listitem"><div class="fmt-media wide"><video controls preload="none" playsinline poster="{M}issue-explainer-poster.jpg" src="{M}issue-explainer.mp4" width="640" height="360" aria-label="The first 15 seconds of an Explainer video"></video></div>
     <div class="fmt-txt"><b>{F_EXPL}</b><p>A few narrated minutes, a drawing for each point.</p><p class="fmt-date">The first 15 seconds of 7 minutes</p></div></div>
   <div class="fmt-card" role="listitem"><div class="fmt-media"><video controls preload="none" playsinline poster="{M}issue-short-poster.jpg" src="{M}issue-short.mp4" width="540" height="960" aria-label="The first 15 seconds of a Reel, a short vertical video"></video></div>
     <div class="fmt-txt"><b>{F_REEL}</b><p>Captioned vertical video, sized for Instagram Reels, TikTok and YouTube Shorts.</p><p class="fmt-date">The first 15 seconds</p></div></div>
@@ -564,7 +564,7 @@ FEATURES = f'''<section class="hero">
           <li><strong>Tone and layout</strong>: how it sounds, how each story is laid out.</li>
           <li><strong>Formats</strong>: add or drop a format, such as the {F_POD}.</li>
         </ul>
-        <p>Write what you want changed in your reply, and every issue after follows it. Changed your mind? Reply with the one word UNDO. Only emails from your own address count, so forwarding an issue to a colleague changes nothing.</p>
+        <p>Write what you want changed in your reply, and every issue after follows it. Only emails from your own address count, so forwarding an issue to a colleague changes nothing.</p>
       </div>
     </div>
 
@@ -645,17 +645,22 @@ SOLO_ROWS = ("A newsletter every day or every week",
 BUSINESS_ROWS = ("A custom design of your emails, pages and videos, built with you",
                  "All your issues on one web page, like a blog",
                  "Each issue posted to your Slack or Discord channel, and an RSS feed")
+# Edit or reply: on every plan, so the table ticks it for both (BREAK S3); same words as the Free week card.
+EDIT_ROW = "Edit any line, or reply to your issue email with what to change"
 BUSINESS_COMING = f"Your {F_POD} in podcast apps; your {F_REEL} and {F_CAR} ready to post to Instagram, LinkedIn and TikTok"
 
 
 def plan_table() -> str:
     yes = '<span class="yes" role="img" aria-label="Included"></span>'
-    no = '<span class="no" aria-label="Not included">-</span>'
-    rows = [(r, yes, yes) for r in SOLO_ROWS] + [(r, no, yes) for r in BUSINESS_ROWS]
+    no = '<span class="no"><span aria-hidden="true">-</span><span class="sr-only">Not included</span></span>'
+    rows = [(r, yes, yes) for r in SOLO_ROWS[:2]] + [(EDIT_ROW, yes, yes)] + [(r, yes, yes) for r in SOLO_ROWS[2:]]
+    rows += [(r, no, yes) for r in BUSINESS_ROWS]
     rows.append((BUSINESS_COMING, no, coming()))
-    body = "".join(f'<tr><th scope="row">{r}</th><td class="v">{a}</td><td class="v">{b}</td></tr>' for r, a, b in rows)
+    # data-label: on phones each value carries its plan name (site.css, BREAK S4).
+    body = "".join(f'<tr><th scope="row">{r}</th><td class="v" data-label="Solo">{a}</td>'
+                   f'<td class="v" data-label="Business">{b}</td></tr>' for r, a, b in rows)
     return (f'<table class="ptable"><thead><tr><th scope="col"><span class="sr-only">What you get</span></th>'
-            f'<th scope="col" class="v">Solo $19</th><th scope="col" class="v biz">Business $95</th></tr></thead>'
+            f'<th scope="col" class="v lead">Solo $19</th><th scope="col" class="v">Business $95</th></tr></thead>'
             f'<tbody>{body}</tbody></table>')
 
 
@@ -670,7 +675,7 @@ PRICING = f'''<section class="hero">
         <p class="plan-outcome">Judge a week of real issues before anyone else sees them.</p>
         <ul class="checks">
           <li>Every format: {F_EMAIL}, {F_POD}, {F_REEL}, {F_INFO}, {F_CAR}, {F_EXPL}</li>
-          <li>Edit any line, or reply to the email saying what to change</li>
+          <li>{EDIT_ROW}</li>
           <li>Your name only, in a look matched to your brand</li>
         </ul>
         <a class="btn btn-b" href="/contact/">Start my free week</a></div>
@@ -757,7 +762,7 @@ HOW = f'''<section class="hero">
       <p>Not a pasted feed. In our own daily issues, about 1 in 20 stories makes the cut.</p></div>
     <ol class="steps two">
       <li><h3>Stop checking|ten websites a day</h3><p>LongLens reads the websites, feeds and channels you pick, and brings you what matters.</p></li>
-      <li><h3>Each story is judged|against^what your readers care about</h3><p>Write back "more on the new rules, less on events" and the next issue picks its stories that way.</p></li>
+      <li><h3>Each story is judged against|what your readers care about</h3><p>Write back "more on the new rules, less on events" and the next issue picks its stories that way.</p></li>
       <li><h3>The same story from two outlets|appears once</h3><p>A story your readers already had stays out unless something changed. Then it comes back marked as an update, linked to the earlier coverage.</p></li>
       <li><h3>Each story is written|in LongLens's own words</h3><p>With a line on why it matters to your readers, not pasted from the original.</p></li>
       <li><h3>Every name, title and number|links to the original article</h3><p>The original is one click away.</p></li>
@@ -798,9 +803,16 @@ def qa(q, a):
 # B3, B1, B2 in newsletter-samples/research/positioning-2026-11-07 (TRUTH-learning-training.md,
 # MARKETER-learning-training.md). Answer only, never hero, headline, button or pricing.
 CLIENT_DETAILS_QA = ("What happens to my clients' details?",
-                     "<p>Your client list is used for one thing: sending your updates to the clients you choose. "
-                     "It never goes to an AI. Your replies shape your own newsletter and nobody else's, and your "
+                     "<p>Your clients' names and email addresses are used for one thing: sending them your updates. "
+                     "They never go to an AI. Your replies shape your own newsletter and nobody else's, and your "
                      "content is never used to teach an AI.</p>")
+
+# The accountants page never explains replying elsewhere, so its answer says how (BREAK S1, 2026-11-08).
+FA_CLIENT_DETAILS_QA = (CLIENT_DETAILS_QA[0],
+                        "<p>Your clients' names and email addresses are used for one thing: sending them your updates. "
+                        "They never go to an AI. Hit Reply on any update in your inbox and write what you want changed. "
+                        "Your replies shape your firm's updates and nobody else's, and your content is never used to "
+                        "teach an AI.</p>")
 
 
 FAQ_ITEMS = [
@@ -1061,7 +1073,7 @@ FA_FAQ = "".join(qa(q, a) for q, a in [
      "<p>Yours, and only yours, so it looks like your firm, not a template. On every plan, every update carries your firm's name, logo and colours, never ours. Business adds a custom design of your letters, pages and videos, built with you when you start.</p>"),
     ("Who is responsible for record keeping and professional rules?",
      "<p>Your firm is. You decide what your clients are told, and you keep the records your own professional rules require. When LongLens sends for you, it keeps the proof of who was added as a client and who stopped.</p>"),
-    CLIENT_DETAILS_QA,
+    FA_CLIENT_DETAILS_QA,
 ])
 
 FOR_ACCOUNTANTS = f'''<section class="hero">
@@ -1106,7 +1118,7 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
     <div class="cards">
       <div class="card"><h3>Your clients get|what a change means for them,|not the press release</h3><p>Each update says in plain words what most stories mean for your clients, with a link to every original. {FA_SETUP} Examples: {FA_AUTH}. Sources with a news feed work when pasted; some government pages need us to set them up by hand.</p></div>
       <div class="card"><h3>You see every issue first,|with the original one click away</h3><p>Every name, title and number links to the original article. You read each issue before a client does, so a client only sees what you signed off.</p></div>
-      <div class="card"><h3>Every line sounds like your firm,|and any claim is one click|from its original</h3><p>LongLens writes the first version with AI. Make it yours: change any line you like, and follow any story to its original. LongLens cannot promise that a draft is right, so your judgement is what your clients are reading.</p><p>Tell LongLens what you want the way you would tell a new junior: say it once, and every update after follows it.</p></div>
+      <div class="card"><h3>Every line sounds like your firm,|and any claim is one click|from its original</h3><p>LongLens writes the first version with AI. Make it yours: change any line you like, and follow any story to its original. LongLens cannot promise that a draft is right, so your judgement is what your clients are reading.</p><p>Tell LongLens what you want the way you would tell a new junior: say it once in a reply to any update, and every update after follows it.</p></div>
       <div class="card"><h3>When a deadline moves,|clients see it in the same story,|not as a second surprise</h3><p>LongLens watches for updates and reversals and links back to earlier coverage, so a moved deadline reads as part of the story your clients already know.</p></div>
       <div class="card"><h3>Show clients^what keeps coming up,|so they know to ask you first</h3><p>After your first few updates, each one shows what keeps coming up across the last few weeks.</p></div>
       <div class="card"><h3>Reach the client|who would rather listen than read</h3><p>Each update is an {F_EMAIL}, a {F_POD} for the client who listens on the drive in, a {F_REEL} for the one who lives on their phone, and an {F_EXPL} or an {F_INFO} for the one who wants it at a glance.</p></div>
@@ -1139,7 +1151,7 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
   </div>
 </section>
 
-{close_cta("See a week|of client updates,|free.",
+{close_cta("See a week|of client updates, free.",
            f"Be the first voice your clients hear when the rules change. Name the sources you trust, list your topics, add your email. Your first update arrives in about {FIRST_ISSUE_MINUTES} minutes, and you read a week of updates before your clients see any.",
            FA_CTA)}'''
 
