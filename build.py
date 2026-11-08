@@ -195,16 +195,13 @@ EXAMPLE_LABEL = "Geoff's own newsletter about his own field, visual effects for 
 # media-audit-2026-11-07/TERMS-MAP.md). "Reel" is our label for the format, never a product name.
 F_EMAIL, F_POD, F_REEL, F_EXPL, F_INFO, F_CAR = (
     "Email", "Podcast", "Reel", "Explainer video", "Infographic", "Carousel")
-F_LEADS = (f"the full {F_EMAIL}, a short {F_EMAIL} with a button to the whole issue, "
-           f"the {F_POD}, the {F_REEL}, the {F_INFO} or the {F_EXPL}")
 
 # What a reader can count on, per format (app media ladder, 2026-11-08): the Email goes out with
 # every issue; the Podcast (two AI voices, else one AI voice reading), the Reel and the Infographic
 # are attempted for every issue but can be left off (no public story in the issue, or not right);
 # the Carousel was switched on 2026-11-08 with no track record yet, and the Explainer video has no
 # fallback when the shared allowance runs out. Never "every issue" for anything but the Email.
-FORMAT_LADDER = (f"The {F_EMAIL} comes with every issue. Most issues also bring a {F_POD}, a {F_REEL} "
-                 f"and an {F_INFO}; some bring a {F_CAR} or an {F_EXPL}.")
+FORMAT_LADDER = (f"The {F_EMAIL}, {F_POD}, {F_REEL}, {F_INFO}, {F_CAR} and {F_EXPL} are all part of the issue.")
 
 FORMAT_STRIP = f'''<p class="eyebrow strip-label">Real examples from Geoff's own newsletter, with their dates</p>
 <div class="fmt-strip" role="list" aria-label="One issue in five formats, real examples">
@@ -419,17 +416,12 @@ FEATURES = f'''<section class="hero">
       <p>Whichever way a reader opens you, they get the same news. Every format that is live today is switched on for a new account, and each comes from the same stories.</p></div>
     <div class="cards">
       <div class="card"><h3>{F_EMAIL}</h3><p>What changed and what it means for them, with a link to every original story, in their inbox and on the web once you publish the issue. For the reader with no time, a short version: the one line that matters most and a button to the whole issue.</p></div>
-      <div class="card"><h3>{F_POD}</h3><p>Your news in their ears on the drive in: two AI voices talk the issue through, or one AI voice reads it. With most issues.</p></div>
-      <div class="card"><h3>{F_REEL}</h3><p>A short vertical video with captions that keeps you on their phone, sized for Instagram Reels, TikTok and YouTube Shorts. With most issues.</p></div>
-      <div class="card"><h3>{F_EXPL}</h3><p>A few minutes on the issue's stories, narrated, with a drawing for each point. On some issues.</p></div>
-      <div class="card"><h3>{F_INFO}</h3><p>The whole issue on one image, for the reader who will not read: the headline, then one line on what each story means. With most issues.</p></div>
-      <div class="card"><h3>{F_CAR}</h3><p>Swipeable slides of the issue that show your followers you know your field. On some issues.</p></div>
+      <div class="card"><h3>{F_POD}</h3><p>Your news in their ears on the drive in: two AI voices talk the issue through, or one AI voice reads it.</p></div>
+      <div class="card"><h3>{F_REEL}</h3><p>A short vertical video with captions that keeps you on their phone, sized for Instagram Reels, TikTok and YouTube Shorts.</p></div>
+      <div class="card"><h3>{F_EXPL}</h3><p>A few minutes on the issue's stories, narrated, with a drawing for each point.</p></div>
+      <div class="card"><h3>{F_INFO}</h3><p>The whole issue on one image, for the reader who will not read: the headline, then one line on what each story means.</p></div>
+      <div class="card"><h3>{F_CAR}</h3><p>Swipeable slides of the issue that show your followers you know your field.</p></div>
     </div>
-    <ul class="list">
-      <li><strong>Not every issue gets every format.</strong> The {F_EMAIL} always goes out. A format that does not come out right is left off that issue.</li>
-      <li><strong>You pick what leads your own email</strong>: {F_LEADS}. The full letter always follows.</li>
-      <li><strong>Each reader, their own way</strong>: today the public page of your issues carries every format side by side. {coming("Each reader picks once at the bottom of their email, and LongLens sends every issue that way.")}</li>
-    </ul>
 
     <div class="sec-head"><span class="eyebrow">Where it goes</span>
       <h2>Be where your readers already are</h2>
@@ -678,7 +670,7 @@ HOW = f'''<section class="hero">
       <li><h3>{LINK_LINE}</h3><p>The original is one click away.</p></li>
       <li><h3>A website that stops working or fills with junk is paused automatically</h3><p>You can see which one, and turn it back on with one tap.</p></li>
       <li><h3>You read it before your readers do</h3><p>Change any line first. {CLIENT_LINE}</p></li>
-      <li><h3>The {F_POD}, {F_REEL} and the rest follow on most issues</h3><p>{FORMAT_LADDER} Each appears on the issue's page when it is ready.</p></li>
+      <li><h3>The {F_POD}, {F_REEL} and the rest follow</h3><p>{FORMAT_LADDER} Each appears on the issue's page.</p></li>
     </ol>
   </div>
 </section>
@@ -746,9 +738,7 @@ FAQ_ITEMS = [
         ("Is LongLens only for one kind of business?",
          "<p>No. LongLens works for any business whose readers need to know what is changing: an accountancy, a vet practice, a law firm, a recruiter, a consultancy, a school or a members' association. Geoff built it first for his own field, visual effects, and that is the example on this site. Yours follows the websites, forums and newsletters of your field.</p>"),
         (f"Is the {F_POD} voice AI?",
-         f"<p>Yes. Every {F_POD} is spoken by AI voices, never a person: usually two AI hosts talking the issue through, and on some issues one AI voice reading it.</p>"),
-        (f"What if the {F_POD}, {F_REEL} or {F_EXPL} is missing?",
-         f"<p>Not every issue gets every format. {FORMAT_LADDER} If the format that leads your email is missing, you get the full letter with one line saying so.</p>"),
+         f"<p>Yes. Every {F_POD} is spoken by AI voices, never a person: two AI hosts talking the issue through, or one AI voice reading it.</p>"),
         ("What happens when a rule changes after I have written about it?",
          "<p>Your readers see it as one story, not a second surprise. A story that moves stays one story: LongLens watches for updates and reversals and links back to earlier coverage.</p>"),
         ("Can LongLens show my readers where their field is heading?",
@@ -1009,7 +999,7 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
       <div class="card"><h3>Every line sounds like your firm, and any claim is one click from its original</h3><p>LongLens writes the first version with AI. Make it yours: change any line you like, and follow any story to its original. LongLens cannot promise that a draft is right, so your judgement is what your clients are reading.</p></div>
       <div class="card"><h3>When a deadline moves, clients see it in the same story, not as a second surprise</h3><p>LongLens watches for updates and reversals and links back to earlier coverage, so a moved deadline reads as part of the story your clients already know.</p></div>
       <div class="card"><h3>Show clients what keeps coming up, so they know to ask you first</h3><p>After your first few updates, each one shows what keeps coming up across the last few weeks.</p></div>
-      <div class="card"><h3>Reach the client who would rather listen than read</h3><p>Each update is an {F_EMAIL}, and most also come as a {F_POD} for the client who listens on the drive in and a {F_REEL} for the one who lives on their phone. Some add an {F_EXPL} or an {F_INFO}. Not every update has every format.</p></div>
+      <div class="card"><h3>Reach the client who would rather listen than read</h3><p>Each update is an {F_EMAIL}, a {F_POD} for the client who listens on the drive in, a {F_REEL} for the one who lives on their phone, and an {F_EXPL} or an {F_INFO} for the one who wants it at a glance.</p></div>
       <div class="card"><h3>Know what changed in two minutes, before your day starts</h3><p>Each update takes about two minutes to read. Updates come to you weekdays at 07:00, or the days and time you choose.</p></div>
       <div class="card"><h3>Clients hear it from you, and only you</h3><p>The update comes to you first. {CLIENT_LINE_FIRM} {SEND_SETUP} Or forward it from your own email.</p></div>
     </div>
