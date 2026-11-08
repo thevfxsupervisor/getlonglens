@@ -702,7 +702,7 @@ PRICING = f'''<section class="hero">
     <ol class="steps three">
       <li><strong>Day one</strong><p>Your first issue arrives in about {FIRST_ISSUE_MINUTES} minutes.</p></li>
       <li><strong>Every weekday</strong><p>A new issue at 07:00 your time, or the days and time you choose.</p></li>
-      <li><strong>Room to try</strong><p>One newsletter, up to 10 sources and 25 readers. Every issue ends with a Stop button.</p></li>
+      <li><strong>Room to try</strong><p>One newsletter, with as many sources as you like, and 25 readers. Every issue ends with a Stop button.</p></li>
     </ol>
   </div>
 </section>
@@ -859,7 +859,7 @@ FAQ_ITEMS = [
         ("What does LongLens cost?",
          "<p>Nothing during the pilot. After it, Solo is $19 a month and Business is $95 a month. <a href=\"/pricing/\">See what each plan includes</a>.</p>"),
         ("Is there a limit during the free week?",
-         "<p>Yes: one newsletter, up to 10 sources and up to 25 readers on your list. There is also a monthly cap on writing. If a newsletter reaches it, LongLens says so on your pages, and new issues start again the next month.</p>"),
+         "<p>Yes: one newsletter, with as many sources as you like and up to 25 readers on your list. There is also a monthly cap on writing. If a newsletter reaches it, LongLens says so on your pages, and new issues start again the next month.</p>"),
         ("Who owns what LongLens writes?",
          "<p>You do. Every issue, every website you chose, every lesson you taught LongLens.</p>"),
         ("Who is behind LongLens?",
@@ -932,11 +932,11 @@ def inquiry_form() -> str:
 
 CONTACT_BODY = inquiry_form() if FORM_LIVE else f'''<div class="contact-card">
   <h2 style="font-size:22px">Email Geoff.|Three lines are enough.</h2>
-  <ol>
+  <ul>
     <li>The websites or feeds you read.</li>
     <li>The topics you follow.</li>
     <li>Your name and your business.</li>
-  </ol>
+  </ul>
   <a class="btn btn-a" href="{html.escape(CALL_MAIL)}">Email Geoff for a free week</a>
   <p class="email-line">Or write to <a href="mailto:{EMAIL}">{EMAIL}</a></p>
   <p class="tiny">Writing does not add you to any list. Geoff replies personally.</p>
