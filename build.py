@@ -213,8 +213,8 @@ FORMAT_STRIP = f'''<p class="eyebrow strip-label">Real examples from Geoff's own
   <div class="fmt-card" role="listitem"><div class="fmt-media"><img src="{M}issue-audio-wave.png" width="780" height="352" loading="lazy" alt="The sound wave of the audio clip below."></div>
     <div class="fmt-txt"><b>{F_POD}</b><p>Two AI voices talk the issue through, or one AI voice reads it.</p>
     <audio controls preload="none" src="{M}issue-audio.m4a" aria-label="The first 16 seconds of the issue's Podcast"></audio><p class="fmt-date">13 Oct 2026, the first 16 seconds</p></div></div>
-  <div class="fmt-card" role="listitem"><div class="fmt-media"><a href="{M}issue-infographic.jpg"><img src="{M}issue-infographic.jpg" width="1280" height="714" loading="lazy" alt="An infographic of a whole issue: headed panels, each with a drawing and a short line."></a></div>
-    <div class="fmt-txt"><b>{F_INFO}</b><p>The whole issue on one image.</p><p class="fmt-date">30 Oct 2026</p></div></div>
+  <div class="fmt-card" role="listitem"><div class="fmt-media tall"><a href="{M}issue-infographic.jpg"><img src="{M}issue-infographic.jpg" width="1080" height="1350" loading="lazy" alt="An Infographic of a whole issue: the headline, then one line on what each story means, with its source."></a></div>
+    <div class="fmt-txt"><b>{F_INFO}</b><p>The whole issue on one image.</p><p class="fmt-date">7 Nov 2026</p></div></div>
   <div class="fmt-card" role="listitem"><div class="fmt-media"><video controls preload="none" playsinline poster="{M}issue-explainer-poster.jpg" src="{M}issue-explainer.mp4" width="640" height="360" aria-label="The first 15 seconds of an Explainer video"></video></div>
     <div class="fmt-txt"><b>{F_EXPL}</b><p>A few narrated minutes, a drawing for each point.</p><p class="fmt-date">1 Nov 2026, the first 15 seconds of 7 minutes</p></div></div>
   <div class="fmt-card" role="listitem"><div class="fmt-media tall"><video controls preload="none" playsinline poster="{M}issue-short-poster.jpg" src="{M}issue-short.mp4" width="540" height="960" aria-label="The first 15 seconds of a Reel, a short vertical video"></video></div>
@@ -422,9 +422,8 @@ FEATURES = f'''<section class="hero">
       <div class="card"><h3>{F_POD}</h3><p>Your news in their ears on the drive in: two AI voices talk the issue through, or one AI voice reads it. With most issues.</p></div>
       <div class="card"><h3>{F_REEL}</h3><p>A short vertical video with captions that keeps you on their phone, sized for Instagram Reels, TikTok and YouTube Shorts. With most issues.</p></div>
       <div class="card"><h3>{F_EXPL}</h3><p>A few minutes on the issue's stories, narrated, with a drawing for each point. On some issues.</p></div>
-      <div class="card"><h3>{F_INFO}</h3><p>The whole issue on one image, for the reader who will not read. A drawing and a short line for each point. With most issues.</p></div>
+      <div class="card"><h3>{F_INFO}</h3><p>The whole issue on one image, for the reader who will not read: the headline, then one line on what each story means. With most issues.</p></div>
       <div class="card"><h3>{F_CAR}</h3><p>Swipeable slides of the issue that show your followers you know your field. On some issues.</p></div>
-      <div class="card"><h3>Story pictures</h3><p>Turn them on and your top stories each get a small picture in your colours, so the issue looks like yours. {coming("A picture generated for each story, in your own style.")}</p></div>
     </div>
     <ul class="list">
       <li><strong>Not every issue gets every format.</strong> The {F_EMAIL} always goes out. A format that does not come out right is left off that issue.</li>
@@ -480,15 +479,6 @@ FEATURES = f'''<section class="hero">
           <li><strong>Back to the usual</strong>: one button puts the usual sections back.</li>
         </ul>
         <p>Your next issue uses the new layout. Issues already written stay as they were.</p>
-      </div>
-      <div class="txt">
-        <h2>Pictures that are yours to use</h2>
-        <p>Turn on story pictures and your top stories each get a small picture beside them: a card drawn for your newsletter, in your colours, with the topic and the website the story came from. From one to six an issue, top stories only.</p>
-        <ul>
-          <li><strong>Never copied</strong>: LongLens never takes the picture from the article itself, so there is nothing to credit and nothing to take down.</li>
-          <li><strong>Still reads well without them</strong>: the words come first, so the issue works in an inbox that hides pictures.</li>
-          <li>{coming("A picture generated for each story, in your own style, never the article's own photo.")}</li>
-        </ul>
       </div>
     </div>
 
