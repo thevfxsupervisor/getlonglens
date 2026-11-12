@@ -480,7 +480,7 @@ footer a:hover{color:var(--txt)}
     box-shadow:0 -6px 18px rgba(0,0,0,.08);padding:8px 16px max(8px,env(safe-area-inset-bottom));
     transform:translateY(110%);visibility:hidden;transition:transform .2s ease,visibility 0s linear .2s}
   .mbar.on{transform:none;visibility:visible;transition:transform .2s ease}
-  .mbar .btn{width:100%;height:auto;min-height:46px;padding:8px 14px;font-size:15px;line-height:1.25}
+  .mbar .btn{width:100%;height:auto;min-height:46px;padding:8px 12px;font-size:15px;line-height:1.25;text-wrap:balance}
   body.has-mbar{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
 }
 .mbar[hidden]{display:none!important}
