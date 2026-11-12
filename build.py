@@ -1056,7 +1056,7 @@ def inquiry_form() -> str:
   <button class="btn btn-a" type="submit">See my first issue, free</button>
   <p class="form-msg" id="f-status" role="alert" hidden></p>
   <p class="fine">{CONSENT_HTML}</p>
-  <p class="email-line">We never add you to a list. Read the <a href="/terms/">terms</a> and <a href="/privacy/">privacy</a>.</p>
+  <p class="email-line">We never add you to a list. Read the <a href="/privacy/">privacy note</a>.</p>
 </form>
 {FORM_JS}'''
 
