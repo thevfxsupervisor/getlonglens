@@ -38,8 +38,15 @@ IDENTITY = f"LongLens is run by {COMPANY}, CVR {CVR}, {COMPANY_ADDRESS}."
 FORM_LIVE = True
 INQUIRY_ENDPOINT = APP + "/hooks/inquiry"
 # The wording of the small print under the start form's button. The app keeps a table of what each
-# version said (accounts/first_issue.py CONSENT_TEXTS): change the words, change this too.
-CONSENT_VERSION = "consent-2026-11-07"
+# version said (accounts/first_issue.py CONSENT_TEXTS): change the words, change the version too,
+# and add the new version to the app (deployed) BEFORE this page sends it. CONSENT_WORDS must be
+# exactly the app's text for CONSENT_VERSION; the form shows it with "the terms" linked.
+# 2026-11-12: the terms joined the sentence (consent-2026-11-07 had no terms in it).
+CONSENT_VERSION = "consent-2026-11-12"
+CONSENT_WORDS = ("By starting, you agree to get these emails and to the terms. "
+                 "Stop them any time with one click.")
+CONSENT_HTML = CONSENT_WORDS.replace("the terms", '<a href="/terms/">the terms</a>', 1)
+assert CONSENT_HTML != CONSENT_WORDS, "the consent words must name the terms"
 INQUIRY_CONSENT = "I agree to be contacted about this message at the email address I gave."
 # Cloudflare Turnstile on the form (the app checks the token when NL_TURNSTILE_SECRET is set).
 # The site key is PUBLIC; paste it from Cloudflare > Turnstile > the getlonglens.com widget.
@@ -1048,7 +1055,7 @@ def inquiry_form() -> str:
   <input type="hidden" name="consent_version" value="{CONSENT_VERSION}">
   <button class="btn btn-a" type="submit">See my first issue, free</button>
   <p class="form-msg" id="f-status" role="alert" hidden></p>
-  <p class="fine">By starting, you agree to get these emails. Stop them any time with one click.</p>
+  <p class="fine">{CONSENT_HTML}</p>
   <p class="email-line">We never add you to a list. Read the <a href="/terms/">terms</a> and <a href="/privacy/">privacy</a>.</p>
 </form>
 {FORM_JS}'''
