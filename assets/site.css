@@ -471,3 +471,24 @@ footer a:hover{color:var(--txt)}
   .every-line .el-fig{grid-column:7 / span 6;grid-row:1 / span 2}
 }
 .sample-split .sec-head{margin-bottom:0}
+/* Sticky start bar on phones (build.py mobile_bar): hidden in the HTML, shown by its script once the
+   hero button is off screen. The body keeps room for it while the script runs, so it never sits on
+   the last lines of the page. */
+.mbar{display:none}
+@media(max-width:760px){
+  .mbar{display:block;position:fixed;left:0;right:0;bottom:0;z-index:45;background:var(--bg);border-top:1px solid var(--line);
+    box-shadow:0 -6px 18px rgba(0,0,0,.08);padding:8px 16px max(8px,env(safe-area-inset-bottom));
+    transform:translateY(110%);visibility:hidden;transition:transform .2s ease,visibility 0s linear .2s}
+  .mbar.on{transform:none;visibility:visible;transition:transform .2s ease}
+  .mbar .btn{width:100%;height:auto;min-height:46px;padding:8px 14px;font-size:15px;line-height:1.25}
+  body.has-mbar{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
+}
+.mbar[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){.mbar,.mbar.on{transition:none}}
+/* start form: inline messages (build.py inquiry_form) */
+.ferr{display:block;margin-top:6px;font-size:14px;line-height:1.4;color:var(--red);font-weight:600}
+.ferr[hidden],.form-msg[hidden]{display:none}
+.contact-card [aria-invalid=true]{border-color:var(--red)!important}
+.form-msg{margin-top:16px;padding:12px 14px;border:1px solid var(--red);border-radius:8px;font-size:15px;line-height:1.5}
+.btn:disabled{opacity:.75;cursor:progress;transform:none}
+.idline{margin-top:6px}

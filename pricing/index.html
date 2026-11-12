@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="https://getlonglens.com/assets/og-card.png?v=2026-11-08">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
-<link rel="apple-touch-icon" href="/assets/mark-e1-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="alternate" type="text/markdown" href="/llms.txt" title="LongLens in plain text">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://getlonglens.com/#org","name":"LongLens","url":"https://getlonglens.com/","logo":"https://getlonglens.com/assets/mark-e1-512.png","description":"LongLens is an AI newsletter service for businesses. LongLens finds what changed in your field and tells your clients what it means, under your name only. The Email, Podcast, Reel, Infographic, Carousel and Explainer video are all part of the issue. Every issue comes to you first, and you make it yours on the page before you send it.","disambiguatingDescription":"LongLens at getlonglens.com, the newsletter service.","founder":{"@type":"Person","@id":"https://thevfxsupervisor.com/#person","name":"Geoffrey Hancock","url":"https://thevfxsupervisor.com/","sameAs":["https://thevfxsupervisor.com/"],"award":"VES Award, Outstanding Supporting Visual Effects in a Feature Motion Picture, for Changeling"},"sameAs":["https://www.youtube.com/@getlonglens"]},{"@type":"WebSite","@id":"https://getlonglens.com/#site","name":"LongLens","url":"https://getlonglens.com/","publisher":{"@id":"https://getlonglens.com/#org"}},{"@type":"SoftwareApplication","@id":"https://getlonglens.com/#product","name":"LongLens","url":"https://getlonglens.com/","applicationCategory":"BusinessApplication","operatingSystem":"Web","description":"LongLens is an AI newsletter service for businesses. LongLens finds what changed in your field and tells your clients what it means, under your name only. The Email, Podcast, Reel, Infographic, Carousel and Explainer video are all part of the issue. Every issue comes to you first, and you make it yours on the page before you send it.","publisher":{"@id":"https://getlonglens.com/#org"},"offers":[{"@type":"Offer","name":"Free week","price":"0","priceCurrency":"USD","description":"A week of real issues, no card. One newsletter, as many sources as you like, up to 25 readers.","url":"https://getlonglens.com/pricing/","eligibleDuration":{"@type":"QuantitativeValue","value":7,"unitCode":"DAY"}},{"@type":"Offer","name":"Solo","price":"19","priceCurrency":"USD","description":"A newsletter every day or every week. Every format: Email, Podcast, Reel, Infographic, Carousel, Explainer video. Your name, logo and colours, never ours. Sent to your existing clients for you, with a one-click opt-out.","url":"https://getlonglens.com/pricing/","priceSpecification":{"@type":"UnitPriceSpecification","price":"19","priceCurrency":"USD","unitCode":"MON","billingDuration":"P1M"}},{"@type":"Offer","name":"Business","price":"95","priceCurrency":"USD","description":"Everything in Solo. A custom design of your emails, pages and videos, built with you. All your issues on one web page, like a blog. Each issue posted to your Slack or Discord channel, and an RSS feed.","url":"https://getlonglens.com/pricing/","priceSpecification":{"@type":"UnitPriceSpecification","price":"95","priceCurrency":"USD","unitCode":"MON","billingDuration":"P1M"}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://getlonglens.com/"},{"@type":"ListItem","position":2,"name":"Pricing","item":"https://getlonglens.com/pricing/"}]}]}</script>
@@ -109,10 +109,20 @@
     <div>
       <p class="by">LongLens (getlonglens.com). Built by <a href="https://thevfxsupervisor.com/">Geoffrey Hancock</a>.</p>
       <p class="tiny">No cookies on this site. Visits are counted with Cloudflare Web Analytics.</p>
+      <p class="tiny idline">LongLens is run by Hedge Holding ApS, CVR 41583290, Bakkevej 8, 3050 Humlebæk, Denmark.</p>
     </div>
-    <nav aria-label="Footer"><a href="/features/">Features</a><a href="/pricing/">Pricing</a><a href="/how-it-works/">How it works</a><a href="/faq/">FAQ</a><a href="/for-accountants/">For accountants</a><a href="/contact/">Free week</a><a href="/sign-in/">Sign in</a><a href="/privacy/">Privacy</a></nav>
+    <nav aria-label="Footer"><a href="/features/">Features</a><a href="/pricing/">Pricing</a><a href="/how-it-works/">How it works</a><a href="/faq/">FAQ</a><a href="/for-accountants/">For accountants</a><a href="/contact/">Free week</a><a href="/sign-in/">Sign in</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></nav>
   </div>
 </footer>
+<div class="mbar" id="mbar" hidden><a class="btn btn-a" href="/contact/">Start with a free week</a></div>
+<script>(function(){var b=document.getElementById("mbar");if(!b||!("IntersectionObserver"in window))return;
+var t=document.querySelector("main .hero .btn-a")||document.querySelector("main h1");if(!t)return;
+var past=false,near=[].slice.call(document.querySelectorAll("form.contact-card,.close .btn,footer"));
+function set(){var n=near.some(function(x){return x._in});b.classList.toggle("on",past&&!n)}
+b.hidden=false;document.body.classList.add("has-mbar");
+new IntersectionObserver(function(e){e=e[e.length-1];past=!e.isIntersecting&&e.boundingClientRect.top<0;set()}).observe(t);
+var io=new IntersectionObserver(function(es){es.forEach(function(e){e.target._in=e.isIntersecting});set()});
+near.forEach(function(x){io.observe(x)})})();</script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "1f336ebfe8c4455d866eefbd78962e59"}'></script>
 </body>
 </html>

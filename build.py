@@ -27,6 +27,11 @@ APP_PRIVACY = APP + "/privacy"
 DAILY = "https://thevfxsupervisor.com/daily/"
 GEOFF_SITE = "https://thevfxsupervisor.com/"
 EMAIL = "geoff@wanglemedia.com"
+# Who runs LongLens (Geoff 2026-11-12: the address may be published; no phone number on the site).
+COMPANY = "Hedge Holding ApS"
+CVR = "41583290"
+COMPANY_ADDRESS = "Bakkevej 8, 3050 Humleb\u00e6k, Denmark"
+IDENTITY = f"LongLens is run by {COMPANY}, CVR {CVR}, {COMPANY_ADDRESS}."
 
 # The inquiry form posts to the app's endpoint (POST /hooks/inquiry), which accepts
 # https://getlonglens.com (NL_INQUIRY_ORIGINS). Set FORM_LIVE to False to fall back to email only.
@@ -155,8 +160,9 @@ def footer() -> str:
     <div>
       <p class="by">LongLens (getlonglens.com). Built by <a href="{GEOFF_SITE}">Geoffrey Hancock</a>.</p>
       <p class="tiny">No cookies on this site. Visits are counted with Cloudflare Web Analytics.</p>
+      <p class="tiny idline">{IDENTITY}</p>
     </div>
-    <nav aria-label="Footer">{links}<a href="/for-accountants/">For accountants</a><a href="/contact/">Free week</a><a href="/sign-in/">Sign in</a><a href="/privacy/">Privacy</a></nav>
+    <nav aria-label="Footer">{links}<a href="/for-accountants/">For accountants</a><a href="/contact/">Free week</a><a href="/sign-in/">Sign in</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></nav>
   </div>
 </footer>'''
 
@@ -221,7 +227,7 @@ def page(slug: str, title: str, description: str, body: str, current: str = "",
 <meta name="twitter:image" content="{SITE}/assets/og-card.png?v={OG_VERSION}">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
-<link rel="apple-touch-icon" href="/assets/mark-e1-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="alternate" type="text/markdown" href="/llms.txt" title="LongLens in plain text">{ld_tag}
 </head>
@@ -230,11 +236,38 @@ def page(slug: str, title: str, description: str, body: str, current: str = "",
 <main id="main">
 {phrase_chunks(body)}
 </main>
-{footer()}
+{footer()}{mobile_bar(slug, body)}
 {CF_BEACON}
 </body>
 </html>
 '''
+
+
+# Sticky start bar on phones (Geoff 2026-11-12): the page's own hero button (label and target),
+# or the home page's when the hero has none. It is `hidden` in the HTML, so with no script it is
+# simply absent; the script shows it once the hero button (or the H1) has scrolled up out of view,
+# and hides it again while the start form, the closing call to action or the footer is on screen.
+# Over 760px the CSS never shows it. Not on the form page itself or the plain pages.
+MBAR_SKIP = {"contact", "sign-in", "privacy", "terms", "thanks", "contact/thanks-first-issue",
+             "contact/thanks-personal", "404"}
+MBAR_JS = """<script>(function(){var b=document.getElementById("mbar");if(!b||!("IntersectionObserver"in window))return;
+var t=document.querySelector("main .hero .btn-a")||document.querySelector("main h1");if(!t)return;
+var past=false,near=[].slice.call(document.querySelectorAll("form.contact-card,.close .btn,footer"));
+function set(){var n=near.some(function(x){return x._in});b.classList.toggle("on",past&&!n)}
+b.hidden=false;document.body.classList.add("has-mbar");
+new IntersectionObserver(function(e){e=e[e.length-1];past=!e.isIntersecting&&e.boundingClientRect.top<0;set()}).observe(t);
+var io=new IntersectionObserver(function(es){es.forEach(function(e){e.target._in=e.isIntersecting});set()});
+near.forEach(function(x){io.observe(x)})})();</script>"""
+
+
+def mobile_bar(slug: str, body: str) -> str:
+    if slug in MBAR_SKIP:
+        return ""
+    hero = re.search(r'<section class="hero[^"]*">(.*?)</section>', body, re.S)
+    m = hero and re.search(r'<a class="btn btn-a[^"]*" href="([^"]+)">([^<]+)</a>', hero.group(1))
+    href, label = (m.group(1), m.group(2)) if m else ("/contact/", CTA_TEXT)
+    return (f'\n<div class="mbar" id="mbar" hidden><a class="btn btn-a" href="{href}">{label}</a></div>'
+            f"\n{MBAR_JS}")
 
 
 CTA_TEXT = "See what your clients would hear from you, free"
@@ -965,6 +998,36 @@ def turnstile_widget() -> str:
     )
 
 
+# The start form's script. With no script the form posts as before (the browser checks the
+# required fields, the app answers with its own page). With it: our own inline messages instead of
+# the browser's bubbles, a "Sending..." button, and the post sent with Accept: application/json, so
+# the app answers in JSON (web/inquiry_pages.py): ok + next (the thanks page to open), or errors per
+# field, or a message. Anything else (the edge's 502, an app 500 with no CORS header, no network)
+# shows FORM_OOPS, never a raw page. The Turnstile token works once, so it is reset after a refusal.
+FORM_OOPS = f"Sorry, your form did not reach us. Please try again in a minute, or email {EMAIL}."
+FORM_JS = """<script>(function(){var f=document.getElementById("start-form");if(!f||!window.fetch||!window.FormData||!window.URLSearchParams)return;
+f.noValidate=true;var btn=f.querySelector("button[type=submit]"),label=btn.textContent,box=document.getElementById("f-status");
+var fields=[].slice.call(f.querySelectorAll("textarea,input[type=email]"));
+var NEED={concepts:"Please list a few topics you want to follow.",sources:"Please paste at least one website or feed.",email:"Please add your email address."};
+var OOPS=%s;
+function show(el,m){var p=document.getElementById(el.id+"-err");el.setAttribute("aria-invalid",m?"true":"false");p.textContent=m||"";p.hidden=!m}
+function check(el){var v=el.value.trim();if(el.required&&!v)return NEED[el.name]||"Please fill this in.";
+if(el.type=="email"&&v&&!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(v))return "That email address does not look right. Please check it.";
+if(el.maxLength>0&&el.value.length>el.maxLength)return "Please make this a little shorter.";return ""}
+fields.forEach(function(el){el.addEventListener("input",function(){if(el.getAttribute("aria-invalid")=="true")show(el,check(el))})});
+function say(m){box.textContent=m||"";box.hidden=!m}
+function busy(on){btn.disabled=on;btn.textContent=on?"Sending...":label;f.setAttribute("aria-busy",on?"true":"false")}
+function again(){busy(false);try{if(window.turnstile)window.turnstile.reset()}catch(e){}}
+f.addEventListener("submit",function(ev){ev.preventDefault();if(btn.disabled)return;say("");var first=null;
+fields.forEach(function(el){var m=check(el);show(el,m);if(m&&!first)first=el});if(first){first.focus();return}
+busy(true);fetch(f.action,{method:"POST",body:new URLSearchParams(new FormData(f)),headers:{"Accept":"application/json"}})
+.then(function(r){return r.json().then(function(d){return[r.status,d||{}]},function(){return[r.status,{}]})})
+.then(function(x){var st=x[0],d=x[1];if(d.ok){if(d.next){location.href=d.next;return}busy(false);btn.disabled=true;say(d.message||"Thanks. Your form has reached us.");return}
+again();var e=d.errors||{},hit=null;fields.forEach(function(el){if(e[el.name]){show(el,e[el.name]);hit=hit||el}});if(hit){hit.focus();return}
+var rest=Object.keys(e).map(function(k){return e[k]});say(rest.length?rest.join(" "):(st==403||st==413||st==429)&&d.message?d.message:OOPS)})
+.catch(function(){again();say(OOPS)})})})();</script>""" % json.dumps(FORM_OOPS)
+
+
 def inquiry_form() -> str:
     """The start form, three fields (Geoff 2026-11-06: "just paste sources and list concepts and
     give your email. that starts it"). The app fills setup with the answers and asks the rest
@@ -974,19 +1037,21 @@ def inquiry_form() -> str:
     both names; it had to be deployed before this page."""
     sources_label = "Sources to follow" + ("" if SOURCES_REQUIRED else " (optional)")
     required = " required" if SOURCES_REQUIRED else ""
-    return f'''<form class="contact-card" method="post" action="{INQUIRY_ENDPOINT}" accept-charset="utf-8">
-  <p><label for="f-sources">{sources_label}: paste websites or feeds, one per line</label><br><textarea id="f-sources" name="sources" rows="4" maxlength="4000"{required} placeholder="https://www.accountingtoday.com&#10;https://www.journalofaccountancy.com"></textarea></p>
-  <p><label for="f-concepts">Topics to follow</label><br><textarea id="f-concepts" name="concepts" rows="4" required maxlength="4000" placeholder="New tax and payroll rules for small businesses, and what my clients should do before each deadline."></textarea></p>
-  <p><label for="f-email">Your email</label><br><input id="f-email" type="email" name="email" required maxlength="320" autocomplete="email"></p>
+    return f'''<form class="contact-card" id="start-form" method="post" action="{INQUIRY_ENDPOINT}" accept-charset="utf-8">
+  <p><label for="f-sources">{sources_label}: paste websites or feeds, one per line</label><br><textarea id="f-sources" name="sources" rows="4" maxlength="4000"{required} aria-describedby="f-sources-err" placeholder="https://www.accountingtoday.com&#10;https://www.journalofaccountancy.com"></textarea><span class="ferr" id="f-sources-err" role="alert" hidden></span></p>
+  <p><label for="f-concepts">Topics to follow</label><br><textarea id="f-concepts" name="concepts" rows="4" required maxlength="4000" aria-describedby="f-concepts-err" placeholder="New tax and payroll rules for small businesses, and what my clients should do before each deadline."></textarea><span class="ferr" id="f-concepts-err" role="alert" hidden></span></p>
+  <p><label for="f-email">Your email</label><br><input id="f-email" type="email" name="email" required maxlength="320" autocomplete="email" aria-describedby="f-email-err"><span class="ferr" id="f-email-err" role="alert" hidden></span></p>
   <input type="hidden" name="offer" value="brief"><input type="hidden" name="source" value="longlens">
   <input type="hidden" name="tz" id="f-tz" value="">
   <script>try{{document.getElementById("f-tz").value=Intl.DateTimeFormat().resolvedOptions().timeZone||""}}catch(e){{}}</script>
   <p style="position:absolute;left:-9999px" aria-hidden="true"><label for="f-hp-note">Leave this empty</label><input id="f-hp-note" name="hp_note" tabindex="-1" autocomplete="off" aria-hidden="true"></p>{turnstile_widget()}
   <input type="hidden" name="consent_version" value="{CONSENT_VERSION}">
   <button class="btn btn-a" type="submit">See my first issue, free</button>
+  <p class="form-msg" id="f-status" role="alert" hidden></p>
   <p class="fine">By starting, you agree to get these emails. Stop them any time with one click.</p>
-  <p class="email-line">We never add you to a list.</p>
-</form>'''
+  <p class="email-line">We never add you to a list. Read the <a href="/terms/">terms</a> and <a href="/privacy/">privacy</a>.</p>
+</form>
+{FORM_JS}'''
 
 
 CONTACT_BODY = inquiry_form() if FORM_LIVE else f'''<div class="contact-card">
@@ -1070,6 +1135,32 @@ PRIVACY = f'''<section class="hero">
     <h2>Once you use LongLens</h2>
     <p>We notice if you tap a link in your issues, only so we stop emailing anyone who never reads them. Nothing else is read from your issues, and it is not used for anything else.</p>
     <p>What the LongLens app keeps about you, where it lives and who else sees anything is set out on the app's own privacy page: <a href="{APP_PRIVACY}">LongLens app privacy</a>.</p>
+    <h2>Who runs|LongLens</h2>
+    <p>{IDENTITY} Write to <a href="mailto:{EMAIL}">{EMAIL}</a>. The <a href="/terms/">terms</a> are on their own page.</p>
+  </div>
+</section>'''
+
+# Terms (Geoff 2026-11-12: short plain terms, approved to go live with the identity line). The
+# full text and its review are in newsletter-samples/research/site-checklist-2026-11-12/TERMS-DRAFT.md.
+TERMS_UPDATED = "12 November 2026"
+TERMS = f'''<section class="hero">
+  <div class="wrap prose">
+    <h1>Your content stays yours.|Stop any time.</h1>
+    <p class="lede">These terms cover LongLens, the newsletter service at getlonglens.com, run by {COMPANY}. They are short on purpose. Last updated {TERMS_UPDATED}.</p>
+    <h2>Your first week|is free</h2>
+    <p>Starting costs nothing and needs no card. After your free week you pay only if you pick a paid plan; plans and prices are on the <a href="/pricing/">pricing page</a>, invoiced in US dollars. LongLens is new and still changing, so we may limit how many new newsletters start each day.</p>
+    <h2>Your content|and your readers stay yours</h2>
+    <p>Your topics, the websites you name, your readers' email addresses and the issues you send are yours. LongLens uses them to write and deliver your newsletter, as the <a href="/privacy/">privacy page</a> sets out, and for nothing else. We never sell your readers' addresses or add them to any list. Every story links to its original, and the original belongs to its publisher.</p>
+    <h2>Your name,|your call</h2>
+    <p>LongLens writes each issue with AI, and every issue comes to you first. You make it yours and you decide what goes out under your name, so what you send is your responsibility.</p>
+    <h2>No guarantees</h2>
+    <p>LongLens is provided as it is. We work to keep it running and its stories right, but we cannot promise it is free of mistakes or always available. As far as Danish law allows, we are not liable for any loss that comes from using it.</p>
+    <h2>Stop|any time</h2>
+    <p>You can stop whenever you like: press Stop at the end of any issue, or email <a href="mailto:{EMAIL}">{EMAIL}</a>. We can stop your newsletter too, and when we do we tell you by email first whenever we can.</p>
+    <h2>Changes|and the law</h2>
+    <p>We may change these terms as LongLens changes. The date at the top shows the latest version, and we email you about any change that affects you. Danish law applies, and the Danish courts decide any dispute.</p>
+    <h2>Who we are</h2>
+    <p>{COMPANY}, CVR {CVR}, {COMPANY_ADDRESS}. Email <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
   </div>
 </section>'''
 
@@ -1214,6 +1305,9 @@ PAGES = [
     ("privacy", "Privacy", "Privacy | LongLens",
      "This site counts visits with Cloudflare Web Analytics and sets no cookies. What happens when you write, and where the app's privacy page is.",
      PRIVACY, "", "this site counts visits with Cloudflare Web Analytics and sets no cookies"),
+    ("terms", "Terms", "Terms | LongLens",
+     "Plain terms for LongLens: the free week, your content and readers stay yours, stop any time, Danish law. Run by Hedge Holding ApS.",
+     TERMS, "", "plain terms: the free week, ownership, stopping, Danish law, who runs LongLens"),
 ]
 
 # --------------------------------------------------------------------------------------------
@@ -1383,9 +1477,9 @@ def llms_txt() -> str:
     the sitemap: it is not a page for search results."""
     url = lambda slug: SITE + ("/" if slug == "" else f"/{slug}/")
     pages = "\n".join(f"- [{label}]({url(slug)}): {about}" for slug, label, _t, _d, _b, _c, about in PAGES
-                      if slug not in ("sign-in", "privacy"))
+                      if slug not in ("sign-in", "privacy", "terms"))
     optional = "\n".join(f"- [{label}]({url(slug)}): {about}" for slug, label, _t, _d, _b, _c, about in PAGES
-                         if slug in ("sign-in", "privacy"))
+                         if slug in ("sign-in", "privacy", "terms"))
     plans = "\n".join(
         f"- {name}: ${price}" + ("" if not price else " a month") + f". {desc}" for name, price, desc in PLANS)
     return f"""# LongLens

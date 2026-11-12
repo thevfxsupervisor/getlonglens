@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="https://getlonglens.com/assets/og-card.png?v=2026-11-08">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
-<link rel="apple-touch-icon" href="/assets/mark-e1-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="alternate" type="text/markdown" href="/llms.txt" title="LongLens in plain text">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://getlonglens.com/#org","name":"LongLens","url":"https://getlonglens.com/","logo":"https://getlonglens.com/assets/mark-e1-512.png","description":"LongLens is an AI newsletter service for businesses. LongLens finds what changed in your field and tells your clients what it means, under your name only. The Email, Podcast, Reel, Infographic, Carousel and Explainer video are all part of the issue. Every issue comes to you first, and you make it yours on the page before you send it.","disambiguatingDescription":"LongLens at getlonglens.com, the newsletter service.","founder":{"@type":"Person","@id":"https://thevfxsupervisor.com/#person","name":"Geoffrey Hancock","url":"https://thevfxsupervisor.com/","sameAs":["https://thevfxsupervisor.com/"],"award":"VES Award, Outstanding Supporting Visual Effects in a Feature Motion Picture, for Changeling"},"sameAs":["https://www.youtube.com/@getlonglens"]},{"@type":"WebSite","@id":"https://getlonglens.com/#site","name":"LongLens","url":"https://getlonglens.com/","publisher":{"@id":"https://getlonglens.com/#org"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://getlonglens.com/"},{"@type":"ListItem","position":2,"name":"Start a free week","item":"https://getlonglens.com/contact/"}]}]}</script>
@@ -45,10 +45,10 @@
   <div class="wrap">
     <h1 class="long"><span class="ph">Read a week</span> <span class="ph">of what your clients</span> <span class="ph">would hear</span> <span class="ph">from you, free.</span></h1>
     <p class="lede">Name a few websites you trust, list your topics, add your email. In about 5 minutes you read your first issue. Free for a week, then from $19 a month.</p>
-    <form class="contact-card" method="post" action="https://newsletter-edge.thevfxsupervisor.workers.dev/hooks/inquiry" accept-charset="utf-8">
-  <p><label for="f-sources">Sources to follow (optional): paste websites or feeds, one per line</label><br><textarea id="f-sources" name="sources" rows="4" maxlength="4000" placeholder="https://www.accountingtoday.com&#10;https://www.journalofaccountancy.com"></textarea></p>
-  <p><label for="f-concepts">Topics to follow</label><br><textarea id="f-concepts" name="concepts" rows="4" required maxlength="4000" placeholder="New tax and payroll rules for small businesses, and what my clients should do before each deadline."></textarea></p>
-  <p><label for="f-email">Your email</label><br><input id="f-email" type="email" name="email" required maxlength="320" autocomplete="email"></p>
+    <form class="contact-card" id="start-form" method="post" action="https://newsletter-edge.thevfxsupervisor.workers.dev/hooks/inquiry" accept-charset="utf-8">
+  <p><label for="f-sources">Sources to follow (optional): paste websites or feeds, one per line</label><br><textarea id="f-sources" name="sources" rows="4" maxlength="4000" aria-describedby="f-sources-err" placeholder="https://www.accountingtoday.com&#10;https://www.journalofaccountancy.com"></textarea><span class="ferr" id="f-sources-err" role="alert" hidden></span></p>
+  <p><label for="f-concepts">Topics to follow</label><br><textarea id="f-concepts" name="concepts" rows="4" required maxlength="4000" aria-describedby="f-concepts-err" placeholder="New tax and payroll rules for small businesses, and what my clients should do before each deadline."></textarea><span class="ferr" id="f-concepts-err" role="alert" hidden></span></p>
+  <p><label for="f-email">Your email</label><br><input id="f-email" type="email" name="email" required maxlength="320" autocomplete="email" aria-describedby="f-email-err"><span class="ferr" id="f-email-err" role="alert" hidden></span></p>
   <input type="hidden" name="offer" value="brief"><input type="hidden" name="source" value="longlens">
   <input type="hidden" name="tz" id="f-tz" value="">
   <script>try{document.getElementById("f-tz").value=Intl.DateTimeFormat().resolvedOptions().timeZone||""}catch(e){}</script>
@@ -57,9 +57,31 @@
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <input type="hidden" name="consent_version" value="consent-2026-11-07">
   <button class="btn btn-a" type="submit">See my first issue, free</button>
+  <p class="form-msg" id="f-status" role="alert" hidden></p>
   <p class="fine">By starting, you agree to get these emails. Stop them any time with one click.</p>
-  <p class="email-line">We never add you to a list.</p>
+  <p class="email-line">We never add you to a list. Read the <a href="/terms/">terms</a> and <a href="/privacy/">privacy</a>.</p>
 </form>
+<script>(function(){var f=document.getElementById("start-form");if(!f||!window.fetch||!window.FormData||!window.URLSearchParams)return;
+f.noValidate=true;var btn=f.querySelector("button[type=submit]"),label=btn.textContent,box=document.getElementById("f-status");
+var fields=[].slice.call(f.querySelectorAll("textarea,input[type=email]"));
+var NEED={concepts:"Please list a few topics you want to follow.",sources:"Please paste at least one website or feed.",email:"Please add your email address."};
+var OOPS="Sorry, your form did not reach us. Please try again in a minute, or email geoff@wanglemedia.com.";
+function show(el,m){var p=document.getElementById(el.id+"-err");el.setAttribute("aria-invalid",m?"true":"false");p.textContent=m||"";p.hidden=!m}
+function check(el){var v=el.value.trim();if(el.required&&!v)return NEED[el.name]||"Please fill this in.";
+if(el.type=="email"&&v&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v))return "That email address does not look right. Please check it.";
+if(el.maxLength>0&&el.value.length>el.maxLength)return "Please make this a little shorter.";return ""}
+fields.forEach(function(el){el.addEventListener("input",function(){if(el.getAttribute("aria-invalid")=="true")show(el,check(el))})});
+function say(m){box.textContent=m||"";box.hidden=!m}
+function busy(on){btn.disabled=on;btn.textContent=on?"Sending...":label;f.setAttribute("aria-busy",on?"true":"false")}
+function again(){busy(false);try{if(window.turnstile)window.turnstile.reset()}catch(e){}}
+f.addEventListener("submit",function(ev){ev.preventDefault();if(btn.disabled)return;say("");var first=null;
+fields.forEach(function(el){var m=check(el);show(el,m);if(m&&!first)first=el});if(first){first.focus();return}
+busy(true);fetch(f.action,{method:"POST",body:new URLSearchParams(new FormData(f)),headers:{"Accept":"application/json"}})
+.then(function(r){return r.json().then(function(d){return[r.status,d||{}]},function(){return[r.status,{}]})})
+.then(function(x){var st=x[0],d=x[1];if(d.ok){if(d.next){location.href=d.next;return}busy(false);btn.disabled=true;say(d.message||"Thanks. Your form has reached us.");return}
+again();var e=d.errors||{},hit=null;fields.forEach(function(el){if(e[el.name]){show(el,e[el.name]);hit=hit||el}});if(hit){hit.focus();return}
+var rest=Object.keys(e).map(function(k){return e[k]});say(rest.length?rest.join(" "):(st==403||st==413||st==429)&&d.message?d.message:OOPS)})
+.catch(function(){again();say(OOPS)})})})();</script>
   </div>
 </section>
 
@@ -81,8 +103,9 @@
     <div>
       <p class="by">LongLens (getlonglens.com). Built by <a href="https://thevfxsupervisor.com/">Geoffrey Hancock</a>.</p>
       <p class="tiny">No cookies on this site. Visits are counted with Cloudflare Web Analytics.</p>
+      <p class="tiny idline">LongLens is run by Hedge Holding ApS, CVR 41583290, Bakkevej 8, 3050 Humlebæk, Denmark.</p>
     </div>
-    <nav aria-label="Footer"><a href="/features/">Features</a><a href="/pricing/">Pricing</a><a href="/how-it-works/">How it works</a><a href="/faq/">FAQ</a><a href="/for-accountants/">For accountants</a><a href="/contact/">Free week</a><a href="/sign-in/">Sign in</a><a href="/privacy/">Privacy</a></nav>
+    <nav aria-label="Footer"><a href="/features/">Features</a><a href="/pricing/">Pricing</a><a href="/how-it-works/">How it works</a><a href="/faq/">FAQ</a><a href="/for-accountants/">For accountants</a><a href="/contact/">Free week</a><a href="/sign-in/">Sign in</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></nav>
   </div>
 </footer>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "1f336ebfe8c4455d866eefbd78962e59"}'></script>

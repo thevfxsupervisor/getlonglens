@@ -41,5 +41,6 @@ LongLens was built by Geoffrey Hancock, a visual effects supervisor and VES Awar
 
 - [Sign in](https://getlonglens.com/sign-in/): sign in with a link by email, no password
 - [Privacy](https://getlonglens.com/privacy/): this site counts visits with Cloudflare Web Analytics and sets no cookies
+- [Terms](https://getlonglens.com/terms/): plain terms: the free week, ownership, stopping, Danish law, who runs LongLens
 - [LongLens on YouTube](https://www.youtube.com/@getlonglens)
 - [About the founder](https://thevfxsupervisor.com/longlens/)
