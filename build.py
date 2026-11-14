@@ -1140,7 +1140,7 @@ PRIVACY = f'''<section class="hero">
     <h2>When you write|to Geoff</h2>
     <p>Your email goes to Geoffrey Hancock at {EMAIL}. LongLens uses it to make your account and email you your newsletter, and Geoff uses it only to reply to you. Writing does not add you to any list.</p>
     <h2>Once you use LongLens</h2>
-    <p>We notice if you tap a link in your issues, only so we stop emailing anyone who never reads them. Nothing else is read from your issues, and it is not used for anything else.</p>
+    <p>We count taps on the links in each issue, per link and never per person. That tells the sender which stories were read, and lets us stop emailing anyone who never reads them. Nothing else is read from your issues.</p>
     <p>What the LongLens app keeps about you, where it lives and who else sees anything is set out on the app's own privacy page: <a href="{APP_PRIVACY}">LongLens app privacy</a>.</p>
     <h2>Who runs|LongLens</h2>
     <p>{IDENTITY} Write to <a href="mailto:{EMAIL}">{EMAIL}</a>. The <a href="/terms/">terms</a> are on their own page.</p>
