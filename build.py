@@ -278,7 +278,7 @@ def mobile_bar(slug: str, body: str) -> str:
 
 
 CTA_TEXT = "See what your clients would hear from you, free"
-HERO_OFFER = f"AI writes the first version, you make it yours, and only your name is on it. {OFFER_LINE}."
+HERO_OFFER = f"AI writes the first version, you make it yours, and it goes out from your name. {OFFER_LINE}."
 
 
 def close_cta(h2: str, text: str, cta: str = "") -> str:
