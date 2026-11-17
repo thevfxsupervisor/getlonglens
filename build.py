@@ -1573,6 +1573,8 @@ LongLens was built by Geoffrey Hancock, a visual effects supervisor and VES Awar
 
 - [The VFX Supervisor Daily]({DAILY}): Geoffrey Hancock's own newsletter, made with LongLens
 - [A sample issue for an accounting firm's clients]({SITE}/samples/uk-accounting/): written by LongLens from real UK news for an invented Manchester firm
+- [A sample issue for a law firm's clients]({SITE}/samples/uk-law/): written by LongLens from real UK news for an invented Leeds firm
+- [A sample issue for a vet practice's pet owners]({SITE}/samples/uk-vets/): written by LongLens from real UK news for an invented Bristol practice
 - [A sample issue for a bakery owners' community]({SITE}/samples/bakery/): written by LongLens from real news for an invented community
 
 ## Optional
