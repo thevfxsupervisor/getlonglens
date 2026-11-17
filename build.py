@@ -1040,7 +1040,7 @@ RATES = {"GBP": 0.75767, "EUR": 0.90794, "DKK": 6.787, "CAD": 1.4285, "AUD": 1.4
 RATE_REGIONS = {"GB": "GBP", "DK": "DKK", "CA": "CAD", "AU": "AUD", "NZ": "NZD", "CH": "CHF", "SE": "SEK",
                 "NO": "NOK", "SG": "SGD", **{r: "EUR" for r in "IE DE FR ES IT NL BE AT FI PT GR LU".split()}}
 RATE_LANGS = {"da": "DKK", "nl": "EUR", "de": "EUR", "fr": "EUR", "es": "EUR", "it": "EUR"}  # no region given
-RATE_NOTE = "Amounts in your own currency are about, worked out at " + RATES_DATE + " rates. Invoices are in US dollars."
+RATE_NOTE = "Prices in your own currency are rounded, at " + RATES_DATE + " exchange rates. Invoices are in US dollars."
 PRICE_JS = """<script>(function(){try{var R=%s,G=%s,L=%s,N=%s;
 var p=(navigator.language||"").replace("_","-").split("-"),c=G[(p[1]||"").toUpperCase()]||(p.length<2?L[p[0].toLowerCase()]:"");
 if(!c||!R[c])return;var f=new Intl.NumberFormat("en-US",{style:"currency",currency:c,maximumFractionDigits:0});
