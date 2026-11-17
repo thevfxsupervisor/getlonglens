@@ -492,3 +492,5 @@ footer a:hover{color:var(--txt)}
 .form-msg{margin-top:16px;padding:12px 14px;border:1px solid var(--red);border-radius:8px;font-size:15px;line-height:1.5}
 .btn:disabled{opacity:.75;cursor:progress;transform:none}
 .idline{margin-top:6px}
+.lc{font-size:.85em;font-weight:400;color:var(--dim);white-space:nowrap}
+.lc-note{font-size:14px;color:var(--dim);margin:12px 0 0}

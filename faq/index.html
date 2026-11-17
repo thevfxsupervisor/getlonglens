@@ -91,6 +91,25 @@ b.hidden=false;document.body.classList.add("has-mbar");
 new IntersectionObserver(function(e){e=e[e.length-1];past=!e.isIntersecting&&e.boundingClientRect.top<0;set()}).observe(t);
 var io=new IntersectionObserver(function(es){es.forEach(function(e){e.target._in=e.isIntersecting});set()});
 near.forEach(function(x){io.observe(x)})})();</script>
+<script>(function(){try{var s=window.sessionStorage,q=new URLSearchParams(location.search),K=["utm_source","utm_medium","utm_campaign"];
+K.forEach(function(k){var v=q.get(k);if(v)s.setItem("ll_"+k,v.slice(0,80))});
+if(!s.getItem("ll_from")&&document.referrer){var h=new URL(document.referrer).hostname.replace(/^www\./,"");if(h&&h!==location.hostname.replace(/^www\./,""))s.setItem("ll_from",h)}
+var V={};K.forEach(function(k){V[k]=s.getItem("ll_"+k)||""});V.came_from=s.getItem("ll_from")||"";
+[].forEach.call(document.querySelectorAll("input[type=hidden]"),function(i){if(V.hasOwnProperty(i.name))i.value=V[i.name]});
+var P=new URLSearchParams();K.forEach(function(k){if(V[k])P.set(k,V[k])});if(!P.toString())return;
+[].forEach.call(document.querySelectorAll("a[href]"),function(a){var h=a.getAttribute("href");
+if(h.indexOf("/contact/")==0||h=="https://newsletter-edge.thevfxsupervisor.workers.dev/login"){var u=new URL(a.href);P.forEach(function(v,k){if(!u.searchParams.has(k))u.searchParams.set(k,v)});a.href=u.href}})}catch(e){}})();</script>
+<script>(function(){try{var R={"GBP": 0.75767, "EUR": 0.90794, "DKK": 6.787, "CAD": 1.4285, "AUD": 1.48, "NZD": 1.8132, "CHF": 0.8393, "SEK": 10.0735, "NOK": 9.6005, "SGD": 1.2888},G={"GB": "GBP", "DK": "DKK", "CA": "CAD", "AU": "AUD", "NZ": "NZD", "CH": "CHF", "SE": "SEK", "NO": "NOK", "SG": "SGD", "IE": "EUR", "DE": "EUR", "FR": "EUR", "ES": "EUR", "IT": "EUR", "NL": "EUR", "BE": "EUR", "AT": "EUR", "FI": "EUR", "PT": "EUR", "GR": "EUR", "LU": "EUR"},L={"da": "DKK", "nl": "EUR", "de": "EUR", "fr": "EUR", "es": "EUR", "it": "EUR"},N="Amounts in your own currency are about, worked out at 2026-11-16 rates. Invoices are in US dollars.";
+var p=(navigator.language||"").replace("_","-").split("-"),c=G[(p[1]||"").toUpperCase()]||(p.length<2?L[p[0].toLowerCase()]:"");
+if(!c||!R[c])return;var f=new Intl.NumberFormat("en-US",{style:"currency",currency:c,maximumFractionDigits:0});
+var w=document.createTreeWalker(document.querySelector("main"),NodeFilter.SHOW_TEXT),hit=[],n;
+while(n=w.nextNode()){if(/\$\d/.test(n.nodeValue)&&!n.parentNode.closest("h1,h2,h3,script,style,a.btn"))hit.push(n)}
+var seen=[];hit.forEach(function(t){var m=/\$(\d+)/.exec(t.nodeValue);if(!m||+m[1]==0)return;
+var sp=document.createElement("span");sp.className="lc";sp.textContent=" (about "+f.format(+m[1]*R[c])+")";
+var a=t,nx=t.nextSibling;if(nx&&nx.nodeType==1&&/^a month/.test(nx.textContent))a=nx;
+else{var rest=t.nodeValue.slice(m.index+m[0].length),mm=/^ a month/.exec(rest);t.splitText(m.index+m[0].length+(mm?mm[0].length:0))}
+a.parentNode.insertBefore(sp,a.nextSibling);
+var sec=a.parentNode.closest("section")||document.querySelector("main");if(seen.indexOf(sec)<0){seen.push(sec);var q=document.createElement("p");q.className="lc-note";q.textContent=N;(sec.querySelector(".wrap")||sec).appendChild(q)}})}catch(e){}})();</script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "1f336ebfe8c4455d866eefbd78962e59"}'></script>
 </body>
 </html>

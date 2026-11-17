@@ -244,6 +244,8 @@ def page(slug: str, title: str, description: str, body: str, current: str = "",
 {phrase_chunks(body)}
 </main>
 {footer()}{mobile_bar(slug, body)}
+{UTM_JS}
+{PRICE_JS}
 {CF_BEACON}
 </body>
 </html>
@@ -1014,6 +1016,44 @@ def turnstile_widget() -> str:
 # field, or a message. Anything else (the edge's 502, an app 500 with no CORS header, no network)
 # shows FORM_OOPS, never a raw page. The Turnstile token works once, so it is reset after a refusal.
 FORM_OOPS = f"Sorry, your form did not reach us. Please try again in a minute, or email {EMAIL}."
+# Attribution (S3, 2026-11-17): utm_* tags and the referring site are kept in the tab's
+# sessionStorage (no cookie), sent as hidden fields of the start form, and carried on the links
+# to /contact/ and the app's sign-in, so the app can say which channel brought a sign-up.
+UTM_JS = """<script>(function(){try{var s=window.sessionStorage,q=new URLSearchParams(location.search),K=["utm_source","utm_medium","utm_campaign"];
+K.forEach(function(k){var v=q.get(k);if(v)s.setItem("ll_"+k,v.slice(0,80))});
+if(!s.getItem("ll_from")&&document.referrer){var h=new URL(document.referrer).hostname.replace(/^www\\./,"");if(h&&h!==location.hostname.replace(/^www\\./,""))s.setItem("ll_from",h)}
+var V={};K.forEach(function(k){V[k]=s.getItem("ll_"+k)||""});V.came_from=s.getItem("ll_from")||"";
+[].forEach.call(document.querySelectorAll("input[type=hidden]"),function(i){if(V.hasOwnProperty(i.name))i.value=V[i.name]});
+var P=new URLSearchParams();K.forEach(function(k){if(V[k])P.set(k,V[k])});if(!P.toString())return;
+[].forEach.call(document.querySelectorAll("a[href]"),function(a){var h=a.getAttribute("href");
+if(h.indexOf("/contact/")==0||h==APP_LOGIN){var u=new URL(a.href);P.forEach(function(v,k){if(!u.searchParams.has(k))u.searchParams.set(k,v)});a.href=u.href}})}catch(e){}})();</script>""".replace("APP_LOGIN", json.dumps(SIGNIN))
+
+# Prices in local money (Geoff 2026-11-17: "leads should see prices also in local currency").
+# USD stays the invoiced price. Rates are baked in here, never fetched by a visitor's browser:
+# api.frankfurter.dev (ECB reference rates, the successor of frankfurter.app), base USD, day
+# RATES_DATE. Refresh by editing RATES and RATES_DATE. No script, or no region match (US, plain
+# "en"): USD only.
+RATES_DATE = "2026-11-16"
+RATES_SOURCE = "frankfurter.app (ECB reference rates)"
+RATES = {"GBP": 0.75767, "EUR": 0.90794, "DKK": 6.787, "CAD": 1.4285, "AUD": 1.48, "NZD": 1.8132,
+         "CHF": 0.8393, "SEK": 10.0735, "NOK": 9.6005, "SGD": 1.2888}
+RATE_REGIONS = {"GB": "GBP", "DK": "DKK", "CA": "CAD", "AU": "AUD", "NZ": "NZD", "CH": "CHF", "SE": "SEK",
+                "NO": "NOK", "SG": "SGD", **{r: "EUR" for r in "IE DE FR ES IT NL BE AT FI PT GR LU".split()}}
+RATE_LANGS = {"da": "DKK", "nl": "EUR", "de": "EUR", "fr": "EUR", "es": "EUR", "it": "EUR"}  # no region given
+RATE_NOTE = "Amounts in your own currency are about, worked out at " + RATES_DATE + " rates. Invoices are in US dollars."
+PRICE_JS = """<script>(function(){try{var R=%s,G=%s,L=%s,N=%s;
+var p=(navigator.language||"").replace("_","-").split("-"),c=G[(p[1]||"").toUpperCase()]||(p.length<2?L[p[0].toLowerCase()]:"");
+if(!c||!R[c])return;var f=new Intl.NumberFormat("en-US",{style:"currency",currency:c,maximumFractionDigits:0});
+var w=document.createTreeWalker(document.querySelector("main"),NodeFilter.SHOW_TEXT),hit=[],n;
+while(n=w.nextNode()){if(/\\$\\d/.test(n.nodeValue)&&!n.parentNode.closest("h1,h2,h3,script,style,a.btn"))hit.push(n)}
+var seen=[];hit.forEach(function(t){var m=/\\$(\\d+)/.exec(t.nodeValue);if(!m||+m[1]==0)return;
+var sp=document.createElement("span");sp.className="lc";sp.textContent=" (about "+f.format(+m[1]*R[c])+")";
+var a=t,nx=t.nextSibling;if(nx&&nx.nodeType==1&&/^a month/.test(nx.textContent))a=nx;
+else{var rest=t.nodeValue.slice(m.index+m[0].length),mm=/^ a month/.exec(rest);t.splitText(m.index+m[0].length+(mm?mm[0].length:0))}
+a.parentNode.insertBefore(sp,a.nextSibling);
+var sec=a.parentNode.closest("section")||document.querySelector("main");if(seen.indexOf(sec)<0){seen.push(sec);var q=document.createElement("p");q.className="lc-note";q.textContent=N;(sec.querySelector(".wrap")||sec).appendChild(q)}})}catch(e){}})();</script>""" % (
+    json.dumps(RATES), json.dumps(RATE_REGIONS), json.dumps(RATE_LANGS), json.dumps(RATE_NOTE))
+
 FORM_JS = """<script>(function(){var f=document.getElementById("start-form");if(!f||!window.fetch||!window.FormData||!window.URLSearchParams)return;
 f.noValidate=true;var btn=f.querySelector("button[type=submit]"),label=btn.textContent,box=document.getElementById("f-status");
 var fields=[].slice.call(f.querySelectorAll("textarea,input[type=email]"));
@@ -1050,7 +1090,7 @@ def inquiry_form() -> str:
   <p><label for="f-sources">{sources_label}: paste websites or feeds, one per line</label><br><textarea id="f-sources" name="sources" rows="4" maxlength="4000"{required} aria-describedby="f-sources-err" placeholder="https://www.accountingtoday.com&#10;https://www.journalofaccountancy.com"></textarea><span class="ferr" id="f-sources-err" role="alert" hidden></span></p>
   <p><label for="f-concepts">Topics to follow</label><br><textarea id="f-concepts" name="concepts" rows="4" required maxlength="4000" aria-describedby="f-concepts-err" placeholder="New tax and payroll rules for small businesses, and what my clients should do before each deadline."></textarea><span class="ferr" id="f-concepts-err" role="alert" hidden></span></p>
   <p><label for="f-email">Your email</label><br><input id="f-email" type="email" name="email" required maxlength="320" autocomplete="email" aria-describedby="f-email-err"><span class="ferr" id="f-email-err" role="alert" hidden></span></p>
-  <input type="hidden" name="offer" value="brief"><input type="hidden" name="source" value="longlens">
+  <input type="hidden" name="offer" value="brief"><input type="hidden" name="source" value="longlens"><input type="hidden" name="utm_source" value=""><input type="hidden" name="utm_medium" value=""><input type="hidden" name="utm_campaign" value=""><input type="hidden" name="came_from" value="">
   <input type="hidden" name="tz" id="f-tz" value="">
   <script>try{{document.getElementById("f-tz").value=Intl.DateTimeFormat().resolvedOptions().timeZone||""}}catch(e){{}}</script>
   <p style="position:absolute;left:-9999px" aria-hidden="true"><label for="f-hp-note">Leave this empty</label><input id="f-hp-note" name="hp_note" tabindex="-1" autocomplete="off" aria-hidden="true"></p>{turnstile_widget()}
@@ -1135,6 +1175,15 @@ SIGNIN_PAGE = f'''<section class="hero">
   </div>
 </section>'''
 
+OUTREACH_PRIVACY = (f"We may email a firm once, at a business address the firm publishes on its own website, with an offer "
+                    f"for LongLens. Our reason is legitimate interest in offering a business a business service, and the "
+                    f"source is the firm's website. Reply &quot;no&quot; and we stop, and we keep only a note that says not to "
+                    f"contact you again. The sender is {COMPANY}, CVR {CVR}, Denmark.")
+ATTRIBUTION_PRIVACY = ("If you arrive from a link that carries a tag such as utm_source=linkedin, this site remembers the tag, "
+                       "and the name of the site you came from, in that browser tab only (no cookie). If you start a free "
+                       "week it sends them with the form, so we know which post or email brought you. Nothing else about "
+                       "your visit is sent.")
+
 PRIVACY = f'''<section class="hero">
   <div class="wrap prose">
     <h1>No cookies on this site.|Your email reaches one person.</h1>
@@ -1144,6 +1193,10 @@ PRIVACY = f'''<section class="hero">
     <h2>Once you use LongLens</h2>
     <p>We count taps on the links in each issue, per link and never per person. That tells the sender which stories were read, and lets us stop emailing anyone who never reads them. Nothing else is read from your issues.</p>
     <p>What the LongLens app keeps about you, where it lives and who else sees anything is set out on the app's own privacy page: <a href="{APP_PRIVACY}">LongLens app privacy</a>.</p>
+    <h2>If we write to your|firm first</h2>
+    <p>{OUTREACH_PRIVACY}</p>
+    <h2>Which link|brought you</h2>
+    <p>{ATTRIBUTION_PRIVACY}</p>
     <h2>Who runs|LongLens</h2>
     <p>{IDENTITY} Write to <a href="mailto:{EMAIL}">{EMAIL}</a>. The <a href="/terms/">terms</a> are on their own page.</p>
   </div>
