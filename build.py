@@ -1239,12 +1239,12 @@ NOT_FOUND = '''<section class="hero">
 # For accountants (outreach page: in the sitemap, not in the main navigation)
 # --------------------------------------------------------------------------------------------
 
-# The accountants page shows its own sample: an invented Manchester firm, real UK news, from a real
-# pipeline run (newsletter-samples/samples-accountants-uk-2026-11-07, not hand-edited). Same shape as SAMPLES.
-FA_SAMPLE = ("uk-accounting", "Client Update", "For the clients of a Manchester accounting firm",
-             "Late payments cost more from 16 November, and MTD and Budget dates are closing in",
+# The accountants page shows its own sample: a sample accounting firm, real UK news, from a real
+# pipeline run (first run: newsletter-samples/samples-accountants-uk-2026-11-07; reissued 17 Nov 2026). Same shape as SAMPLES.
+FA_SAMPLE = ("uk-accounting", "Client Update", "For the clients of an accounting firm",
+             "Tax interest rises to 8% on 24 November, and April 2027 changes are closing in",
              "The dates clients must act on come first.")
-FA_SAMPLE_DATE = "Sat 7 Nov 2026"
+FA_SAMPLE_DATE = "Tue 17 Nov 2026"
 FA_CTA = "Get your first client update free"
 
 FA_OFFER = f"{OFFER_LINE}, invoiced."
@@ -1285,7 +1285,7 @@ FOR_ACCOUNTANTS = f'''<section class="hero">
   <div class="wrap">
     <div class="split sample-split"><div class="s7">
     <div class="sec-head">      <h2>See what your clients|would hear from you|the morning^a tax rule changes</h2>
-      <p>One example, written for an invented firm in Manchester, using real news: HMRC late payment interest going up, a Making Tax Digital deadline, Budget changes for April 2027. The firm is made up; the stories and links are real, and each section says what it means for the firm's clients. Yours would use the sources you trust, from any country.</p></div>
+      <p>One example issue for an accounting firm, using real news: HMRC late payment interest going up, a check before 31 January, fake tax refund emails. The stories and links are real, and each section says what it means for the firm's clients. Yours would use the sources you trust, from any country.</p></div>
     </div>
     <div class="s5 fmt-strip one" role="list" aria-label="A sample client update for an accounting firm">
       <div class="fmt-card" role="listitem"><div class="fmt-media"><a href="/samples/{FA_SAMPLE[0]}/"><img src="/assets/samples/{FA_SAMPLE[0]}-top.png" width="600" height="900" loading="lazy" alt="The top of Client Update, a sample client update for an accounting firm: {html.escape(FA_SAMPLE[3])}"></a></div>
@@ -1572,10 +1572,10 @@ LongLens was built by Geoffrey Hancock, a visual effects supervisor and VES Awar
 ## Examples
 
 - [The VFX Supervisor Daily]({DAILY}): Geoffrey Hancock's own newsletter, made with LongLens
-- [A sample issue for an accounting firm's clients]({SITE}/samples/uk-accounting/): written by LongLens from real UK news for an invented Manchester firm
-- [A sample issue for a law firm's clients]({SITE}/samples/uk-law/): written by LongLens from real UK news for an invented Leeds firm
-- [A sample issue for a vet practice's pet owners]({SITE}/samples/uk-vets/): written by LongLens from real UK news for an invented Bristol practice
-- [A sample issue for a bakery owners' community]({SITE}/samples/bakery/): written by LongLens from real news for an invented community
+- [A sample issue for an accounting firm's clients]({SITE}/samples/uk-accounting/): written by LongLens from real UK news
+- [A sample issue for a law firm's clients]({SITE}/samples/uk-law/): written by LongLens from real UK news
+- [A sample issue for a vet practice's pet owners]({SITE}/samples/uk-vets/): written by LongLens from real UK news
+- [A sample issue for a bakery owners' community]({SITE}/samples/bakery/): written by LongLens from real news
 
 ## Optional
 
