@@ -80,6 +80,10 @@ CURRENCY = "USD"
 FREE_DAYS = 7
 OFFER_LINE = f"Free for a week, then from ${PRICE_SOLO} a month"
 OG_VERSION = "2026-11-08"
+# The stylesheet link carries a hash of site.css, so a CSS change reaches every visitor at once
+# (GitHub Pages caches for 10 minutes; Geoff saw the pre-fix pricing layout 2026-11-26).
+import hashlib as _hl
+CSS_VERSION = _hl.sha256((ROOT / "assets" / "site.css").read_bytes()).hexdigest()[:10]
 # The plain definition, said the same way on the home page, the FAQ, the JSON-LD and llms.txt.
 DEFINITION = ("LongLens is an AI newsletter service for businesses. LongLens finds what changed in your "
               "field and tells your clients what it means, under your name only. The Email, Podcast, Reel, "
@@ -235,7 +239,7 @@ def page(slug: str, title: str, description: str, body: str, current: str = "",
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/site.css?v={CSS_VERSION}">
 <link rel="alternate" type="text/markdown" href="/llms.txt" title="LongLens in plain text">{ld_tag}
 </head>
 <body>
