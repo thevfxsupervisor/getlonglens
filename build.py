@@ -497,11 +497,11 @@ HOME = f'''<section class="hero skim-hero">
 <section>
   <div class="wrap">
     <div class="sec-head">      <h2>Free for a week.|Then from ${PRICE_SOLO} a month.</h2>
-      <p>No card and no call. Your first issue is with you in about {FIRST_ISSUE_MINUTES} minutes.</p></div>
+      <p>No card and no call to start. Your first issue is with you in about {FIRST_ISSUE_MINUTES} minutes.</p></div>
     <div class="cards">
       <div class="card price-card"><b class="kick">Free week</b><span class="amt">${PRICE_FREE}</span><p>A week of real issues, in every format, for you to judge.</p></div>
       <div class="card price-card lead"><b class="kick">Solo</b><span class="amt">${PRICE_SOLO} <small>a month</small></span><p>Your clients hear what changed from you every week, and LongLens does the sending.</p></div>
-      <div class="card price-card"><b class="kick">Business</b><span class="amt">${PRICE_BUSINESS} <small>a month</small></span><p>A custom design, plus all your issues on one web page like a blog, your Slack or Discord, and RSS, so new people can follow you.</p></div>
+      <div class="card price-card"><b class="kick">Business</b><span class="amt">${PRICE_BUSINESS} <small>a month</small></span><p>No setting up alone: we design your emails, pages and videos with you, live. Plus all your issues on one web page like a blog, your Slack or Discord, and RSS, so new people can follow you.</p></div>
     </div>
     <div class="after-cards"><a class="btn btn-b" href="/pricing/#plans">Compare the plans</a></div>
   </div>
@@ -730,7 +730,7 @@ SOLO_ROWS = ("A newsletter every day or every week",
 # Slack, Discord and the RSS feed are listed under Business only (Geoff 2026-11-08). The app has no
 # plan gate on them, so any owner can still set them up; the site just does not sell them on Solo,
 # and no page may say they come with every plan.
-BUSINESS_ROWS = ("A custom design of your emails, pages and videos, built with you",
+BUSINESS_ROWS = ("No setting up alone: we design your emails, pages and videos with you, live",
                  "All your issues on one web page, like a blog",
                  "Each issue posted to your Slack or Discord channel, and an RSS feed")
 # Edit or reply: on every plan, so the table ticks it for both (BREAK S3); same words as the Free week card.
@@ -755,7 +755,7 @@ def plan_table() -> str:
 PRICING = f'''<section class="hero">
   <div class="wrap">
     <div class="sec-head center" style="margin-bottom:0">    <h1>Free for a week.|Then from ${PRICE_SOLO} a month.</h1>
-    <p class="lede">No card, no call. Your first issue is with you in about {FIRST_ISSUE_MINUTES} minutes.</p></div>
+    <p class="lede">No card and no call to start. Your first issue is with you in about {FIRST_ISSUE_MINUTES} minutes.</p></div>
     <div class="plans">
       <div class="plan"><h2>Free week</h2>
         <p class="plan-price">${PRICE_FREE}</p>
@@ -916,7 +916,7 @@ FAQ_ITEMS = [
         ("What if LongLens gets something wrong?",
          "<p>Every issue comes to you first, and you can change or cut any line before you send it. If your issues also go on a web page, you choose: each one goes up on its own, or when you put it up. LongLens links every story to its original, so you or your client can follow any fact in one click. Your name is on it, so the last word is yours.</p>"),
         ("Whose name is on what my clients read, and will it look like my brand?",
-         "<p>Yours, and only yours, so it looks like your firm, not a template. On every plan, every issue carries your name, logo and colours, never ours. Business adds a custom design of your letters, pages and videos, built with you when you start.</p>"),
+         "<p>Yours, and only yours, so it looks like your firm, not a template. On every plan, every issue carries your name, logo and colours, never ours. On Business, you do not set up alone: we work with you live and design your letters, pages and videos together, so they look like your firm.</p>"),
         ("Who is responsible for record keeping and professional rules?",
          "<p>Your firm is. You decide what your clients are told, and you keep the records your own professional rules require. When LongLens sends for you, it keeps the proof of who was added as a client and who stopped.</p>"),
         ("Will AI-drafted issues sound like me?",
@@ -1258,7 +1258,7 @@ FA_FAQ = "".join(qa(q, a) for q, a in [
     ("Can I pick websites from my own country?",
      "<p>Yes. Name the websites you trust, such as a tax authority, your professional body or the business press, and we set them up when you start. Websites with a news feed work when you paste them. Some government pages need us to set them up by hand, so tell us which ones matter most to you.</p>"),
     ("Whose name is on what my clients read, and will it look like my brand?",
-     "<p>Yours, and only yours, so it looks like your firm, not a template. On every plan, every update carries your firm's name, logo and colours, never ours. Business adds a custom design of your letters, pages and videos, built with you when you start.</p>"),
+     "<p>Yours, and only yours, so it looks like your firm, not a template. On every plan, every update carries your firm's name, logo and colours, never ours. On Business, you do not set up alone: we work with you live and design your letters, pages and videos together, so they look like your firm.</p>"),
     ("Who is responsible for record keeping and professional rules?",
      "<p>Your firm is. You decide what your clients are told, and you keep the records your own professional rules require. When LongLens sends for you, it keeps the proof of who was added as a client and who stopped.</p>"),
     FA_CLIENT_DETAILS_QA,
