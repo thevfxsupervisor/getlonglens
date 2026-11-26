@@ -364,6 +364,7 @@ section{padding:clamp(64px,4.5vw + 46px,96px) 0}
   .plan-price{font-size:32px;margin:0;text-align:right;min-width:0}
   .plan>*:not(h2):not(.plan-price){grid-column:1 / -1}
   .plan-notes{justify-content:flex-start;text-align:left}
+  .plans+.lc-note{text-align:left}
 }
 
 /* compare the plans (SPEC 4.3.3) */
@@ -460,8 +461,9 @@ footer a:hover{color:var(--txt)}
 /* The rotating phrase must fit one line with its longest words ("Your customers watch", about 10x the
    font size wide), or the headline jumps between three and four lines as the words change. Over
    1200px the column stops at 637px, so the font stops at 3.9rem (62.4px, longest pair 627px):
-   measured 2026-11-08, the old 4.75rem cap broke the line at every width over about 1450px. */
-.hero h1.rot-h1{font-size:min(clamp(2.625rem,1.5rem + 4.6vw,4.75rem),8.8vw)}
+   measured 2026-11-08, the old 4.75rem cap broke the line at every width over about 1450px. At 390px
+   the 8.8vw cap left "customers watch" 344px for a 335px line (2026-11-26), so phones cap at 8.4vw. */
+.hero h1.rot-h1{font-size:min(clamp(2.625rem,1.5rem + 4.6vw,4.75rem),8.4vw)}
 @media(min-width:960px){.hero h1.rot-h1{font-size:min(3.9rem,4.3vw)}}
 @media(max-width:380px){h1:not(.rot-h1){font-size:32px}.close h2{font-size:28px}}
 /* landing "Every line": head and rows left, the editor right; on phones the picture comes before the rows */
@@ -494,8 +496,8 @@ footer a:hover{color:var(--txt)}
 .form-msg{margin-top:16px;padding:12px 14px;border:1px solid var(--red);border-radius:8px;font-size:15px;line-height:1.5}
 .btn:disabled{opacity:.75;cursor:progress;transform:none}
 .idline{margin-top:6px}
-.lc{font-size:.85em;font-weight:400;color:var(--dim);display:inline-block;max-width:100%;overflow-wrap:anywhere}
+.lc{font-size:.85em;font-weight:400;color:var(--dim);white-space:nowrap}
 /* local-currency text sits under a big plan price: small sans, on its own line, never in the price's mono size */
 .plan-price .lc,.card .amt .lc{display:block;font:400 15px/1.35 var(--sans);letter-spacing:0;margin-top:6px}
 .ptable thead th .lc{display:block;font-size:11px;letter-spacing:.06em;white-space:normal}
-.lc-note{font-size:14px;color:var(--dim);margin:12px 0 0;overflow-wrap:anywhere}
+.lc-note{font-size:14px;color:var(--dim);margin:24px 0 0;text-align:center;overflow-wrap:anywhere}

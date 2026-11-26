@@ -1,6 +1,6 @@
 # LongLens
 
-> LongLens (getlonglens.com) writes a newsletter for a business, under the business's own name. It finds what changed in the business's field, writes an issue that says what it means for the business's clients. The owner can change the words of any issue on the page before sending it, and every issue comes to the owner first. The Email, Podcast, Reel, Infographic, Carousel and Explainer video are all part of the issue. Free for a week, then from $19 a month.
+> LongLens (getlonglens.com) writes a newsletter for a business, under the business's own name. It finds what changed in the business's field and writes an issue that says what it means for the business's clients. The owner can change the words of any issue on the page before sending it, and every issue comes to the owner first. The Email, Podcast, Reel, Infographic, Carousel and Explainer video are all part of the issue. Free for a week, then from $19 a month.
 
 LongLens is an AI newsletter service for businesses. LongLens finds what changed in your field and tells your clients what it means, under your name only. The Email, Podcast, Reel, Infographic, Carousel and Explainer video are all part of the issue. Every issue comes to you first, and you make it yours on the page before you send it.
 
@@ -13,7 +13,7 @@ How owners change it: hit Reply on any issue and write what you want in plain wo
 Prices, in US dollars, paid by invoice. Free for a week, then from $19 a month.
 - Free week: $0. A week of real issues, no card. One newsletter, as many websites as you like, up to 25 readers.
 - Solo: $19 a month. A newsletter every day or every week. Every format: Email, Podcast, Reel, Infographic, Carousel, Explainer video. Your name, logo and colours, never ours. Sent to your existing clients for you, with a one-click opt-out.
-- Business: $95 a month. Everything in Solo. No setting up alone: we design your emails, pages and videos with you, live. All your issues on one web page, like a blog. Each issue posted to your Slack or Discord channel, and an RSS feed.
+- Business: $95 a month. Everything in Solo. Set up live, side by side with us: your emails, pages and videos designed with you, so they look like your firm. All your issues on one web page, like a blog. Each issue posted to your Slack or Discord channel, and an RSS feed.
 
 How to start: fill in the form at https://getlonglens.com/contact/ with the websites or feeds to follow (optional), the topics to follow, and an email address. The first issue arrives by email in about 5 minutes. After that, issues arrive on weekdays at 07:00 local time, or on the days and time the owner picks. Every issue ends with a Stop button.
 
@@ -38,6 +38,8 @@ LongLens was built by Geoffrey Hancock, a visual effects supervisor and VES Awar
 - [A sample issue for a law firm's clients](https://getlonglens.com/samples/uk-law/): written by LongLens from real UK news
 - [A sample issue for a vet practice's pet owners](https://getlonglens.com/samples/uk-vets/): written by LongLens from real UK news
 - [A sample issue for a bakery owners' community](https://getlonglens.com/samples/bakery/): written by LongLens from real news
+- [A sample issue for a Copenhagen accounting firm's clients](https://getlonglens.com/samples/dk-accounting/): written by LongLens from real news
+- [A sample issue for a UX researcher's prospects](https://getlonglens.com/samples/ux-research/): written by LongLens from real news
 
 ## Optional
 
