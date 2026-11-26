@@ -358,8 +358,10 @@ section{padding:clamp(64px,4.5vw + 46px,96px) 0}
 @media(min-width:900px){.plans{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}.plan{grid-template-rows:auto auto 72px 1fr auto}}
 @media(max-width:899px){
   .plan{padding:22px;grid-template-columns:1fr auto;grid-template-rows:none;align-items:baseline}
+  .plan{column-gap:16px}
   .plan h2,.plan-price{grid-row:1}
-  .plan-price{font-size:32px;margin:0}
+  .plan h2{min-width:0;overflow-wrap:anywhere}
+  .plan-price{font-size:32px;margin:0;text-align:right;min-width:0}
   .plan>*:not(h2):not(.plan-price){grid-column:1 / -1}
   .plan-notes{justify-content:flex-start;text-align:left}
 }
@@ -492,5 +494,8 @@ footer a:hover{color:var(--txt)}
 .form-msg{margin-top:16px;padding:12px 14px;border:1px solid var(--red);border-radius:8px;font-size:15px;line-height:1.5}
 .btn:disabled{opacity:.75;cursor:progress;transform:none}
 .idline{margin-top:6px}
-.lc{font-size:.85em;font-weight:400;color:var(--dim);white-space:nowrap}
-.lc-note{font-size:14px;color:var(--dim);margin:12px 0 0}
+.lc{font-size:.85em;font-weight:400;color:var(--dim);display:inline-block;max-width:100%;overflow-wrap:anywhere}
+/* local-currency text sits under a big plan price: small sans, on its own line, never in the price's mono size */
+.plan-price .lc,.card .amt .lc{display:block;font:400 15px/1.35 var(--sans);letter-spacing:0;margin-top:6px}
+.ptable thead th .lc{display:block;font-size:11px;letter-spacing:.06em;white-space:normal}
+.lc-note{font-size:14px;color:var(--dim);margin:12px 0 0;overflow-wrap:anywhere}
