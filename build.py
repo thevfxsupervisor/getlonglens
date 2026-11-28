@@ -348,7 +348,7 @@ PROOF = f'''<div class="proof">
 # The section renders only when this list has entries, so nothing placeholder is ever published.
 SAMPLES = [
     ("dk-accounting", "Client Update", "For the clients of a Copenhagen accounting firm",
-     "Corporate tax overpayment window closes soon, and new EU parcel fees add to import costs",
+     "Corporate tax prepayment deadline, EU parcel fee, work permit scheme for hiring abroad",
      "The dates your clients must act on come first, so the deadline is the first thing they see."),
     ("ux-research", "Research Notes", "For the prospects of an independent UX researcher",
      "AI moderators and synthetic users: early data says use them for practice, not evidence",
@@ -1147,7 +1147,7 @@ CONTACT = f'''<section class="hero">
 THANKS = f'''<section class="hero">
   <div class="wrap prose">
     <h1>Thanks.|Check your inbox|for your start link.</h1>
-    <p>LongLens has emailed you a one-time link. Click it: what you wrote on this form is already filled in. Check it, add who reads it if you like, and pick where and when it arrives. Your first issue arrives on the schedule you pick, and your free week starts there. The link works once, for 24 hours.</p>
+    <p>LongLens has emailed you a one-time link. Click it and answer three short questions. What you wrote on this form is already filled in for what to follow and where to start looking, so you only check it. You pick where and when it arrives. Your first issue arrives on the schedule you pick, and your free week starts there. The link works once, for 24 hours.</p>
     <p>Already have an account? The email holds your sign-in link instead. Nothing else is sent to you. We never add you to a list.</p>
     <p>Before you start, read <a href="{DAILY}">Geoff's own newsletter</a>, or go back to the <a href="/">LongLens home page</a>.</p>
   </div>
